@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^', include('profiles.urls')),
     url(r'^', include('categories.urls')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
