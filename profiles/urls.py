@@ -15,10 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 
+from profiles.forms import ExRegistrationForm
 from . import views
+from registration.backends.default.views import RegistrationView
 
 
 urlpatterns = [
+    url(r'accounts/register/$',
+        RegistrationView.as_view(form_class=ExRegistrationForm),
+        name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^$', views.home, name='home'),
 ]

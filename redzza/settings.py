@@ -33,6 +33,8 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # Application definition
 
 INSTALLED_APPS = [
+    'profiles.apps.ProfilesConfig',
+    'categories.apps.CategoriesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,8 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration',
     'social_django',
-    'profiles',
-    'categories',
 ]
 
 MIDDLEWARE = [
