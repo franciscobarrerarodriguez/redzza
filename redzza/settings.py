@@ -33,6 +33,8 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # Application definition
 
 INSTALLED_APPS = [
+    'profiles.apps.ProfilesConfig',
+    'categories.apps.CategoriesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
-    'profiles',
-    'categories',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'redzza.urls'
@@ -69,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -131,6 +135,18 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
-# Docs, pictures and more --Francisco
-# MEDIA_ROOT = 'media'
-# MEDIA_URL = '/media/'
+# Docs, pictures and more
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_FACEBOOK_KEY = '752059251636371'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'e185984029f40b557b0b46ae0d6d1e2e'  # App Secret
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
