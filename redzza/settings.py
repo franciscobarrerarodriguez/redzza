@@ -25,7 +25,7 @@ SECRET_KEY = '54o(ku$!g0k=6ppsa-h%+znjzn1=*bmjq*bcv4&r5_&)awu_9i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #Open for all
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
@@ -59,7 +59,9 @@ ROOT_URLCONF = 'redzza.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': [
+        os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,7 +121,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images)i
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+# Static files directories
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 STATIC_URL = '/static/'
+
+# Docs, pictures and more --Francisco
+# MEDIA_ROOT = 'media'
+# MEDIA_URL = '/media/'

@@ -4,9 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{% block title %}{% endblock %}</title>
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'css/redzza/redzza.css' %}">
+
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
+  {% block menu %}{% endblock%}
+
   {% block content %}{% endblock %}
 </body>
+{% load staticfiles %}
+<script src="{% static 'js/redzza/redzza.js'%}" charset="utf-8"></script>
 </html>
