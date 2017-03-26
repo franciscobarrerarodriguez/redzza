@@ -5,12 +5,56 @@
 {% block menu %}
 <nav class="landing-menu">
   <ul>
-    <li id="signup-button">
-      Registro
-    </li>
-    <li id="login-button">
+    <li id="login-button" onclick="getModal('modal-login')">
       Ingresar
+    </li>
+    <li id="signup-button" onclick="getModal('modal-signup')">
+      Regístrate
     </li>
   </ul>
 </nav>
+{% endblock %}
+
+{% block modals %}
+<!-- modal login-->
+<div class="modal" id="modal-login">
+  <div class="modal-content modal-xs">
+    <div class="modal-header">
+      <span class="close" id="close-modal" onclick="closeModal('modal-login')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
+      <div class="modal-title">
+        <h2>Modal login</h2>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form id="form-login" class="vertical-form" data-url="url-login">
+        {% csrf_token %}
+        <div id="response"></div>
+        <input type="text" placeholder="E-mail o usuario" name="username">
+        <input type="password" placeholder="Contraseña" name="password">
+        <button type="submit" name="button">Ingresar</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /modal login-->
+<!-- modal signup -->
+<div class="modal" id="modal-signup">
+  <div class="modal-content modal-xs">
+    <div class="modal-header">
+      <span class="close" id="close-modal" onclick="closeModal('modal-signup')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
+      <div class="modal-title">
+        <h2>Modal signup</h2>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form id="form-signup" class="vertical-form" data-url="url-signup">
+        {% csrf_token %}
+        <div id="response"></div>
+        <input type="text" placeholder="E-mail" name="email">
+        <input type="password" placeholder="Contraseña" name="password">
+        <button type="submit" name="button">Regístrate</button>
+      </form>    </div>
+  </div>
+</div>
+<!-- /modal signup -->
 {% endblock %}
