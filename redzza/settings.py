@@ -150,3 +150,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'e185984029f40b557b0b46ae0d6d1e2e'  # App Secret
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+
+
+# Backends
+AUTHENTICATION_BACKENDS = (
+    'profiles.backends.EmailBackend',
+)
