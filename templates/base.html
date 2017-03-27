@@ -11,18 +11,17 @@
 </head>
 <!-- https://docs.djangoproject.com/en/1.10/ref/templates/ -->
 <body>
-
   {% block menu %}{% endblock%}
-
   {% block content %}{% endblock %}
-
 <!-- modals -->
   {% block modals %}{% endblock %}
 <!-- /modals -->
-
 </body>
 
 {% load staticfiles %}
 <script src="{% static 'js/redzza/jquery-3.2.0.min.js'%}" charset="utf-8"></script>
 <script src="{% static 'js/redzza/redzza.js'%}" charset="utf-8"></script>
+<!-- Load external javascript -->
+{% block externalfiles %}
+{% endblock %}
 </html>

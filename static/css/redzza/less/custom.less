@@ -1,0 +1,54 @@
+// @media (max-width: @screen-xs-max) {
+//   }
+//   @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+//   }
+//   @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+//   }
+//   @media (min-width: @screen-lg-min) {
+//   }
+
+/* Generic facebook button */
+.facebook-button {
+  border: none;
+  display: block;
+  width: 100%;
+  background-color: @blue-facebook;
+  color: @white-base;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  text-decoration: none;
+  &:hover {
+    background-color: lighten(@blue-facebook, 5%);
+    .icon-transition();
+  }
+}
+
+/* modal-login options */
+.login-options {
+  margin-top: 10px;
+  font-size: 10px;
+  > p {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.banner-info {
+  display: block;
+  width: 100%;
+  position: absolute;
+  background-color: red;
+  bottom: 25%;
+  > h1 {
+    text-align: center;
+    color: @white-base;
+    .font-logo();
+    /* Refactor for devices */
+    font-size: 200px;
+  }
+}

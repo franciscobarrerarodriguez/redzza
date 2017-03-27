@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Homepage</h2>
-  <p>Hello {{ user.username }}!</p>
+  <h2>Inicio</h2>
+  <p>Hola {{ user.username }}!</p>
+  <a href="{% url 'logout' %}">Cerrar sesión</a><br>
 {% endblock %}

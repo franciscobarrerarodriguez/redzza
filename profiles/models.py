@@ -1,28 +1,20 @@
-from __future__ import unicode_literals
-
 from django.db import models
-
 from registration.signals import user_registered
- # Create your models here.
-class User(models.Model):
-    mail = models.EmailField(unique=True)    
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)    
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+from django.contrib.auth.models import User
+# Create your models here.
+
 
 class Profile(models.Model):
-    user = models.ForeignKey(User)
-    is_human = models.BooleanField()
- 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
     def __unicode__(self):
         return self.user
 
     def user_registered_callback(sender, user, request, **kwargs):
-        profile = Profile(user = user)
-        profile.is_human = bool(request.POST["is_human"])
+        profile = Profile(user=user)
         profile.save()
-     
+
     user_registered.connect(user_registered_callback)

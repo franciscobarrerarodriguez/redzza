@@ -1,0 +1,30 @@
+/* Landing nav-bar */
+.nav {
+  background-color: red;
+  width: 100%;
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  .clearfix();
+  .nav-brand {
+    float: left;
+    margin-left: 15px;
+    color: @white-base;
+    > h1 {
+    .font-logo();
+    }
+  }
+  .nav-menu {
+    float: right;
+    margin-right: 15px;
+    > ul {
+      float: right;
+      background: green;
+      list-style: none;
+      >li {
+        background: yellow;
+        display: inline;
+      }
+    }
+  }
+}

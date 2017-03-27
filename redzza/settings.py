@@ -25,7 +25,7 @@ SECRET_KEY = '54o(ku$!g0k=6ppsa-h%+znjzn1=*bmjq*bcv4&r5_&)awu_9i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] #Open for all
+ALLOWED_HOSTS = ['*']  # Open for all
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
@@ -62,7 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-        os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -150,3 +150,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'e185984029f40b557b0b46ae0d6d1e2e'  # App Secret
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+
+
+# Backends
+AUTHENTICATION_BACKENDS = (
+    'profiles.backends.EmailBackend',
+)

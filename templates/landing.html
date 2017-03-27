@@ -1,60 +1,99 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block title %}Redzza{% endblock %}
 
 {% block menu %}
-<nav class="landing-menu">
-  <ul>
-    <li id="login-button" onclick="getModal('modal-login')">
-      Ingresar
-    </li>
-    <li id="signup-button" onclick="getModal('modal-signup')">
-      Regístrate
-    </li>
-  </ul>
+<nav class="nav">
+  <div class="nav-brand">
+    <h1>Redzza</h1>
+  </div>
+  <div class="nav-menu">
+    <ul>
+      <li id="login-button" onclick="getModal('modal-login')">
+        Ingresar
+      </li>
+      <li id="signup-button" onclick="getModal('modal-signup')">
+        Regístrate
+      </li>
+    </ul>
+  </div>
 </nav>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div  style="background-image: url('{% static 'img/redzza/banner.jpg' %}');" class="parallax">
+  <div class="banner-info">
+    <h1>Redzza</h1>
+  </div>
+</div>
 {% endblock %}
 
 {% block modals %}
 <!-- modal login-->
 <div class="modal" id="modal-login">
   <div class="modal-content modal-xs">
+    <!-- modal-header -->
     <div class="modal-header">
       <span class="close" id="close-modal" onclick="closeModal('modal-login')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
       <div class="modal-title">
         <h2>Modal login</h2>
       </div>
     </div>
+    <!-- /modal-header -->
+    <!-- modal-body -->
     <div class="modal-body">
-      <form id="form-login" class="vertical-form" data-url="url-login">
-        {% csrf_token %}
+      <form id="form-login" class="vertical-form" data-url="{% url 'login' %}">
         <div id="response"></div>
-        <input type="text" placeholder="E-mail o usuario" name="username">
-        <input type="password" placeholder="Contraseña" name="password">
-        <button type="submit" name="button">Ingresar</button>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="button">{% trans 'Iniciar sesión' %}</button>
+        <input type="hidden" name="next" value="{{ next }}" />
       </form>
     </div>
+    <!-- /modal-body -->
+    <!-- modal-footer -->
+    <div class="modal-footer">
+      <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
+      <div class="login-options">
+        <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+        <p>{% trans "Not member" %}? <a href="{% url 'register' %}">{% trans "Register" %}</a>!</p>
+        <br>
+      </div>
+    </div>
+    <!-- /modal-footer -->
   </div>
 </div>
 <!-- /modal login-->
 <!-- modal signup -->
 <div class="modal" id="modal-signup">
   <div class="modal-content modal-xs">
+    <!-- modal-header -->
     <div class="modal-header">
       <span class="close" id="close-modal" onclick="closeModal('modal-signup')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
       <div class="modal-title">
         <h2>Modal signup</h2>
       </div>
     </div>
+    <!-- /modal-header -->
+    <!-- modal-body -->
     <div class="modal-body">
-      <form id="form-signup" class="vertical-form" data-url="url-signup">
-        {% csrf_token %}
+      <form id="form-signup" class="vertical-form" data-url="{% url 'register' %}">
         <div id="response"></div>
-        <input type="text" placeholder="E-mail" name="email">
-        <input type="password" placeholder="Contraseña" name="password">
-        <button type="submit" name="button">Regístrate</button>
-      </form>    </div>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% trans 'Register' %}" />
+      </form>
+    </div>
+    <!-- /modal-body -->
   </div>
 </div>
 <!-- /modal signup -->
+{% endblock %}
+
+{% block externalfiles %}
+{% load staticfiles %}
+<script src="{% static 'js/parallax/parallax.min.js'%}" charset="utf-8"></script>
 {% endblock %}
