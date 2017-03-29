@@ -64,7 +64,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
       <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
       <div class="login-options">
         <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
-        <p>{% trans "Not member" %}? <a href="{% url 'register' %}">{% trans "Register" %}</a>!</p>
+        {# Cambiar --> abrir modal #}
+        {# <p>{% trans "Not member" %}? <a href="{% url 'register' %}">{% trans "Register" %}</a>!</p> #}
         <br>
       </div>
     </div>
@@ -85,7 +86,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
-      <form id="form-signup" class="vertical-form" data-url="{% url 'register' %}">
+      {# Usar formulario normal, guardar en sessionstorage, usar vista de verificacion de email #}
+      <form id="form-signup" class="vertical-form" data-url="">
         <div id="response"></div>
         {% csrf_token %}
         {{ form.as_p }}
