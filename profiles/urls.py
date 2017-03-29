@@ -16,15 +16,23 @@ Including another URLconf
 from django.conf.urls import url, include
 
 from . import views
-from registration.backends.default.views import RegistrationView
+# from registration.backends.default.views import RegistrationView
 from django.contrib.auth import views as auth_views
-from .forms import UserCreationEmailForm
+# from .forms import UserCreationEmailForm
 
 
 urlpatterns = [
-    url(r'accounts/register/$', RegistrationView.as_view(form_class=UserCreationEmailForm), name='register'),
+    url(r'accounts/register/(?P<step>[\w\-\W]+)/', views.singup, name='register'),
     url(r'^accounts/login/', views.loginEmail, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^accounts/home/', views.home, name='home'),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    # Url para la verificacion de la existencia correo electronico al momento de registrarse
+    # True --> Existe el correo, NO se puede usar
+    # False --> No existe el correo, se puede usar
+    url(r'^ajax/validateEmail/$', views.validateEmail, name='validateEmail'),
+    # Url para la verificacion de la existencia correo electronico al momento de registrarse
+    # True --> Existe el correo, NO se puede usar
+    # False --> No existe el correo, se puede usar
+    url(r'^ajax/validateUsername/$', views.validateUsername, name='validateUsername'),
 ]
