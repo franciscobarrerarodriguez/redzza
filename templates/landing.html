@@ -9,7 +9,9 @@
   <div class="nav-brand">
     <h1>Redzza</h1>
   </div>
-  <div class="nav-menu">
+  <button class="nav-button" id="nav-button"><i class="fa fa-bars"></i></button>
+  <div class="nav-menu" id="nav-menu">
+    <button class="nav-close-button" id="nav-close-button"><i class="fa fa-times"></i></button>
     <ul>
       <li id="login-button" onclick="getModal('modal-login')">
         Ingresar
@@ -24,11 +26,14 @@
 
 {% block content %}
 {% load static %}
-<div  style="background-image: url('{% static 'img/redzza/banner.jpg' %}');" class="parallax">
-  <div class="banner-info">
-    <h1>Redzza</h1>
-  </div>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<!-- <div  style="background-image: url('{% static 'img/redzza/banner.jpg' %}');" class="parallax">
+<div class="banner-info">
+<h1>Redzza</h1>
 </div>
+</div> -->
 {% endblock %}
 
 {% block modals %}
@@ -94,6 +99,5 @@
 {% endblock %}
 
 {% block externalfiles %}
-{% load staticfiles %}
 <script src="{% static 'js/parallax/parallax.min.js'%}" charset="utf-8"></script>
 {% endblock %}

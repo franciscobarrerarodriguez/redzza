@@ -11,11 +11,22 @@
 </head>
 <!-- https://docs.djangoproject.com/en/1.10/ref/templates/ -->
 <body>
-  {% block menu %}{% endblock%}
-  {% block content %}{% endblock %}
-<!-- modals -->
+
+<!-- all -->
+  <div id="all">
+    {% block menu %}{% endblock%}
+    <!-- container-all -->
+    <div id="container-all">
+      {% block content %}{% endblock %}
+    </div>
+    <!-- /container-all -->
+  </div>
+  <!-- /all -->
+
+  <!-- modals -->
   {% block modals %}{% endblock %}
-<!-- /modals -->
+  <!-- /modals -->
+
 </body>
 
 {% load staticfiles %}

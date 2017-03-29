@@ -1,4 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API
+
+var isOpen = false; //nav-menu status
+
 (function () {
   /* form-login actions */
   $('#form-login').submit(function (e) {
@@ -28,6 +31,22 @@
     });
   });
 
+  /* Listener open menu */
+  document.getElementById('nav-button').addEventListener('click', openMenu);
+  /* /Open menu */
+
+  /* Close menu */
+  document.getElementById('nav-close-button').addEventListener('click', closeMenu);
+  /* /Close menu  */
+
+/* closeMenu */
+document.getElementById('container-all').addEventListener('click', function () {
+  if (isOpen) {
+    closeMenu();
+  }
+});
+/* /closeMenu */
+
 })();
 
 /* === Modal actions
@@ -45,4 +64,18 @@ function getModal(modalId) {
 /* Hidde modal by id */
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = 'none';
+}
+
+function openMenu() {
+  document.getElementById('nav-menu').style.width = '250px';
+  document.getElementById('all').style.marginLeft = '250px';
+  document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+  isOpen = true;
+}
+
+function closeMenu() {
+  document.getElementById('nav-menu').style.width = '0';
+  document.getElementById('all').style.marginLeft = '0';
+  document.body.style.backgroundColor = "white";
+  isOpen = false;
 }

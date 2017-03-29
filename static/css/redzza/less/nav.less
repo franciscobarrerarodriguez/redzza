@@ -9,17 +9,83 @@
 
 // https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_sidenav_push_opacity
 
- // === Mixins
+// === Mixins
 /*
 * Extra-small and medium devices.
 */
 .extra-small-small-nav-menu (){
+  .nav-brand {
+    float: left;
+  }
+  .nav-menu {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
 
+    overflow-x: hidden;
+
+    width: 0;
+    height: 100%;
+    padding-top: 60px;
+
+    transition: .5s;
+
+    background-color: green;
+
+    button.nav-close-button {
+      visibility: visible;
+    }
+  }
+
+  .nav-button {
+    visibility: visible;
+    float: right;
+  }
 }
 /*
 * Medium and large devices.
 */
-.medium-large-nav-menu() {}
+.medium-large-nav-menu() {
+  .nav-brand {
+    float: left;
+
+    margin-left: 15px;
+
+    color: @white-base;
+    > h1 {
+      .font-logo();
+    }
+  }
+
+  .nav-button {
+    visibility: hidden;
+  }
+
+  .nav-menu {
+    float: right;
+
+    margin-right: 15px;
+
+    button.nav-close-button {
+      visibility: hidden;
+    }
+
+    > ul {
+      float: right;
+
+      list-style: none;
+
+      background: green;
+      >li {
+        display: inline;
+
+        background: yellow;
+      }
+    }
+  }
+}
+// /...
 
 // ./Mixins
 
@@ -39,84 +105,18 @@
 .nav {
   // For extra-small devices
   @media (max-width: @screen-xs-max) {
-  .extra-small-small-nav-menu ();
+    .extra-small-small-nav-menu ();
   }
   // For small devices
   @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-  .extra-small-small-nav-menu ();
+    .extra-small-small-nav-menu ();
   }
   // For medium devices
   @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
     .medium-large-nav-menu();
   }
   // For large devices
-    @media (min-width: @screen-lg-min) {
-    .medium-large-nav-menu();
-    }
-}
-
-
-.nav {
-    .nav-brand {
-      float: left;
-
-      margin-left: 15px;
-
-      color: @white-base;
-      > h1 {
-        .font-logo();
-      }
-    }
-
-    .nav-menu {
-      float: right;
-
-      margin-right: 15px;
-      > ul {
-        float: right;
-
-        list-style: none;
-
-        background: green;
-        >li {
-          display: inline;
-
-          background: yellow;
-        }
-      }
-    }
-  }
-
-// For large devices
-.nav {
   @media (min-width: @screen-lg-min) {
-    .nav-brand {
-      float: left;
-
-      margin-left: 15px;
-
-      color: @white-base;
-      > h1 {
-        .font-logo();
-      }
-    }
-
-    .nav-menu {
-      float: right;
-
-      margin-right: 15px;
-      > ul {
-        float: right;
-
-        list-style: none;
-
-        background: green;
-        >li {
-          display: inline;
-
-          background: yellow;
-        }
-      }
-    }
+    .medium-large-nav-menu();
   }
 }
