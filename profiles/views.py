@@ -16,13 +16,18 @@ def queries(request):
     #profile1 = Profile.objects.order_by('id')
     #profile2 = Profile.objects.all()
     #profile3 = get_object_or_404(Profile, user.id=1)
-    place = get_object_or_404(Place, name="tunja")
-    city = Place.objects.exclude(pattern__isnull=True)
+    place = get_object_or_404(Place, name="boyaca")
+    cityvalue = Place.objects.exclude(pattern__isnull=True).values('id','name','pattern')
+    city = Place.objects.exclude(pattern__isnull=True) 
     department = Place.objects.filter(pattern__isnull=True)
     category = Category.objects.order_by('name')
-
+    #Guardando datos
+    #p=Place(pattern=place,name='Duitama')
+    #p.save()
+    
     #return HttpResponse(place.id)
-    return HttpResponse(city)
+    return HttpResponse(cityvalue)
+    #return HttpResponse(place.pattern.name)
 
 # Vista de login por correo electronico
 def loginEmail(request):

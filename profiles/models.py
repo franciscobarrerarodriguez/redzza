@@ -14,7 +14,7 @@ class Place(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
-    birth_date = models.DateField(null=True, blank=True)
+    birth_date = models.DateField()
     #No son opcionales
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
