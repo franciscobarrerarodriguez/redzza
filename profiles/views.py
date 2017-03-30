@@ -13,20 +13,21 @@ from django.http import HttpResponse
 
 def queries(request):
     # Importante: Las consultas no funcionan si no hay datos guardados
-    #profile1 = Profile.objects.order_by('id')
-    #profile2 = Profile.objects.all()
-    #profile3 = get_object_or_404(Profile, user.id=1)
+    profile1 = Profile.objects.order_by('id')
+    profile2 = Profile.objects.all()
+    profile3 = get_object_or_404(Profile, id=1)
     place = get_object_or_404(Place, name="boyaca")
     cityvalue = Place.objects.exclude(pattern__isnull=True).values('id','name','pattern')
     city = Place.objects.exclude(pattern__isnull=True) 
     department = Place.objects.filter(pattern__isnull=True)
     category = Category.objects.order_by('name')
+    
     #Guardando datos
-    #p=Place(pattern=place,name='Duitama')
+    #p=Place(pattern=place,name='Sogamoso')
     #p.save()
     
     #return HttpResponse(place.id)
-    return HttpResponse(cityvalue)
+    return HttpResponse(profile3)
     #return HttpResponse(place.pattern.name)
 
 # Vista de login por correo electronico

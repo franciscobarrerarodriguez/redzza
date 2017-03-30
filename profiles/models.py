@@ -14,17 +14,22 @@ class Place(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
-    birth_date = models.DateField()
-    #No son opcionales
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(default=datetime.now)
+    first_name = models.CharField(max_length=30, default='')
+    last_name = models.CharField(max_length=30, default='')
     date_joined = models.DateTimeField(default=datetime.now, blank=True)
+    GENDER = (
+        ('F', 'Femenino'),
+        ('M', 'Masculino'),
+    )
+    gender = models.CharField(
+        max_length=1, choices=GENDER, default='M')
     phone = models.IntegerField(null=True, blank=True)
     location = models.ForeignKey(Place, default="")
     biography = models.TextField(blank=True) #opcional
 
     def __unicode__(self):
-        return self.user
+        return unicode(self.user)
 
     def user_registered_callback(sender, user, request, **kwargs):
         profile = Profile(user = user)
