@@ -22,11 +22,11 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    url(r'accounts/register/(?P<step>[\w\-\W]+)/', views.singup, name='register'),
-    url(r'^accounts/login/', views.loginEmail, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
-    url(r'^accounts/home/', views.home, name='home'),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'register/(?P<step>[\w\-\W]+)/', views.singup, name='register'),
+    url(r'^login/', views.loginEmail, name='login'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^home/', views.home, name='home'),
+    url(r'^', include('registration.backends.default.urls')),
     # Url para la verificacion de la existencia correo electronico al momento de registrarse
     # True --> Existe el correo, NO se puede usar
     # False --> No existe el correo, se puede usar
@@ -36,6 +36,6 @@ urlpatterns = [
     # False --> No existe el correo, se puede usar
     url(r'^ajax/validateUsername/$', views.validateUsername, name='validateUsername'),
 
-    #URL para comprobar el funcionamiento de las consultas a la base de datos
-    url(r'^accounts/queries/', views.queries, name='query')
+    # URL para comprobar el funcionamiento de las consultas a la base de datos
+    url(r'^queries/', views.queries, name='query')
 ]
