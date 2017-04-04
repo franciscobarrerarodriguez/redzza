@@ -8,8 +8,9 @@ from .models import Profile, Place
 from categories.models import Category
 # Create your views here.
 
-#Para probar las consultas
+# Para probar las consultas
 from django.http import HttpResponse
+
 
 def queries(request):
     # Importante: Las consultas no funcionan si no hay datos guardados
@@ -17,18 +18,19 @@ def queries(request):
     profile2 = Profile.objects.all()
     profile3 = get_object_or_404(Profile, id=1)
     place = get_object_or_404(Place, name="boyaca")
-    cityvalue = Place.objects.exclude(pattern__isnull=True).values('id','name','pattern')
-    city = Place.objects.exclude(pattern__isnull=True) 
+    cityvalue = Place.objects.exclude(pattern__isnull=True).values('id', 'name', 'pattern')
+    city = Place.objects.exclude(pattern__isnull=True)
     department = Place.objects.filter(pattern__isnull=True)
     category = Category.objects.order_by('name')
-    
-    #Guardando datos
-    #p=Place(pattern=place,name='Sogamoso')
-    #p.save()
-    
-    #return HttpResponse(place.id)
+
+    # Guardando datos
+    # p=Place(pattern=place,name='Sogamoso')
+    # p.save()
+
+    # return HttpResponse(place.id)
     return HttpResponse(profile3)
-    #return HttpResponse(place.pattern.name)
+    # return HttpResponse(place.pattern.name)
+
 
 # Vista de login por correo electronico
 def loginEmail(request):
@@ -81,4 +83,16 @@ def validateUsername(request):
     data = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
+    return JsonResponse(data)
+
+
+# Vista de obtencion de lugares
+def getPlaces(request):
+    data = Place.objects.all()
+    return JsonResponse(data)
+
+
+# Vista de obtencion de categorias
+def getCategories(request):
+    data = Category.objects.order_by('name')
     return JsonResponse(data)
