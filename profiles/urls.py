@@ -16,9 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 
 from . import views
-# from registration.backends.default.views import RegistrationView
 from django.contrib.auth import views as auth_views
-# from .forms import UserCreationEmailForm
 
 
 urlpatterns = [

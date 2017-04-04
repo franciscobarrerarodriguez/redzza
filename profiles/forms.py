@@ -5,10 +5,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Place
 
+
 class UserCreationEmailForm(UserCreationForm):
     email = forms.EmailField()
     location = forms.ModelMultipleChoiceField(queryset=Place.objects.all())
-    
+
     class Meta:
         model = User
         fields = ('username', 'email')
