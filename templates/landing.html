@@ -25,15 +25,8 @@
 {% endblock %}
 
 {% block content %}
-{% load static %}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<!-- <div  style="background-image: url('{% static 'img/redzza/banner.jpg' %}');" class="parallax">
-<div class="banner-info">
-<h1>Redzza</h1>
-</div>
-</div> -->
+
+<div class="banner parallax" >hg</div>
 {% endblock %}
 
 {% block modals %}
@@ -50,10 +43,11 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
+      <div id="login-response"></div>
       <form id="form-login" class="vertical-form" data-url="{% url 'login' %}">
-        <div id="response"></div>
         {% csrf_token %}
-        {{ form.as_p }}
+        <input type="email" placeholder="Correo electrónico">
+        <input type="password" placeholder="Contraseña">
         <button type="submit" name="button">{% trans 'Iniciar sesión' %}</button>
         <input type="hidden" name="next" value="{{ next }}" />
       </form>
@@ -64,8 +58,7 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
       <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
       <div class="login-options">
         <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
-        {# Cambiar --> abrir modal #}
-        {# <p>{% trans "Not member" %}? <a href="{% url 'register' %}">{% trans "Register" %}</a>!</p> #}
+        <p>{% trans "Not member" %}? <a href="#" id="button-not-member">{% trans "Register" %}</a>!</p>
         <br>
       </div>
     </div>
@@ -86,20 +79,18 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
-      {# Usar formulario normal, guardar en sessionstorage, usar vista de verificacion de email #}
+      <div id="signup-response"></div>
       <form id="form-signup" class="vertical-form" data-url="">
-        <div id="response"></div>
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="{% trans 'Register' %}" />
+        <input type="email" placeholder="Correo electrónico" id="signup-input" data-url="{% url 'validateEmail' %}">
+        <button type="submit" name="button">{% trans 'Register' %}</button>
       </form>
     </div>
     <!-- /modal-body -->
+    <!-- modal-footer -->
+    <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
+    <!-- /modal-footer -->
   </div>
 </div>
 <!-- /modal signup -->
-{% endblock %}
-
-{% block externalfiles %}
-<script src="{% static 'js/parallax/parallax.min.js'%}" charset="utf-8"></script>
 {% endblock %}

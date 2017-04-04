@@ -39,13 +39,27 @@ var isOpen = false; //nav-menu status
   document.getElementById('nav-close-button').addEventListener('click', closeMenu);
   /* /Close menu  */
 
-/* closeMenu */
-document.getElementById('container-all').addEventListener('click', function () {
-  if (isOpen) {
-    closeMenu();
-  }
-});
-/* /closeMenu */
+  /* closeMenu */
+  document.getElementById('container-all').addEventListener('click', function () {
+    if (isOpen) {
+      closeMenu();
+    }
+  });
+  /* /closeMenu */
+
+  /* not member modal */
+  document.getElementById('button-not-member').addEventListener('click', function () {
+    closeModal('modal-login');
+    getModal('modal-signup');
+  });
+
+  /* Email validation */
+  document.getElementById('signup-input').addEventListener("keyup", function (e) {
+    var url = $('#signup-input').attr('data-url') +"?email="+ this.value;
+        $.get(url, function (data) {
+      console.log(data.is_taken);
+    });
+  });
 
 })();
 

@@ -14,9 +14,11 @@
 * Extra-small and medium devices.
 */
 .extra-small-small-nav-menu (){
-  .nav-brand {
-    float: left;
+
+  .nav-brand{
+    margin-left: 20px;
   }
+
   .nav-menu {
     position: fixed;
     z-index: 1;
@@ -31,8 +33,6 @@
 
     transition: .5s;
 
-    background-color: green;
-
     button.nav-close-button {
       visibility: visible;
     }
@@ -41,21 +41,23 @@
   .nav-button {
     visibility: visible;
     float: right;
+
+    width: 23px;
+    height: 23px;
+    margin-right: 20px !important;
+    margin-bottom: 10px;
+
+    border: 0;
+    background-color: transparent;
   }
 }
 /*
 * Medium and large devices.
 */
 .medium-large-nav-menu() {
-  .nav-brand {
-    float: left;
 
-    margin-left: 15px;
-
-    color: @white-base;
-    > h1 {
-      .font-logo();
-    }
+  .nav-brand{
+    margin-left: 100px;
   }
 
   .nav-button {
@@ -65,7 +67,7 @@
   .nav-menu {
     float: right;
 
-    margin-right: 15px;
+    margin-right: 100px !important;
 
     button.nav-close-button {
       visibility: hidden;
@@ -74,13 +76,14 @@
     > ul {
       float: right;
 
-      list-style: none;
+      margin-top: 5px;
 
-      background: green;
+      list-style: none;
       >li {
         display: inline;
 
-        background: yellow;
+        padding-right: 5px;
+        padding-left: 5px;
       }
     }
   }
@@ -92,14 +95,36 @@
 
 /* Landing nav-bar */
 .nav {
+  color: @white-base;
+
   width: 100%;
   margin: 0;
-  padding-top: 5px;
+  padding-top: 11px;
   padding-bottom: 5px;
+
+  background-color: transparent;
 
   background-color: red;
 
+
   .clearfix();
+
+  .nav-brand {
+    float: left;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 12.5px;
+  }
+
+  .nav-menu {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 18px;
+  }
+
 }
 
 .nav {
