@@ -39,9 +39,11 @@ def loginEmail(request):
     if form.is_valid():
         login(request, form.get_user())
         if form.get_user().is_staff:
-            return redirect('/admin/')
+            # return redirect('/admin/')
+            return JsonResponse({'success': True, 'url': '/admin/'})
         else:
-            return redirect('home')
+            # return redirect('home')
+            return JsonResponse({'success': True, 'url': '/home/'})
     else:
         return JsonResponse({'success': False, 'errors': form.errors})
 

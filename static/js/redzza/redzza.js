@@ -16,8 +16,13 @@ var all = document.getElementById('all');
     e.preventDefault();
     var form = $(this);
     $.post(form.attr('data-url'), form.serialize(), function (response, status, jqXHR) {
-      console.log(response.errors.__all__[0]);
-      document.getElementById('login-response').innerHTML = `<p>${response.errors.__all__[0]}</p>`
+      if (response.success) {
+        // Redirreccion
+        console.log("Si");
+      }else{
+        console.log(response.errors.__all__[0]);
+        document.getElementById('login-response').innerHTML = `<p>${response.errors.__all__[0]}</p>`
+      }
     });
   });
 
