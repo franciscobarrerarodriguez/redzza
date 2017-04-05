@@ -2,6 +2,8 @@
 
 {% load i18n %}
 
+{% load staticfiles %}
+
 {% block title %}Redzza{% endblock %}
 
 {% block menu %}
@@ -80,10 +82,13 @@
     <!-- modal-body -->
     <div class="modal-body">
       <div id="signup-response"></div>
-      <form id="form-signup" class="vertical-form" data-url="{% url '/register/step1' %}">
+      <form id="form-signup" class="vertical-form" data-url="">
         {% csrf_token %}
         <input type="email" placeholder="Correo electrónico" id="signup-input" data-url="{% url 'validateEmail' %}" required="true">
-  <a href=""><input type="checkbox" id="tems"></input><span>Acepto los terminos y condiciones de uso</span></a>
+        <div>
+          <span><input type="checkbox" id="tems"></input></span>
+          <span><a href="">Acepto los terminos y condiciones de uso</a></span>
+        </div>
         <button type="submit" name="button">{% trans 'Registro' %}</button>
       </form>
     </div>
@@ -94,4 +99,8 @@
   </div>
 </div>
 <!-- /modal signup -->
+{% endblock %}
+
+{% block externalfiles %}
+<script src="{% static 'js/redzza/primary-menu.js'%}" charset="utf-8"></script>
 {% endblock %}

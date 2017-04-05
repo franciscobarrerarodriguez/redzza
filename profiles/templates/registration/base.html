@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'css/redzza/less/redzza.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<!-- https://docs.djangoproject.com/en/1.10/ref/templates/ -->
+<body>
+
+<!-- all -->
+  <div id="all" class="all">
+    {% block menu %}{% endblock%}
+    <!-- container-all -->
+    <div id="container-all" class="container-all">
+      {% block content %}{% endblock %}
+    </div>
+    <!-- /container-all -->
+  </div>
+  <!-- /all -->
+
+  <!-- modals -->
+  {% block modals %}{% endblock %}
+  <!-- /modals -->
+
+</body>
+
+{% load staticfiles %}
+<script src="{% static 'js/redzza/jquery-3.2.0.min.js'%}" charset="utf-8"></script>
+<script src="{% static 'js/redzza/redzza.js'%}" charset="utf-8"></script>
+<!-- Load external javascript -->
+{% block externalfiles %}
+{% endblock %}
+</html>

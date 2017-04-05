@@ -1,1 +1,23 @@
-registration_1.html
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+<!-- contraseña
+	contraseña2
+	nombre
+	apellido
+	localizacion
+	terminos y condicicones
+	aceptar  -->
+<form id="form-profile-info" class="vertical-form">
+  <input type="text" placeholder="Nombres" required="true">
+<input type="text" placeholder="Apellidos" required="true">
+<select name="" required="true">
+  <option value="lug">Lugares</option>
+</select>
+<button type="submit">Siguiente</button>
+</form>
+{% endblock %}
