@@ -80,7 +80,7 @@
     <!-- modal-body -->
     <div class="modal-body">
       <div id="signup-response"></div>
-      <form id="form-signup" class="vertical-form" data-url="{% url '/register/step1' %}">
+      <form id="form-signup" class="vertical-form" data-url="{% url 'register' step='step1' %}">
         {% csrf_token %}
         <input type="email" placeholder="Correo electrónico" id="signup-input" data-url="{% url 'validateEmail' %}" required="true">
   <a href=""><input type="checkbox" id="tems"></input><span>Acepto los terminos y condiciones de uso</span></a>
