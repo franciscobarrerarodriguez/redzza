@@ -42,6 +42,8 @@ def loginEmail(request):
             return redirect('/admin/')
         else:
             return redirect('home')
+    else:
+        return JsonResponse({'success': False, 'errors': form.errors})
 
     return render(request, 'registration/login.html', {'form': form})
 
@@ -100,9 +102,9 @@ def getCategories(request):
 
 # Vista para la creacion de un usuario
 def createUser(request):
-    userName = request.POST.get('username', None)
-    userPass = request.POST.get('password', None)
-    userMail = request.POST.get('email', None)
+    userName = request.GET.get('username', None)
+    userPass = request.GET.get('password', None)
+    userMail = request.GET.get('email', None)
 
     # TODO: check if already existed
     if userName and userPass and userMail:
