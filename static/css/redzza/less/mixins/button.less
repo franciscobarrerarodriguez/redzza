@@ -1,0 +1,21 @@
+// === Buttons
+
+// These are the button's types
+.button-default() {
+  height: 28px;
+
+  color: @white-base;
+  border: none;
+  border-radius: 4px;
+  background-color: @purple-base;
+  // Cuadrar para dejar general
+  font-size: 14px;
+  font-weight: bold;
+  &:hover {
+    color: @green-base;
+    background-color: lighten(@purple-base, 3%);
+
+    .button-transition();
+  }
+
+}

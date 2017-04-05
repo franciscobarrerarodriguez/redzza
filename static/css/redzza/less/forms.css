@@ -1,1 +1,1 @@
-.vertical-form{padding:0}.vertical-form>input,.vertical-form button,.vertical-form textarea,.vertical-form select{display:block;width:100%;margin-bottom:10px;border:none}
+.vertical-form{padding:0;width:100%;background-color:orange}.vertical-form>input[type=text],.vertical-form input[type=password],.vertical-form input[type=email]{box-sizing:border-box}.vertical-form>input,.vertical-form button,.vertical-form textarea,.vertical-form select{background-color:blue;margin-bottom:10px;display:block;width:inherit}

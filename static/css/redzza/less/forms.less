@@ -1,11 +1,21 @@
 // === All forms
 
 .vertical-form {
+  width: 100%;
   padding: 0;
+  > input {
+    .input-default();
+  }
+  > button {
+    .button-default();
+  }
+  > input[type=text], input[type=password], input[type=email] {
+    box-sizing : border-box;
+  }
   > input, button, textarea, select {
     display: block;
-    width: 100%;
+
+    width: inherit;
     margin-bottom: 10px;
-    border: none;
   }
 }
