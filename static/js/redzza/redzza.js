@@ -1,8 +1,54 @@
 // https://developer.mozilla.org/en-US/docs/Web/API
 
+/* Menu variables */
 var isOpen = false; //nav-menu status
+var navButton = document.getElementById('nav-button');
+var closeButton = document.getElementById('nav-close-button');
+var buttonNotMember = document.getElementById('button-not-member');
+var navMenu = document.getElementById('nav-menu');
+
+/* Body variables */
+var all = document.getElementById('all');
+var containerAll = document.getElementById('container-all');
 
 (function () {
+  navButton.addEventListener('click', openMenu); // Listener open menu
+  closeButton.addEventListener('click', closeMenu); // Close menu
+
+  containerAll.addEventListener('click', function () { // Close menu when it's open
+    if (isOpen) {
+      closeMenu();
+    }
+  });
+
+  buttonNotMember.addEventListener('click', function () { // Listener button Not Member
+    closeModal('modal-login');
+    getModal('modal-signup');
+  });
+
+  /* form-signup actions */
+  $('#form-signup').submit(function (e) {
+    e.preventDefault();
+    //Estado del checkbox
+    var url = $('#signup-input').attr('data-url') + "?email=" + $('#signup-input').val();
+    $.get(url, function (data) {
+        if (data.is_taken) {
+          document.getElementById('signup-response').innerHTML = `<p>Este correo ya tiene una cuenta asociada, prueba iniciando sesion.</p>`;
+        }else{
+localStorage.setItem("email", $('#signup-input').val()); // Save email in localStorage
+window.location.href = $('#form-signup').attr('data-url'); // Redirecting to step1
+        }
+      });
+  });
+
+  // /* Email validation Listener, when key is pressed */
+  // document.getElementById('signup-input').addEventListener("keyup", function (e) {
+  //   var url = $('#signup-input').attr('data-url') +"?email="+ this.value;
+  //       $.get(url, function (data) {
+  //     console.log(data.is_taken); //
+  //   });
+  // });
+
   /* form-login actions */
   $('#form-login').submit(function (e) {
     e.preventDefault();
@@ -17,49 +63,7 @@ var isOpen = false; //nav-menu status
     });
   });
 
-  /* form-signup actions */
-  $('#form-signup').submit(function (e) {
-    e.preventDefault();
-    var form = $(this);
-    $.ajax({
-      url: form.attr('data-url'),
-      data: form.serialize(),
-      dataType: 'json',
-      success: function (json) {
-        alert(json);/*Falta terminar*/
-      }
-    });
-  });
 
-  /* Listener open menu */
-  document.getElementById('nav-button').addEventListener('click', openMenu);
-  /* /Open menu */
-
-  /* Close menu */
-  document.getElementById('nav-close-button').addEventListener('click', closeMenu);
-  /* /Close menu  */
-
-  /* closeMenu */
-  document.getElementById('container-all').addEventListener('click', function () {
-    if (isOpen) {
-      closeMenu();
-    }
-  });
-  /* /closeMenu */
-
-  /* not member modal */
-  document.getElementById('button-not-member').addEventListener('click', function () {
-    closeModal('modal-login');
-    getModal('modal-signup');
-  });
-
-  /* Email validation */
-  document.getElementById('signup-input').addEventListener("keyup", function (e) {
-    var url = $('#signup-input').attr('data-url') +"?email="+ this.value;
-        $.get(url, function (data) {
-      console.log(data.is_taken);
-    });
-  });
 
 })();
 
@@ -81,15 +85,15 @@ function closeModal(modalId) {
 }
 
 function openMenu() {
-  document.getElementById('nav-menu').style.width = '250px';
-  document.getElementById('all').style.marginLeft = '250px';
+  navMenu.style.width = '250px';
+  all.style.marginLeft = '250px';
   document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
   isOpen = true;
 }
 
 function closeMenu() {
-  document.getElementById('nav-menu').style.width = '0';
-  document.getElementById('all').style.marginLeft = '0';
+  navMenu.style.width = '0';
+  all.style.marginLeft = '0';
   document.body.style.backgroundColor = "white";
   isOpen = false;
 }

@@ -3,7 +3,7 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from datetime import datetime   
 # Create your models here.
-
+#Si hay problemas con null constraint, quitar campos del modelo que no han sido anadidos
 class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
     name = models.CharField(max_length=25)
@@ -25,7 +25,7 @@ class Profile(models.Model):
     gender = models.CharField(
         max_length=1, choices=GENDER, default='M')
     phone = models.IntegerField(null=True, blank=True)
-    location = models.ForeignKey(Place, default="")
+    location = models.ForeignKey(Place, default='')
     biography = models.TextField(blank=True) #opcional
 
     def __unicode__(self):
@@ -33,7 +33,7 @@ class Profile(models.Model):
 
     def user_registered_callback(sender, user, request, **kwargs):
         profile = Profile(user = user)
-        profile.location = get_object_or_404(Place, name=request.POST["location"])  
-        profile.save()
+        #profile.location = get_object_or_404(Place, name=request.POST["location"])  
+        profile.save(commit=False)
 
     user_registered.connect(user_registered_callback)
