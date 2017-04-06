@@ -6,18 +6,21 @@
 
 {% block content %}
 <!-- contraseña
-	contraseña2
-	nombre
-	apellido
-	localizacion
-	terminos y condicicones
-	aceptar  -->
-<form id="form-profile-info" class="vertical-form">
-  <input type="text" placeholder="Nombres" required="true">
-<input type="text" placeholder="Apellidos" required="true">
-<select name="" required="true">
-  <option value="lug">Lugares</option>
-</select>
-<button type="submit">Siguiente</button>
+contraseña2
+nombre
+apellido
+localizacion
+terminos y condicicones
+aceptar  -->
+<form id="form-profile-info" class="vertical-form" data-url="{% url 'register' step='step2' %}">
+  <div id="response"></div>
+  <input type="text" placeholder="Nombres" required="true" name="name">
+  <input type="text" placeholder="Apellidos" required="true" name="lastname">
+  <input type="password" placeholder="Contraseña" required="true" name="password">
+  <input type="password" placeholder="Confirmar contraseña" required="true" name="password-2">
+  <select name="" required="true">
+    <option value="lug">Lugares</option>
+  </select>
+  <button type="submit">Siguiente</button>
 </form>
 {% endblock %}

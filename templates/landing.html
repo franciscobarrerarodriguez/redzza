@@ -59,7 +59,7 @@
       <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
       <div class="login-options">
         <a href="{% url 'auth_password_reset' %}">{% trans "¿Olvidaste tu contraseña?" %}</a>
-        <a href="#" id="button-not-member">{% trans "Regístrate" %}</a>
+        <a href="#" onclick="notMember()">{% trans "Regístrate" %}</a>
         <br>
       </div>
     </div>
@@ -86,7 +86,7 @@
         {% csrf_token %}
         <input type="email" placeholder="Correo electrónico" id="signup-input" data-url="{% url 'validateEmail' %}" required="true">
         <div>
-          <span><input type="checkbox" id="tems"></input></span>
+          <span><input type="checkbox" id="terms"></input></span>
           <span><a href="">Acepto los terminos y condiciones de uso</a></span>
         </div>
         <button type="submit" name="button">{% trans 'Registro' %}</button>
