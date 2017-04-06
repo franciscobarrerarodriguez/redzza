@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Profile, Place
 from categories.models import Category
+from django.core import serializers
 # Create your views here.
 
 # Para probar las consultas
@@ -91,13 +92,15 @@ def validateUsername(request):
 # Vista de obtencion de lugares
 def getPlaces(request):
     data = Place.objects.all()
-    return JsonResponse(data)
+    data_serialized = serializers.serialize('json', data)
+    return JsonResponse(data_serialized, safe=False)
 
 
 # Vista de obtencion de categorias
 def getCategories(request):
     data = Category.objects.order_by('name')
-    return JsonResponse(data)
+    data_serialized = serializers.serialize('json', data)
+    return JsonResponse(data_serialized, safe=False)
 
 
 # Vista para la creacion de un usuario
