@@ -14,14 +14,14 @@ from django.http import HttpResponse
 
 def queries(request):
     # Importante: Las consultas no funcionan si no hay datos guardados
-    profile1 = Profile.objects.order_by('id')
-    profile2 = Profile.objects.all()
+    # profile1 = Profile.objects.order_by('id')
+    # profile2 = Profile.objects.all()
     profile3 = get_object_or_404(Profile, id=1)
-    place = get_object_or_404(Place, name="boyaca")
-    cityvalue = Place.objects.exclude(pattern__isnull=True).values('id', 'name', 'pattern')
-    city = Place.objects.exclude(pattern__isnull=True)
-    department = Place.objects.filter(pattern__isnull=True)
-    category = Category.objects.order_by('name')
+    # place = get_object_or_404(Place, name="boyaca")
+    # cityvalue = Place.objects.exclude(pattern__isnull=True).values('id', 'name', 'pattern')
+    # city = Place.objects.exclude(pattern__isnull=True)
+    # department = Place.objects.filter(pattern__isnull=True)
+    # category = Category.objects.order_by('name')
 
     # Guardando datos
     # p=Place(pattern=place,name='Sogamoso')
@@ -46,8 +46,6 @@ def loginEmail(request):
             return JsonResponse({'success': True, 'url': '/home/'})
     else:
         return JsonResponse({'success': False, 'errors': form.errors})
-
-    return render(request, 'registration/login.html', {'form': form})
 
 
 # Vista de redireccion al home despues de login

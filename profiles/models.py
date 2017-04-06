@@ -25,7 +25,6 @@ class Profile(models.Model):
     gender = models.CharField(
         max_length=1, choices=GENDER, default='M')
     phone = models.IntegerField(null=True, blank=True)
-    location = models.ForeignKey(Place, default='')
     biography = models.TextField(blank=True) #opcional
 
     def __unicode__(self):
