@@ -33,6 +33,8 @@ urlpatterns = [
     # True --> Existe el correo, NO se puede usar
     # False --> No existe el correo, se puede usar
     url(r'^ajax/validateUsername/$', views.validateUsername, name='validateUsername'),
+    url(r'^ajax/categories/$', views.getCategories, name='getCategories'),
+    url(r'^ajax/places/$', views.getPlaces, name='getPlaces'),
 
     # URL para comprobar el funcionamiento de las consultas a la base de datos
     url(r'^queries/', views.queries, name='query')
