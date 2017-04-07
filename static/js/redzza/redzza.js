@@ -83,6 +83,15 @@ var all = document.getElementById('all');
       aux.push({pk:$(this).attr('value')});
     });
     sessionStorage.setItem('tengo', JSON.stringify(aux));
+    $.ajax({
+      type: "POST",
+      url: $(this).attr('data-url'),
+      data: { name : sessionStorage.getItem('name'), lastname : sessionStorage.getItem('lastname'), password: sessionStorage.getItem('password'), place: sessionStorage.getItem('place'), busco: sessionStorage.getItem('busco'), tengo: sessionStorage.getItem('tengo')},
+      success: function (response) {
+        console.log(response);
+      }
+    });
+    $.post(, );
     // terminar proceso
   });
 

@@ -3,7 +3,7 @@
 {% block title %}Registro{% endblock %}
 
 {% block content %}
-<form class="vertical-form" id="form-profile-info3" data-url="">
+<form class="vertical-form" id="form-profile-info3" data-url="{% url 'createUser' %}">
   <div id="categories" data-url="{% url 'getCategories' %}">
   </div>
   <button id="button-next-3" type="submit">Siguiente</button>
