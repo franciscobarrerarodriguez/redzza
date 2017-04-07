@@ -90,7 +90,11 @@ var all = document.getElementById('all');
       url: $(this).attr('data-url'),
       data: { name : sessionStorage.getItem('name'), lastname : sessionStorage.getItem('lastname'), password: sessionStorage.getItem('password'), place: sessionStorage.getItem('place'), busco: sessionStorage.getItem('busco'), tengo: sessionStorage.getItem('tengo'), csrf_token: csrf_token},
       success: function (response) {
-        console.log(response);
+        if (response.success) {
+          window.location.href = response.url;
+        }else {
+          console.log("Paila");
+        }
       }
     });
     // terminar proceso
