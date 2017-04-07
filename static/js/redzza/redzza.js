@@ -91,7 +91,6 @@ var all = document.getElementById('all');
         console.log(response);
       }
     });
-    $.post(, );
     // terminar proceso
   });
 
