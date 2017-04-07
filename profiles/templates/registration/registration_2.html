@@ -3,7 +3,9 @@
 {% block title %}Registro{% endblock %}
 
 {% block content %}
-<input type="checkbox">hola</input>
-
-<button id="button-next-2">Siguiente</button>
+<form class="vertical-form" id="form-profile-info2" data-url="{% url 'register' step='step3' %}">
+  <div id="categories" data-url="{% url 'getCategories' %}">
+  </div>
+  <button id="button-next-2" type="submit">Siguiente</button>
+</form>
 {% endblock %}

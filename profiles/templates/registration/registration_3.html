@@ -1,1 +1,11 @@
-registration_3.html
+{% extends 'base.html'%}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<form class="vertical-form" id="form-profile-info3" data-url="">
+  <div id="categories" data-url="{% url 'getCategories' %}">
+  </div>
+  <button id="button-next-3" type="submit">Siguiente</button>
+</form>
+{% endblock %}
