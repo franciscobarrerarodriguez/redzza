@@ -83,12 +83,13 @@ var all = document.getElementById('all');
       aux.push({pk:$(this).attr('value')});
     });
     sessionStorage.setItem('tengo', JSON.stringify(aux));
-    // csrf_token = document.getElementsByName('csrfmiddlewaretoken').value;
-    csrf_token = $("input[name:'csrfmiddlewaretoken']").val();
+    csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    console.log(csrf_token);
+    // csrf_token = $("input[name:'csrfmiddlewaretoken']").val();
     $.ajax({
       type: "POST",
       url: $(this).attr('data-url'),
-      data: { name : sessionStorage.getItem('name'), lastname : sessionStorage.getItem('lastname'), password: sessionStorage.getItem('password'), place: sessionStorage.getItem('place'), busco: sessionStorage.getItem('busco'), tengo: sessionStorage.getItem('tengo'), csrf_token: csrf_token},
+      data: { name : sessionStorage.getItem('name'), lastname : sessionStorage.getItem('lastname'), password: sessionStorage.getItem('password'), place: sessionStorage.getItem('place'), busco: sessionStorage.getItem('busco'), tengo: sessionStorage.getItem('tengo'), csrfmiddlewaretoken: csrf_token},
       success: function (response) {
         console.log(response);
       }
