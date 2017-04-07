@@ -84,7 +84,6 @@ var all = document.getElementById('all');
     });
     sessionStorage.setItem('tengo', JSON.stringify(aux));
     csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-    console.log(csrf_token);
     // csrf_token = $("input[name:'csrfmiddlewaretoken']").val();
     $.ajax({
       type: "POST",

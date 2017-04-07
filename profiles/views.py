@@ -105,22 +105,22 @@ def getCategories(request):
 
 # Vista para la creacion de un usuario
 def createUser(request):
-    userName = request.POST.get('username', None)
-    userPass = request.POST.get('password', None)
-    userMail = request.POST.get('email', None)
+    # userName = request.POST.get('username', None)
+    # userPass = request.POST.get('password', None)
+    # userMail = request.POST.get('email', None)
 
-    # TODO: check if already existed
-    if userName and userPass and userMail:
-        user, created = User.objects.get_or_create(userName, userMail)
-        if created:
-            user.set_password(userPass)
-            # user was created
-            # set the password here
-        else:
-            pass
-            # user was retrieved
-    else:
-        pass
-        # request was empty
+    # # TODO: check if already existed
+    # if userName and userPass and userMail:
+    #     user, created = User.objects.get_or_create(userName, userMail)
+    #     if created:
+    #         user.set_password(userPass)
+    #         # user was created
+    #         # set the password here
+    #     else:
+    #         pass
+    #         # user was retrieved
+    # else:
+    #     pass
+    #     # request was empty
 
-    return render(request, 'home')
+    return JsonResponse({'success': True, 'url': '/'})
