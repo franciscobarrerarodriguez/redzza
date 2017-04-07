@@ -4,10 +4,10 @@ from profiles.models import Profile
 
 class Category(models.Model):
 	pattern = models.ForeignKey("self", blank=True, null=True)   
-	name = models.CharField(max_length=25)
+	name = models.CharField(max_length=28)
 	description = models.CharField(max_length=300, blank=True)
 
-	def __unicode__(self):
+	def __str__(self):
 	   return self.name
 
 class WantedCategory(models.Model):
@@ -16,12 +16,12 @@ class WantedCategory(models.Model):
 	#Offer(Ofrezco) --> 1 ; Search(Busco) --> 2
 	type_category = models.IntegerField()
 
-	def __unicode__(self):
+	def __str__(self):
 		return '%s %s %s' % (self.category, self.profile, self.type_category)
 
 class SuggestedCategory(models.Model):
 	category = models.CharField(max_length=100)
 	profile = models.ForeignKey(Profile)
 
-	def __unicode__(self):
+	def __str__(self):
 		return '%s %s' % (self.category, self.profile)
