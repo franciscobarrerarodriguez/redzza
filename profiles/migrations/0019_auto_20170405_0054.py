@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='location',
-            field=models.ForeignKey(default=b'', on_delete=django.db.models.deletion.CASCADE, to='profiles.Place'),
+            field=models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE, to='profiles.Place'),
         ),
     ]
