@@ -4,6 +4,7 @@
 
 {% block content %}
 <form class="vertical-form" id="form-profile-info3" data-url="{% url 'createUser' %}">
+  {% crsf_token %}
   <div id="categories" data-url="{% url 'getCategories' %}">
   </div>
   <button id="button-next-3" type="submit">Siguiente</button>
