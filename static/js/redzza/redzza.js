@@ -83,7 +83,8 @@ var all = document.getElementById('all');
       aux.push({pk:$(this).attr('value')});
     });
     sessionStorage.setItem('tengo', JSON.stringify(aux));
-    csrf_token = document.getElementsByName('csrfmiddlewaretoken').value;
+    // csrf_token = document.getElementsByName('csrfmiddlewaretoken').value;
+    csrf_token = $("input[name:'csrfmiddlewaretoken']").val();
     $.ajax({
       type: "POST",
       url: $(this).attr('data-url'),
