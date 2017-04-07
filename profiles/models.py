@@ -8,7 +8,7 @@ class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
     name = models.CharField(max_length=25)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class Profile(models.Model):
@@ -27,7 +27,7 @@ class Profile(models.Model):
     phone = models.IntegerField(null=True, blank=True)
     biography = models.TextField(blank=True) #opcional
 
-    def __unicode__(self):
+    def __str__(self):
         return unicode(self.user)
 
     def user_registered_callback(sender, user, request, **kwargs):
