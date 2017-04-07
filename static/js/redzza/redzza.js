@@ -52,6 +52,40 @@ var all = document.getElementById('all');
     }
   });
 
+  /* == Step 2 */
+  if($('#categories').length){
+    $.get($('#categories').attr('data-url'), function (json) {
+      console.log(json);
+      document.getElementById('categories').innerHTML  = JSON.parse(json).map(function (categorie, index) {
+        return (`<input type="checkbox" value="${categorie.pk}">${categorie.fields.name}</input>`);
+      }).join('');
+    });
+  }
+
+  // Categorias que tengo
+  $('#form-profile-info2').submit(function (e) {
+    // faltan validaciones 0 categorias o mas del numero total
+    e.preventDefault();
+    var aux = new Array();
+    $('#form-profile-info2').find('input[type="checkbox"]:checked').each(function (checkbox) {
+      aux.push({pk:$(this).attr('value')});
+    });
+    sessionStorage.setItem('busco', JSON.stringify(aux));
+    window.location.href = $('#form-profile-info2').attr('data-url');
+  });
+
+  // categorias que busco
+  $('#form-profile-info3').submit(function (e) {
+    // faltan validaciones 0 categorias o mas del numero total
+    e.preventDefault();
+    var aux = new Array();
+    $('#form-profile-info3').find('input[type="checkbox"]:checked').each(function (checkbox) {
+      aux.push({pk:$(this).attr('value')});
+    });
+    sessionStorage.setItem('tengo', JSON.stringify(aux));
+    // terminar proceso
+  });
+
 })();
 
 /* Landing functions */
