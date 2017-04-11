@@ -12,7 +12,7 @@
     height: 100%; /* Full height */
     padding-top: 150px; /* Location of the box */
 
-    background-color: rgba(14, 0, 36, 0.5); /* Black w/ opacity */
+    background-color: rgba(41,57,70, 0.5); /* Black w/ opacity */
 }
 
 /* Modal Content default-width*/
@@ -20,7 +20,7 @@
     position: relative;
 
     margin: auto;
-    padding: 10px;
+    padding: @modal-content-padding;
 
     -webkit-animation-name: animatetop;
     animation-name: animatetop;
@@ -28,10 +28,11 @@
     animation-duration: 0.4s;
 
     border: none;
+    border-radius: @modal-border-radius;
     background-color: @white-base;
-    -webkit-box-shadow: 0px 0px 20px -3px rgba(14, 0, 36, 0.75);
-    -moz-box-shadow: 0px 0px 20px -3px rgba(14, 0, 36, 0.75);
-    box-shadow: 0px 0px 20px -3px rgba(14, 0, 36, 0.75);
+    -webkit-box-shadow: 0px 0px 20px -3px rgba(41,57,70, 0.75);
+    -moz-box-shadow: 0px 0px 20px -3px rgba(41,57,70, 0.75);
+    box-shadow: 0px 0px 20px -3px rgba(41,57,70, 0.75);
 
     @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
         width: 70%;
@@ -41,6 +42,7 @@
     }
 }
 
+/* Modal size in different devices */
 .modal-content, .modal-xs, .modal-sm,
 .modal-md, .modal-lg {
     @media (max-width: @screen-xs-max) {
@@ -102,32 +104,31 @@
 .modal-header {
     .clearfix();
     > .close {
-        float: right;
+        display: block;
 
-        color: @light-gray;
+        text-align: right;
+
+        color: @light-primary;
         > :hover, :focus {
             cursor: pointer;
 
-            color: darken(@light-gray, 30%);
+            color: @primary-color;
 
             .icon-transition();
         }
     }
     > .modal-title {
-        float: left;
-        > h2 {
-            position: relative;
+        display: block;
 
-            display: block;
+        text-align: center;
+        text-transform: uppercase;
 
-            text-align: center;
-        }
+        color: @primary-color;
     }
 }
 
-.modal-body {
-    padding-top: 10px;
-    // padding-bottom: 10px;
+.modal-header, .modal-body {
+    margin-bottom: @general-margin-bottom;
 }
 
 .modal-footer {

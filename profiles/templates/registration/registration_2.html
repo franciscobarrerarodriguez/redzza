@@ -3,9 +3,14 @@
 {% block title %}Registro{% endblock %}
 
 {% block content %}
-<form class="vertical-form" id="form-profile-info2" data-url="{% url 'register' step='step3' %}">
-  <div id="categories" data-url="{% url 'getCategories' %}">
+<div class="step">
+  <div class="step-content">
+    <h1>Redzza</h1>
+    <form class="checkbox-form" id="form-profile-info2" data-url="{% url 'register' step='step3' %}">
+      <div id="categories" data-url="{% url 'getCategories' %}">
+      </div>
+      <button id="button-next-2" class="default-button" type="submit">Siguiente</button>
+    </form>
   </div>
-  <button id="button-next-2" type="submit">Siguiente</button>
-</form>
+</div>
 {% endblock %}

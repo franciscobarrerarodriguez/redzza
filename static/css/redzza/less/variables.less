@@ -1,19 +1,30 @@
 // === Colors
 
-
-@purple-base:           #0E0024; // 14, 0, 36
-@green-base:            #00FD81;
-@light-green:           lighten(@green-base, 20%);
-@white-base:            #FFFFFF;
-@black-base:            #000000;
-@light-gray:            lighten(@black-base, 70%);
-@blue-facebook:         #3B5998;
-
 // @red-base:              #C21124;
 // @dark-blue-base:        #0E8D7C;
 // @sky-blue-base:         #46C8D0;
 // @green-base:            #D5E445;
 // @beige-base:            #DBD7CC;
+// @purple-base:           #0E0024; // 14, 0, 36
+// @green-base:            #00FD81;
+
+@primary-color:         #283946; // 41,57,70
+@hover-primary-color:   lighten(@primary-color, 5%);
+@light-primary:         lighten(@primary-color, 40%);
+
+@secondary-color:       #00C88F;
+@light-green:           lighten(@secondary-color, 20%);
+
+@white-base:            #FFFFFF;
+
+@black-base:            #000000;
+@light-gray:            lighten(@black-base, 70%);
+
+@blue-facebook:         #3B5998;
+@hover-facebook-color:  lighten(@blue-facebook, 5%);
+
+@danger-color:          #C21124;
+
 
 // === Size Bootstrap tool
 
@@ -58,8 +69,31 @@
 
 // font-family: 'Yanone Kaffeesatz', sans-serif;
 // Subtitulos descripciones, parrafos pequeños, listas, links
-@import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,700');
+@import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700');
 
 // font-family: 'Fauna One', serif;
 // parrafos
 @import url('https://fonts.googleapis.com/css?family=Fauna+One');
+
+// === Size
+
+/* 1em = 16px;
+Formula pixels/16=em;
+Example 40px/16=2.5em */
+
+@default-input-font-size:          1.125em;
+@default-button-font-size:         0.9375em;
+@default-p-font-size:              0.812em;
+
+// === Margin
+
+@general-margin-bottom:   15px;
+
+// === Padding
+
+@modal-content-padding:   10px;
+@step-content-padding:    20px;
+
+// === Modal
+
+@modal-border-radius:     3px;

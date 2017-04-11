@@ -1,26 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}Registro{% endblock %}
-
 {% load staticfiles %}
 
-{% block content %}
-<!-- contraseña
-contraseña2
-nombre
-apellido
-localizacion
-terminos y condicicones
-aceptar  -->
-<form id="form-profile-info" class="vertical-form" data-url="{% url 'register' step='step2' %}">
-  <div id="response"></div>
-  <input type="text" placeholder="Nombres" required="true" name="name">
-  <input type="text" placeholder="Apellidos" required="true" name="lastname">
-  <input type="password" placeholder="Contraseña" required="true" name="password">
-  <input type="password" placeholder="Confirmar contraseña" required="true" name="password-2">
-  <select name="" required="true">
-    <option value="lug">Lugares</option>
-  </select>
-  <button type="submit">Siguiente</button>
-</form>
+{% block externalStyles %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
+
+{% block title %}Registro{% endblock %}
+
+
+{% block content %}
+<div class="step">
+  <div class="step-content">
+    <h1>Redzza</h1>
+    <form id="form-profile-info" class="vertical-form" data-url="{% url 'register' step='step2' %}">
+      <div id="response"></div>
+      <input class="default-input" type="text" placeholder="Nombres" required="true" name="name">
+      <input class="default-input" type="text" placeholder="Apellidos" required="true" name="lastname">
+      <input class="default-input" type="password" placeholder="Contraseña" required="true" name="password">
+      <input class="default-input" type="password" placeholder="Confirmar contraseña" required="true" name="password-2">
+      <!-- select2 -->
+      <div>
+        <select class="js-example-basic-single" id="places" data-url="{% url 'getPlaces' %}">
+          <option value="BOG">Bogota</option>
+        </select>
+      </div>
+      <!-- select2 -->
+      <button class="default-button" type="submit">Siguiente</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block externalfiles %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+{% endblock%}

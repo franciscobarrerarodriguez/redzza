@@ -1,0 +1,89 @@
+// === All forms
+
+.vertical-form {
+  width: 100%;
+  padding: 0;
+  > input[type=text], input[type=password], input[type=email] {
+    box-sizing : border-box;
+  }
+  > input, button, textarea, select, div{
+    display: block;
+
+    width: inherit;
+    margin-bottom: @general-margin-bottom;
+  }
+}
+
+.checkbox-form {
+  width: 100%;
+  padding: 0;
+  div, button {
+    display: block;
+    width: inherit;
+    margin-bottom: @general-margin-bottom;
+  }
+  input[type=checkbox] {
+    box-sizing: border-box;
+    // display: block;
+  }
+  > #categories {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .categorie {
+    margin: @general-margin-bottom;
+    padding: 0;
+    .clearfix();
+    input[type="checkbox"] {
+      float: left;
+      margin: 0;
+      padding: 0;
+    }
+    p {
+      float: left;
+      margin: 0 0 0 10px;
+      padding: 0;
+    }
+  }
+
+
+}
+
+
+
+//
+// .terms {
+//   margin: 0;
+//   padding: 0;
+//
+//   .clearfix();
+//   input[type=checkbox] {
+//     // http://www.inserthtml.com/2012/06/custom-form-radio-checkbox/
+//     float: left;
+//
+//     margin: 0;
+//     margin: 0;
+//     padding: 0;
+//     padding: 0;
+//   }
+//   a {
+//     float: left;
+//
+//     margin: 0;
+//     margin-left: 10px; // Remember optimize
+//     padding: 0;
+//
+//     text-decoration: none;
+//
+//     color: @primary-color;
+//
+//     font-family: 'Titillium Web', sans-serif;
+//     font-size: @default-button-font-size;
+//     &:hover {
+//       color: @hover-primary-color;
+//
+//       .button-transition();
+//     }
+//   }
+// }

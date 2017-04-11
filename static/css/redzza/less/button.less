@@ -1,0 +1,43 @@
+/* Default button for all */
+.default-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  color: @white-base;
+  border: 0;
+  border-radius: @modal-border-radius;
+  background-color: @primary-color;
+
+  font-size: @default-button-font-size;
+
+  &:hover {
+    background-color: @hover-primary-color;
+
+    .button-transition();
+  }
+}
+
+/* Generic facebook button */
+.facebook-button {
+  display: block;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  text-align: center;
+  text-decoration: none;
+
+  color: @white-base;
+  border: 0;
+  border-radius: @modal-border-radius;
+  background-color: @blue-facebook;
+
+  font-family: 'Titillium Web', sans-serif;
+  font-size: @default-button-font-size;
+
+  &:hover {
+    background-color: @hover-facebook-color;
+
+    .button-transition();
+  }
+}

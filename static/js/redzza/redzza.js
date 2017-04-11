@@ -12,7 +12,7 @@ var all = document.getElementById('all');
       if (response.success) {
         window.location.href = response.url;
       }else{
-        document.getElementById('login-response').innerHTML = `<p>${response.errors.__all__[0]}</p>`
+        document.getElementById('login-response').innerHTML = `<p class="danger-alert">${response.errors.__all__[0]}</p>`
       }
     });
   });
@@ -25,14 +25,14 @@ var all = document.getElementById('all');
       var url = $('#signup-input').attr('data-url') + "?email=" + $('#signup-input').val();
       $.get(url, function (data) {
         if (data.is_taken) {
-          response.innerHTML = `<p>Este correo ya tiene una cuenta asociada, prueba iniciando sesion.</p>`;
+          response.innerHTML = `<p class="danger-alert">Este correo ya tiene una cuenta asociada, prueba iniciando sesion.</p>`;
         }else{
           sessionStorage.setItem('email', $('#signup-input').val()); // Save email in sessionStorage
           window.location.href = $('#form-signup').attr('data-url'); // Redirecting to step1
         }
       });
     }else{
-      response.innerHTML = `<p>Para iniciar sesión debes aceptar nuestros terminos y condiciones.</p>`;
+      response.innerHTML = `<p class="danger-alert">Para registrarte debes aceptar nuestros terminos y condiciones.</p>`;
     }
   });
 
@@ -48,7 +48,7 @@ var all = document.getElementById('all');
       sessionStorage.setItem('place', document.getElementById('form-profile-info')[4].value); // Place
       window.location.href = $('#form-profile-info').attr('data-url'); // Redirecting to step1
     }else {
-      document.getElementById('response').innerHTML = `<p>Las contraseñas no coinciden</p>`;
+      document.getElementById('response').innerHTML = `<p class="danger-alert">Las contraseñas no coinciden</p>`;
     }
   });
 
@@ -57,7 +57,10 @@ var all = document.getElementById('all');
     $.get($('#categories').attr('data-url'), function (json) {
       console.log(json);
       document.getElementById('categories').innerHTML  = JSON.parse(json).map(function (categorie, index) {
-        return (`<input type="checkbox" value="${categorie.pk}">${categorie.fields.name}</input>`);
+        return (`<div class="categorie">
+          <input type="checkbox" value="${categorie.pk}">
+          <p>${categorie.fields.name}</p>
+        </div>`);
       }).join('');
     });
   }
@@ -102,25 +105,47 @@ var all = document.getElementById('all');
 
 })();
 
-/* Landing functions */
-function notMember() {
-  closeModal('modal-login');
-  getModal('modal-signup');
-}
+$(document).ready(function() {
+  // Select2
+  $(".js-example-basic-single").select2({
+    language: "es",
+    minimumInputLength: 2,
+    tags: [],
+    ajax: {
+      url: $('#places').attr('data-url'),
+      dataType: 'JSON',
+      type: "GET",
+      quietMillis: 50,
+      data: function (term) {
+        return {
+          term: term
+        };
+      }
+    }
+  });
+});
+  // /Select2
 
-/* === Modal actions
-* Display de modal by id */
-function getModal(modalId) {
-  var modal = document.getElementById(modalId);
-  modal.style.display = 'block';
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+
+  /* Landing functions */
+  function notMember() {
+    closeModal('modal-login');
+    getModal('modal-signup');
+  }
+
+  /* === Modal actions
+  * Display de modal by id */
+  function getModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'block';
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
   }
-}
 
-/* Hidde modal by id */
-function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
-}
+  /* Hidde modal by id */
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+  }

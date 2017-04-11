@@ -44,12 +44,12 @@
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
-      <div id="login-response"></div>
       <form id="form-login" class="vertical-form" data-url="{% url 'login' %}">
         {% csrf_token %}
-        <input type="email" name="email" placeholder="Correo electrónico">
-        <input type="password" name="password" placeholder="Contraseña">
-        <button type="submit" name="button">{% trans 'Iniciar sesión' %}</button>
+        <div id="login-response"></div>
+        <input class="default-input" type="email" name="email" placeholder="Correo electrónico">
+        <input class="default-input" type="password" name="password" placeholder="Contraseña">
+        <button class="default-button" type="submit" name="button">{% trans 'Iniciar sesión' %}</button>
         <input type="hidden" name="next" value="{{ next }}" />
       </form>
     </div>
@@ -59,6 +59,7 @@
       <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
       <div class="login-options">
         <a href="{% url 'auth_password_reset' %}">{% trans "¿Olvidaste tu contraseña?" %}</a>
+        <br>
         <a href="#" onclick="notMember()">{% trans "Regístrate" %}</a>
         <br>
       </div>
@@ -81,15 +82,15 @@
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
-      <div id="signup-response"></div>
       <form id="form-signup" class="vertical-form" data-url="{% url 'register' step='step1' %}">
         {% csrf_token %}
-        <input type="email" placeholder="Correo electrónico" id="signup-input" data-url="{% url 'validateEmail' %}" required="true">
-        <div>
-          <span><input type="checkbox" id="terms"></input></span>
-          <span><a href="">Acepto los terminos y condiciones de uso</a></span>
+        <div id="signup-response"></div>
+        <input id="signup-input" class="default-input" type="email" placeholder="Correo electrónico" data-url="{% url 'validateEmail' %}" required="true">
+        <div class="terms">
+          <input type="checkbox" id="terms"></input>
+          <a href="">Acepto los terminos y condiciones de uso</a>
         </div>
-        <button type="submit" name="button">{% trans 'Registro' %}</button>
+        <button class="default-button" type="submit" name="button">{% trans 'Registro' %}</button>
       </form>
     </div>
     <!-- /modal-body -->
