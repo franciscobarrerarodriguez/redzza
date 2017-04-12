@@ -6,10 +6,14 @@
 <div class="step">
   <div class="step-content">
     <h1>Redzza</h1>
+    <p align="right">Paso 3/3</p>
+    <p>¿Tienes algo que ofrecer? ¿A que categorias pertenecen? puedes seleccionar 5.</p>
     <form class="checkbox-form" id="form-profile-info3" data-url="{% url 'createUser' %}">
       {% csrf_token %}
+      <hr>
       <div id="categories" data-url="{% url 'getCategories' %}">
       </div>
+      <hr>
       <button id="button-next-3" class="default-button" type="submit">Siguiente</button>
     </form>
   </div>

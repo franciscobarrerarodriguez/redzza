@@ -17,6 +17,7 @@
 .checkbox-form {
   width: 100%;
   padding: 0;
+  margin: @general-margin-bottom 0 @general-margin-bottom 0;
   div, button {
     display: block;
     width: inherit;
@@ -25,6 +26,15 @@
   input[type=checkbox] {
     box-sizing: border-box;
     // display: block;
+  }
+  > hr {
+    height: 1px;
+    border: 0;
+    background-color: @light-primary;
+    margin-top: @general-margin-bottom;
+    margin-bottom: @general-margin-bottom;
+    width: 100%;
+    display: block;
   }
   > #categories {
     height: 200px;

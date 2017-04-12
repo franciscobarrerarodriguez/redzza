@@ -6,9 +6,13 @@
 <div class="step">
   <div class="step-content">
     <h1>Redzza</h1>
+    <p align="right">Paso 2/3</p>
+    <p>¿En que categorias estas interesado? puedes seleccionar 5.</p>
     <form class="checkbox-form" id="form-profile-info2" data-url="{% url 'register' step='step3' %}">
+      <hr>
       <div id="categories" data-url="{% url 'getCategories' %}">
       </div>
+      <hr>
       <button id="button-next-2" class="default-button" type="submit">Siguiente</button>
     </form>
   </div>
