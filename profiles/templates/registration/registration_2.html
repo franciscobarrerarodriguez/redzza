@@ -1,20 +1,48 @@
-{% extends 'base.html'%}
+{% extends 'materialize-base.html' %}
+
+{% load staticfiles %}
 
 {% block title %}Registro{% endblock %}
 
 {% block content %}
-<div class="step">
-  <div class="step-content">
-    <h1>Redzza</h1>
-    <p align="right">Paso 2/3</p>
-    <p>¿En que categorias estas interesado? puedes seleccionar 5.</p>
-    <form class="checkbox-form" id="form-profile-info2" data-url="{% url 'register' step='step3' %}">
-      <hr>
-      <div id="categories" data-url="{% url 'getCategories' %}">
+<!-- full-screen -->
+<div class="full-screen" data-aos="fade-right" data-aos-delay="200">
+  <!-- row -->
+  <div class="row">
+    <!-- left -->
+    <div class="col s12 m6 l6 valign-wrapper">
+      <!-- form-container -->
+      <div class="form-container">
+        <p>¿Estás interesado en alguna categoría? Escoge al menos una.</p>
+        <br>
+        <form id="form_profile_info_2" data-url="{% url 'register' step='step3' %}">
+          <div id="categories" data-url="{% url 'getCategories' %}"></div>
+          <button class="btn waves-effect waves-light" type="submit" name="action">Siguiente
+            <i class="material-icons right">done</i>
+          </button>
+        </form>
+        <p class="step">Paso 2/3</p>
       </div>
-      <hr>
-      <button id="button-next-2" class="default-button" type="submit">Siguiente</button>
-    </form>
+      <!-- ./form-container -->
+    </div>
+    <!-- ./left -->
+    <!-- right -->
+    <div class="col s12 m6 l6">
+      <!-- parallax -->
+      <div class="parallax-container">
+        <div class="parallax">
+          <img src="{% static 'img/redzza/parallax.jpg' %}">
+        </div>
+      </div>
+      <!-- ./parallax -->
+    </div>
+    <!-- ./right -->
   </div>
+  <!-- ./row -->
 </div>
+<!-- ./full-screen -->
 {% endblock %}
+
+{% block externalfiles %}
+<script src="{% static 'js/redzza/registration.js' %}" charset="utf-8"></script>
+{% endblock%}

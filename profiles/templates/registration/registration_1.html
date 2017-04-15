@@ -1,39 +1,87 @@
-{% extends 'base.html' %}
+{% extends 'materialize-base.html' %}
 
 {% load staticfiles %}
 
 {% block externalStyles %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 {% endblock %}
 
 {% block title %}Registro{% endblock %}
 
-
 {% block content %}
-<div class="step">
-  <div class="step-content">
-    <h1>Redzza</h1>
-    <p align="right">Paso 1/3</p>
-    <form id="form-profile-info" class="vertical-form" data-url="{% url 'register' step='step2' %}">
-      <div id="response"></div>
-      <input class="default-input" type="text" placeholder="Nombres" required="true" name="name">
-      <input class="default-input" type="text" placeholder="Apellidos" required="true" name="lastname">
-      <input class="default-input" type="password" placeholder="Contraseña" required="true" name="password">
-      <input class="default-input" type="password" placeholder="Confirmar contraseña" required="true" name="password-2">
-      <!-- select2 -->
-      <div>
-        <select class="js-example-basic-single" id="places" data-url="{% url 'getPlaces' %}">
-          <option value="BOG">Bogota</option>
-        </select>
+<!-- full-screen -->
+<div class="full-screen" data-aos="fade-right" data-aos-delay="200">
+  <!-- row -->
+  <div class="row">
+    <!-- left -->
+    <div class="col s12 m6 l6 valign-wrapper">
+      <!-- form-container -->
+      <div class="form-container">
+        <p>Información personal</p>
+        <br>
+        <form id="form_profile_info" data-url="{% url 'register' step='step2' %}">
+
+          <div class="row">
+            <div class="col s12 m6 l6 input-field">
+              <input type="text" class="validate" data-length="20" required="" aria-required="true" name="name">
+              <label for="name">Nombres (*)</label>
+            </div>
+            <div class="col s12 m6 l6 input-field">
+              <input id="last_name" type="text" class="validate" data-length="20" required="" aria-required="true" name="last_name">
+              <label for="last_name">Apellidos (*)</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col s12 m6 l6 input-field">
+              <input id="password" type="password" class="validate" data-length="10" required="" aria-required="true" name="password">
+              <label for="password">Contraseña (*)</label>
+            </div>
+            <div class="col s12 m6 l6 input-field">
+              <input id="password" type="password" class="validate" data-length="10" required="" aria-required="true" name="password_2">
+              <label for="password_2">Contraseña</label>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <select required="" aria-required="true" id="places" data-url="{% url 'getPlaces' %}">
+                <option value="" disabled selected>Escoge un lugar</option>
+                <option value="BOG">Bogota</option>
+              </select>
+              <label>Ubicación</label>
+            </div>
+          </div>
+
+          <button class="btn waves-effect waves-light" type="submit" name="action">Siguiente
+            <i class="material-icons right">done</i>
+          </button>
+        </form>
+        <p class="step">Paso 1/3</p>
       </div>
-      <!-- select2 -->
-      <button class="default-button" type="submit">Siguiente</button>
-    </form>
+      <!-- ./form-container -->
+    </div>
+    <!-- ./left -->
+    <!-- right -->
+    <div class="col s12 m6 l6">
+      <!-- parallax -->
+      <div class="parallax-container">
+        <div class="parallax">
+          <img src="{% static 'img/redzza/parallax.jpg' %}">
+        </div>
+      </div>
+      <!-- ./parallax -->
+    </div>
+    <!-- ./right -->
   </div>
-  <!-- /content -->
+  <!-- ./row -->
 </div>
+<!-- ./full-screen -->
 {% endblock %}
 
 {% block externalfiles %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+<script src="{% static 'js/redzza/registration.js' %}" charset="utf-8"></script>
 {% endblock%}

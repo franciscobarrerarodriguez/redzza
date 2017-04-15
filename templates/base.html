@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
   {% load staticfiles %}
   <link rel="stylesheet" href="{% static 'css/redzza/less/redzza.css' %}">
   <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-  <!-- Load external css -->
-  {% block externalStyles %}
-  {% endblock %}
+  <!-- load external css -->{% block externalStyles %}{% endblock %}
+
   <title>{% block title %}{% endblock %}</title>
 </head>
 <!-- https://docs.djangoproject.com/en/1.10/ref/templates/ -->
 <body>
-
-<!-- all -->
+  <!-- all -->
   <div id="all" class="all">
-    {% block menu %}{% endblock%}
+    <!-- menu -->{% block menu %}{% endblock%}<!-- ./menu -->
     <!-- container-all -->
     <div id="container-all" class="container-all">
-      {% block content %}{% endblock %}
+      <!-- content -->{% block content %}{% endblock %}<!-- ./content -->
+      <!-- footer <-->
+      <div class="landing-footer">{% block footer %}{% endblock %}</div>
+      <!-- ./footer -->
     </div>
-    <!-- /container-all -->
+    <!-- ./container-all -->
   </div>
-  <!-- /all -->
+  <!-- ./all -->
 
-  <!-- modals -->
-  {% block modals %}{% endblock %}
-  <!-- /modals -->
+  <!-- modals -->{% block modals %}{% endblock %}<!-- ./modals -->
 
+  <script src="{% static 'js/redzza/jquery-3.2.0.min.js'%}" charset="utf-8"></script>
+  <script src="{% static 'js/redzza/redzza.js'%}" charset="utf-8"></script>
+  <!-- load external javascript -->
+  {% block externalfiles %}{% endblock %}
 </body>
-
-{% load staticfiles %}
-<script src="{% static 'js/redzza/jquery-3.2.0.min.js'%}" charset="utf-8"></script>
-<script src="{% static 'js/redzza/redzza.js'%}" charset="utf-8"></script>
-<!-- Load external javascript -->
-{% block externalfiles %}
-{% endblock %}
 </html>

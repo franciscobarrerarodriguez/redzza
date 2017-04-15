@@ -27,7 +27,111 @@
 {% endblock %}
 
 {% block content %}
-<div class="banner parallax"></div>
+<div class="banner parallax">
+  <div class="caption">
+    <h1>Redzza</h1>
+    <h3>Como quieres, no como debes</h3>
+    <button id="un" onclick="getModal('modal-signup')">Unete ahora</button>
+    <hr>
+    <button id="chev"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<div class="section" id="first">
+  <div class="follow-fb">
+    <iframe src="https://www.facebook.com/plugins/follow.php?href=https%3A%2F%2Fwww.facebook.com%2Fzuck&width=450&height=80&layout=standard&size=small&show_faces=true&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="brand-sen">
+      <h3><i class="fa fa-shopping-cart" aria-hidden="true"></i> AQUÍ PODRÁS INTERCAMBIAR LO QUE QUIERAS</h3>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/in_the_works.png' %}')">
+            <h3 class="card-title">Publica</h3>
+          </div>
+          <div class="card-body">
+            <p>
+              Puedes publicar cualquier articulo, de seguro a alguien le va a interesar.
+            </p>
+          </div>
+          <div class="card-footer">
+            <button onclick="getModal('modal-video1')">Conoce más <i class="fa fa-television" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <!-- /Card -->
+      </div>
+      <div class="col-4">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/teasing.png' %}')">
+            <h3 class="card-title">Busca</h3>
+          </div>
+          <div class="card-body">
+            <p>
+              ¿Aún no encuentras lo que buscas? Tal vez no habías buscado aquí.
+            </p>
+          </div>
+          <div class="card-footer">
+            <button onclick="getModal('modal-video2')">Conoce más <i class="fa fa-television" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <!-- /Card -->
+      </div>
+      <div class="col-4">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/st.png' %}')">
+            <h3 class="card-title">Intercambia</h3>
+          </div>
+          <div class="card-body">
+            <p>
+              Una forma milenaria de tener lo que quieres, solo que si moverte de tu cama.
+            </p>
+          </div>
+          <div class="card-footer">
+            <button onclick="getModal('modal-video3')">Conoce más <i class="fa fa-television" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <!-- /Card -->
+      </div>
+    </div>
+    <!-- ./Row -->
+  </div>
+  <!-- ./Container -->
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="row">
+  <div class="col-4">
+    <p>
+      Copyright (c) 2017 Copyright Holder All Rights Reserved.
+    </p>
+  </div>
+  <div class="col-2"><a href="#">Términos y condiciones de uso</a></div>
+  <div class="col-2"><a href="#">Política de privacidad</a></div>
+  <div class="col-1"><a href="#">Ayuda</a></div>
+  <div class="col-1"><a href="#!" onclick="getModal('modal-login')">Ingresar</a></div>
+  <div class="col-1"><a href="#!"onclick="getModal('modal-signup')">Registro</a></div>
+  <div class="col-1">
+    <ul>
+      <li><a href="#"><i class="fa fa-facebook-official"></i></a></li>
+      <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
 
 {% block modals %}
@@ -44,7 +148,7 @@
     <!-- /modal-header -->
     <!-- modal-body -->
     <div class="modal-body">
-      <form id="form-login" class="vertical-form" data-url="{% url 'login' %}">
+      <form id="form_login" class="vertical-form" data-url="{% url 'login' %}">
         {% csrf_token %}
         <div id="login-response"></div>
         <input class="default-input" type="email" name="email" placeholder="Correo electrónico">
@@ -56,7 +160,9 @@
     <!-- /modal-body -->
     <!-- modal-footer -->
     <div class="modal-footer">
+      <hr class="default-hr">
       <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
+      <hr class="default-hr">
       <div class="login-options">
         <a href="{% url 'auth_password_reset' %}">{% trans "¿Olvidaste tu contraseña?" %}</a>
         <br>
@@ -83,25 +189,73 @@
     <!-- modal-body -->
     <div class="modal-body">
       <p>Regístrate en 3 sencillos pasos</p>
-      <form id="form-signup" class="vertical-form" data-url="{% url 'register' step='step1' %}">
+      <form id="form_signup" class="vertical-form" data-url="{% url 'register' step='step1' %}">
         {% csrf_token %}
-        <div id="signup-response"></div>
-        <input id="signup-input" class="default-input" type="email" placeholder="Correo electrónico" data-url="{% url 'validateEmail' %}" required="true">
+        <div id="signup_response"></div>
+        <input id="signup_input" class="default-input" type="email" placeholder="Correo electrónico" data-url="{% url 'validateEmail' %}" required="true">
         <div class="terms">
-          <input type="checkbox" id="terms"></input>
-          <a href="">Acepto los terminos y condiciones de uso</a>
+          <input type="checkbox" id="terms-checkbox"></input>
+          <a href="#">Acepto los terminos y condiciones de uso</a>
         </div>
         <button class="default-button" type="submit" name="button">{% trans 'Registro' %}</button>
       </form>
     </div>
     <!-- /modal-body -->
     <!-- modal-footer -->
-    <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
+    <div class="modal-footer">
+      <hr class="default-hr">
+      <a href="{% url 'social:begin' 'facebook' %}" class="facebook-button"><i class="fa fa-facebook-f" area-hidden="true"></i> Facebook</a>
+    </div>
     <!-- /modal-footer -->
   </div>
 </div>
 <!-- /modal signup -->
+
+<!-- modal video-publica -->
+<div class="modal" id="modal-video1" style="padding-top:50px;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" id="close-modal" onclick="closeModal('modal-video1')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/tSCoVPoCt1U" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./modal video-publica -->
+<!-- modal video-busca -->
+<div class="modal" id="modal-video2" style="padding-top:50px;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" id="close-modal" onclick="closeModal('modal-video2')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/tSCoVPoCt1U" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./modal video-busca -->
+<!-- modal video-intercambia -->
+<div class="modal" id="modal-video3" style="padding-top:50px;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" id="close-modal" onclick="closeModal('modal-video3')"><i class="fa fa-times-circle" area-hidden="true"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/tSCoVPoCt1U" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./modal video-intercambia -->
 {% endblock %}
+
+
 
 {% block externalfiles %}
 <script src="{% static 'js/redzza/primary-menu.js'%}" charset="utf-8"></script>

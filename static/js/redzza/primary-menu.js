@@ -8,6 +8,7 @@ var buttonNotMember = document.getElementById('button-not-member');
 var navMenu = document.getElementById('nav-menu');
 
 var containerAll = document.getElementById('container-all');
+var all = document.getElementById('all');
 
 (function () {
   navButton.addEventListener('click', openMenu); // Listener open menu
@@ -22,7 +23,6 @@ var containerAll = document.getElementById('container-all');
 function openMenu() {
   navMenu.style.width = '250px';
   all.style.marginLeft = '250px';
-  document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
   isOpen = true;
 }
 

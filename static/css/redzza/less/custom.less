@@ -7,6 +7,111 @@
 //   @media (min-width: @screen-lg-min) {
 //   }
 
+/* Banner title and button */
+.caption {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 50%;//optimize
+  height: 30%;//optimize
+  margin: auto;
+
+  .clearfix();
+  h1 {
+    font-size: @caption-h1;
+  }
+  h3 {
+    font-weight: normal;
+  }
+  h1, h3 {
+    display: block;
+
+    text-align: center;
+
+    color: @white-base;
+  }
+  button {
+    display: block;
+
+    margin: auto;
+
+    cursor: pointer;
+
+    color: @primary-color;
+    border: none;
+    background-color: @secondary-color;
+
+    font-weight: bold;
+    &:hover {
+      transform: scale(1.2);
+
+      color: @hover-primary-color;
+      background-color: @hover-secondary-color;
+
+      .button-transition();
+    }
+  }
+
+  button#un {
+    margin-top: @general-margin-bottom;
+    padding-top: @large-button-padding;
+    padding-right: 80px;
+    padding-bottom: @large-button-padding;
+    padding-left: 80px;
+
+    text-transform: uppercase;
+
+    border-radius: @modal-border-radius;
+
+    font-size: @default-button-font-size;
+  }
+  button#chev {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 25px;
+  }
+  hr {
+    display: block;
+
+    width: 2px;
+    height: 50%;
+    margin: auto;
+
+    border: none;
+    background-color: @secondary-color;
+  }
+}
+
+.section {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  color: @primary-color;
+}
+
+.section:nth-child(odd) {
+  background: @light-gray;
+}
+
+.follow-fb {
+  width: 450px;
+  height: 80px;
+  margin: auto;
+  padding: 0;
+
+  // background-color: blue;
+}
+
+.brand-sen {
+  text-align: center;
+  text-transform: uppercase;
+
+  color: @primary-color;
+}
 
 // #all movement
 .all {
@@ -64,8 +169,6 @@
     margin-left: 10px; // Remember optimize
     padding: 0;
 
-    text-decoration: none;
-
     color: @primary-color;
 
     font-family: 'Titillium Web', sans-serif;
@@ -89,8 +192,8 @@
   height: 100%;
   padding-top: 150px; //Position of the box
 
-background-image: url('../../../img/redzza/step.png');
-background-size: cover;
+  background-image: url('../../../img/redzza/step.png');
+  background-size: cover;
 }
 
 .step-content {
@@ -108,26 +211,26 @@ background-size: cover;
 
   .clearfix();
 
-    h1 {
-      display: block;
+  h1 {
+    display: block;
 
-      text-align: center;
+    text-align: center;
 
-      color: @primary-color;
-    }
+    color: @primary-color;
+  }
 }
 
 .step-content {
   @media (max-width: @screen-xs-max) {
     width: 90%;
-    }
-    @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-      width: 80%;
-    }
-    @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
-      width: 70%;
-    }
-    @media (min-width: @screen-lg-min) {
-      width: 60%;
-    }
+  }
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    width: 80%;
+  }
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    width: 70%;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: 60%;
+  }
 }
