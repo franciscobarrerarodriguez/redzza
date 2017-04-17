@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Profile, Place
-from categories.models import Category
+from categories.models import Category, WantedCategory
 from django.core import serializers
 # Create your views here.
 
@@ -14,10 +14,14 @@ from django.http import HttpResponse
 
 
 def queries(request):
+    #place = get_object_or_404(Place, id=2)
+    # profile = Profile(user=get_object_or_404(User, id=1), gender='F', location=place)
+    # profile.save()
+
     # Importante: Las consultas no funcionan si no hay datos guardados
     # profile1 = Profile.objects.order_by('id')
     # profile2 = Profile.objects.all()
-    profile3 = get_object_or_404(Profile, id=1)
+    # profile3 = get_object_or_404(Profile, id=1)
     # place = get_object_or_404(Place, name="boyaca")
     # cityvalue = Place.objects.exclude(pattern__isnull=True).values('id', 'name', 'pattern')
     # city = Place.objects.exclude(pattern__isnull=True)
@@ -29,7 +33,7 @@ def queries(request):
     # p.save()
 
     # return HttpResponse(place.id)
-    return HttpResponse(profile3)
+    return HttpResponse(place)
     # return HttpResponse(place.pattern.name)
 
 
@@ -113,7 +117,7 @@ def createUser(request):
     place = request.POST.get('place', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
-# TODO: check if already existed
+
     if email and username and name and last_name and password and place and i_search and i_have:
         user, created = User.objects.get_or_create(
             email=email,
@@ -124,11 +128,17 @@ def createUser(request):
         if created:
             user.set_password(password)
             user.save()
+            place = get_object_or_404(Place, id=2)
+            profile = Profile(user=user, gender='F', location=place)
+            profile.save()
+
+            # recorrer objeto de categorias y crear categoria
+            category = get_object_or_404(Category, id=11)
+            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+            wanted = WantedCategory(profile=profile, category=category, type_category=1)
+            wanted.save()
             return JsonResponse({'success': True, 'url': '/'})
-            # user was created
-            # set the password here
         else:
-            pass
             return JsonResponse({'success': False, 'err': 'User not created'})
     else:
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
