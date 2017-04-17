@@ -105,22 +105,30 @@ def getCategories(request):
 
 # Vista para la creacion de un usuario
 def createUser(request):
-    # userName = request.POST.get('username', None)
-    # userPass = request.POST.get('password', None)
-    # userMail = request.POST.get('email', None)
-
-    # # TODO: check if already existed
-    # if userName and userPass and userMail:
-    #     user, created = User.objects.get_or_create(userName, userMail)
-    #     if created:
-    #         user.set_password(userPass)
-    #         # user was created
-    #         # set the password here
-    #     else:
-    #         pass
-    #         # user was retrieved
-    # else:
-    #     pass
-    #     # request was empty
-
-    return JsonResponse({'success': True, 'url': '/'})
+    email = request.POST.get('email', None)
+    username = request.POST.get('name', None)
+    name = request.POST.get('name', None)
+    last_name = request.POST.get('last_name', None)
+    password = request.POST.get('password', None)
+    place = request.POST.get('place', None)
+    i_search = request.POST.get('i_search', None)
+    i_have = request.POST.get('i_have', None)
+# TODO: check if already existed
+    if email and username and name and last_name and password and place and i_search and i_have:
+        user, created = User.objects.get_or_create(
+            email=email,
+            username=username,
+            first_name=name,
+            last_name=last_name
+        )
+        if created:
+            user.set_password(password)
+            user.save()
+            return JsonResponse({'success': True, 'url': '/'})
+            # user was created
+            # set the password here
+        else:
+            pass
+            return JsonResponse({'success': False, 'err': 'User not created'})
+    else:
+        return JsonResponse({'success': False, 'err': 'Incomplete data'})

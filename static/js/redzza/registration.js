@@ -33,7 +33,7 @@ $(document).ready(function() {
   }
   /* ./load all categories */
 
-  /* Categories I have  and redirect to step 3 */
+  /* Categories I search  and redirect to step 3 */
   $('#form_profile_info_2').submit(function (e) {
     e.preventDefault();
     var checked = $('#form_profile_info_2').find('input[type="checkbox"]:checked');
@@ -42,15 +42,15 @@ $(document).ready(function() {
       checked.each(function (checkbox) {
         aux.push({pk:$(this).attr('id')});
       });
-      sessionStorage.setItem('i_have', JSON.stringify(aux));
+      sessionStorage.setItem('i_search', JSON.stringify(aux));
       window.location.href = $('#form_profile_info_2').attr('data-url');
     } else {
       Materialize.toast('Debes seleccionar al menos una categoria', 4000) // 4000 is the duration of the toast
     }
   });
-  /* ./categories I have */
+  /* ./categories I search */
 
-/* Categories I search and redirect to home */
+/* Categories I have and redirect to home */
 $('#form_profile_info_3').submit(function (e) {
   e.preventDefault();
   var checked = $('#form_profile_info_3').find('input[type="checkbox"]:checked');
@@ -63,6 +63,7 @@ $('#form_profile_info_3').submit(function (e) {
       type: "POST",
       url: $(this).attr("data-url"),
       data: {
+        email: sessionStorage.getItem("email"),
         name: sessionStorage.getItem("name"),
         last_name: sessionStorage.getItem("last_name"),
         password: sessionStorage.getItem("password"),
@@ -75,7 +76,8 @@ $('#form_profile_info_3').submit(function (e) {
         if (response.success) {
           window.location.href = response.url;
         } else {
-          window.location.href = "/";
+          console.log(response.err);
+          // window.location.href = "/";
         }
       }
     });
@@ -83,6 +85,6 @@ $('#form_profile_info_3').submit(function (e) {
       Materialize.toast('Debes seleccionar al menos una categoria', 4000) // 4000 is the duration of the toast
   }
 });
-/* ./categories I search */
+/* ./categories I have */
 
 });
