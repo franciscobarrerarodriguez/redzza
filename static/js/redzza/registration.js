@@ -3,8 +3,17 @@ $(document).ready(function() {
   AOS.init();
   /* Init parallax container */
   $('.parallax').parallax();
-  /* Init select for places */
-  $('#places').material_select();
+  /* Load all places */
+  if ($("#places").length) {
+    $.get($("#places").attr("data-url"), function (json) {
+      var places = JSON.parse(json);
+      places.map(function (place, index) {
+        $("#places").append(`<option value="${place.pk}">${capitalize(place.fields.name)}</option>`);
+        /* Init select for places */
+        $("#places").material_select();
+      });
+    });
+  }
   /* Save info in sessionStorage and Redirect to step2 */
   $('#form_profile_info').submit(function (e) {
     e.preventDefault();
@@ -50,41 +59,45 @@ $(document).ready(function() {
   });
   /* ./categories I search */
 
-/* Categories I have and redirect to home */
-$('#form_profile_info_3').submit(function (e) {
-  e.preventDefault();
-  var checked = $('#form_profile_info_3').find('input[type="checkbox"]:checked');
-  var aux = new Array(); // I have categories
-  if (checked.length > 0) {
-    checked.each(function (checkbox) {
-      aux.push({pk:$(this).attr("id")});
-    });
-    $.ajax({
-      type: "POST",
-      url: $(this).attr("data-url"),
-      data: {
-        email: sessionStorage.getItem("email"),
-        name: sessionStorage.getItem("name"),
-        last_name: sessionStorage.getItem("last_name"),
-        password: sessionStorage.getItem("password"),
-        place: sessionStorage.getItem('place'),
-        i_search: sessionStorage.getItem('i_search'),
-        i_have: JSON.stringify(aux),
-        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
-      },
-      success: function (response) {
-        if (response.success) {
-          window.location.href = response.url;
-        } else {
-          console.log(response.err);
-          // window.location.href = "/";
+  /* Categories I have and redirect to home */
+  $('#form_profile_info_3').submit(function (e) {
+    e.preventDefault();
+    var checked = $('#form_profile_info_3').find('input[type="checkbox"]:checked');
+    var aux = new Array(); // I have categories
+    if (checked.length > 0) {
+      checked.each(function (checkbox) {
+        aux.push({pk:$(this).attr("id")});
+      });
+      $.ajax({
+        type: "POST",
+        url: $(this).attr("data-url"),
+        data: {
+          email: sessionStorage.getItem("email"),
+          name: sessionStorage.getItem("name"),
+          last_name: sessionStorage.getItem("last_name"),
+          password: sessionStorage.getItem("password"),
+          place: sessionStorage.getItem('place'),
+          i_search: sessionStorage.getItem('i_search'),
+          i_have: JSON.stringify(aux),
+          csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+        },
+        success: function (response) {
+          if (response.success) {
+            window.location.href = response.url;
+          } else {
+            console.log(response.err);
+            // window.location.href = "/";
+          }
         }
-      }
-    });
-  } else {
+      });
+    } else {
       Materialize.toast('Debes seleccionar al menos una categoria', 4000) // 4000 is the duration of the toast
-  }
-});
-/* ./categories I have */
+    }
+  });
+  /* ./categories I have */
 
 });
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
