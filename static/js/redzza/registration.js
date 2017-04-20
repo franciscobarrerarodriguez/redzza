@@ -36,7 +36,7 @@ $(document).ready(function() {
     $.get($("#categories").attr("data-url"), function (json) {
       var categories = JSON.parse(json);
       categories.map(function (categorie, index) {
-        $("#categories").append(`<p><input type="checkbox" id="${categorie.pk}"/><label for="${categorie.pk}">${categorie.fields.name}</label></p>`);
+        $("#categories").append(`<p><input type="checkbox" id="${categorie.pk}"/><label for="${categorie.pk}">${capitalize(categorie.fields.name)}</label></p>`);
       });
     });
   }
