@@ -143,7 +143,8 @@ def createUser(request):
             # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
             wanted = WantedCategory(profile=profile, category=category, type_category=1)
             wanted.save()
-            return JsonResponse({'success': True, 'url': '/'})
+            login(request, user)
+            return JsonResponse({'success': True, 'url': '/dashboard/'})
         else:
             return JsonResponse({'success': False, 'err': 'User not created'})
     else:
