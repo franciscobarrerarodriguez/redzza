@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^login/', views.loginEmail, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^home/', views.home, name='home'),
+    url(r'^dashboard/', views.dashboard, name='dashboard'),
     url(r'^', include('registration.backends.default.urls')),
     # Url para la verificacion de la existencia correo electronico al momento de registrarse
     # True --> Existe el correo, NO se puede usar

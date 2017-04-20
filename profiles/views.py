@@ -53,10 +53,16 @@ def loginEmail(request):
         return JsonResponse({'success': False, 'errors': form.errors})
 
 
-# Vista de redireccion al home despues de login
+# Vista home
 @login_required
 def home(request):
     return render(request, 'home.html')
+
+
+# Vista perfil personal
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 
 # Vista para el registro en fases, la fase se recibe por parametro de la url
