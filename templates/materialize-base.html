@@ -23,6 +23,22 @@
 
 <body>
 
+  <!-- menu -->
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Redzza</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        {% block large-menu %}{% endblock %}
+        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        {% block collapse-menu %}{% endblock %}
+        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i> Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- ./menu -->
   <!-- content -->{% block content %}{% endblock %}<!-- ./content -->
 
   <!--Import jQuery before materialize.js-->
