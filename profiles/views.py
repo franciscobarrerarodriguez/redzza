@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 
 def queries(request):
-    #place = get_object_or_404(Place, id=2)
+    place = get_object_or_404(Place, id=2)
     # profile = Profile(user=get_object_or_404(User, id=1), gender='F', location=place)
     # profile.save()
 
@@ -60,7 +60,7 @@ def home(request):
 
 
 # Vista perfil personal
-# @login_required
+@login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
