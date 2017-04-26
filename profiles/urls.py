@@ -3,7 +3,6 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    url(r'^', include('registration.backends.default.urls')),
 
     # Url para el registro en fases, la fase se recibe por parametro de la url
     url(r'register/(?P<step>[\w\-\W]+)/', views.singup, name='register'),
@@ -21,4 +20,6 @@ urlpatterns = [
     url(r'^ajax/places/$', views.getPlaces, name='getPlaces'),
     # Url - creacion de un nuevo usuario
     url(r'^createUser/', views.createUser, name='createUser'),
+    # Urls - Adicionales de registro e inicio de sesion - siempre deben estar al final
+    url(r'^', include('registration.backends.default.urls')),
 ]

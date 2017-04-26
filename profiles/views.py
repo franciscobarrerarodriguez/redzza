@@ -6,7 +6,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .models import Profile, Place
 from .forms import EmailAuthenticationForm
-from categories import Category, WantedCategory
+import json
+from categories.models import Category, WantedCategory
 # Create your views here.
 
 
@@ -86,15 +87,19 @@ def createUser(request):
         if created:
             user.set_password(password)
             user.save()
-            place = get_object_or_404(Place, id=2)
-            profile = Profile(user=user, gender='F', location=place)
+            place = get_object_or_404(Place, id=place)
+            profile = Profile(user=user, location=place)
             profile.save()
-
-            # recorrer objeto de categorias y crear categoria
-            category = get_object_or_404(Category, id=11)
-            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-            wanted = WantedCategory(profile=profile, category=category, type_category=1)
-            wanted.save()
+            for element in json.loads(i_have):
+                category = get_object_or_404(Category, id=element['pk'])
+                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                wanted = WantedCategory(profile=profile, category=category, type_category=1)
+                wanted.save()
+            for element in json.loads(i_search):
+                category = get_object_or_404(Category, id=element['pk'])
+                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                wanted = WantedCategory(profile=profile, category=category, type_category=2)
+                wanted.save()
             login(request, user)
             return JsonResponse({'success': True, 'url': '/dashboard/'})
         else:
