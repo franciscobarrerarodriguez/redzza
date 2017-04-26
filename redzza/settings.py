@@ -154,5 +154,6 @@ LOGIN_REDIRECT_URL = 'home'
 
 # Backends
 AUTHENTICATION_BACKENDS = (
+    # Agregado de backend, para la autenticacion con correo y contraseña
     'profiles.backends.EmailBackend',
 )

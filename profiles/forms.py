@@ -2,6 +2,8 @@ from django import forms
 
 from django.contrib.auth import authenticate
 
+
+# Form para el inicio de sesion a la plataforma, se realiza mediante correo y contraseña
 class EmailAuthenticationForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(label='Password', widget=forms.PasswordInput)

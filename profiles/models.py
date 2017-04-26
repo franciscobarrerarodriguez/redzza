@@ -33,7 +33,7 @@ class Profile(models.Model):
 
     def user_registered_callback(sender, user, request, **kwargs):
         profile = Profile(user=user)
-        #profile.location = get_object_or_404(Place, name=request.POST["location"])
+        # profile.location = get_object_or_404(Place, name=request.POST["location"])
         profile.save(commit=False)
 
     user_registered.connect(user_registered_callback)

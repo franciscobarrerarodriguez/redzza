@@ -5,10 +5,12 @@ from .models import Profile, Place
 
 # admin.site.register(Album)
 
+
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
     list_display = ('user',)
 
+
 @admin.register(Place)
 class AdminPlace(admin.ModelAdmin):
-    list_display = ('name','pattern')
+    list_display = ('name', 'pattern')

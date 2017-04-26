@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 
 
+# Backend encargado de la autenticacion de la plataforma, se realiza mediante correo electronico
 class EmailBackend(object):
     def authenticate(self, email=None, password=None):
         try:
