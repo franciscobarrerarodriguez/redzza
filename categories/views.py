@@ -1,5 +1,4 @@
 from django.core import serializers
-from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from categories.models import Category
 # Create your views here.
