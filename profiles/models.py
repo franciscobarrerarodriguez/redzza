@@ -1,9 +1,11 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 from registration.signals import user_registered
 from django.contrib.auth.models import User
 from datetime import datetime
 # Create your models here.
-# Si hay problemas con null constraint, quitar campos del modelo que no han sido anadidos
+# Si hay problemas con null constraint,
+# quitar campos del modelo que no han sido anadidos
 
 
 class Place(models.Model):
@@ -12,6 +14,9 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
+    def getCities():
+        return Place.objects.exclude(pattern__isnull=True)
 
 
 class Profile(models.Model):
@@ -30,6 +35,30 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.gender
+
+    def createUser(email, username, name, last_name, password):
+        user, created = User.objects.get_or_create(
+            email=email,
+            username=username,
+            first_name=name,
+            last_name=last_name
+        )
+        if created:
+            user.set_password(password)
+            user.save()
+        return created
+
+    def create(place, user):
+        location = get_object_or_404(Place, id=place)
+        profile = Profile(user=user, location=location)
+        profile.save()
+        return profile
+
+    def searchEmail(email):
+        return User.objects.filter(email__iexact=email).exists()
+
+    def searchUser(email):
+        return get_object_or_404(User, email=email)
 
     def user_registered_callback(sender, user, request, **kwargs):
         profile = Profile(user=user)

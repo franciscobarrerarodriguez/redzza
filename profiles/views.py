@@ -1,17 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.contrib.auth.models import User
 from .models import Profile, Place
 from .forms import EmailAuthenticationForm
 import json
-from categories.models import Category, WantedCategory
+from categories.models import WantedCategory
 # Create your views here.
 
-
 # Vista de login por correo electronico y contraseña
+
+
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)
     if form.is_valid():
@@ -54,14 +54,14 @@ def singup(request, step):
 def validateEmail(request):
     email = request.GET.get('email', None)
     data = {
-        'is_taken': User.objects.filter(email__iexact=email).exists()
+        'is_taken': Profile.searchEmail(email)
     }
     return JsonResponse(data)
 
 
 # Vista de obtencion de lugares
 def getPlaces(request):
-    data = Place.objects.all()
+    data = Place.getCities()
     data_serialized = serializers.serialize('json', data)
     return JsonResponse(data_serialized, safe=False)
 
@@ -78,28 +78,16 @@ def createUser(request):
     i_have = request.POST.get('i_have', None)
 
     if email and username and name and last_name and password and place and i_search and i_have:
-        user, created = User.objects.get_or_create(
-            email=email,
-            username=username,
-            first_name=name,
-            last_name=last_name
-        )
-        if created:
-            user.set_password(password)
-            user.save()
-            place = get_object_or_404(Place, id=place)
-            profile = Profile(user=user, location=place)
-            profile.save()
+        if Profile.createUser(email, username, name, last_name, password):
+            user = Profile.searchUser(email)
+
+            profile = Profile.create(place, user)
+            print("Profile" + str(profile))
+            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
             for element in json.loads(i_have):
-                category = get_object_or_404(Category, id=element['pk'])
-                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                wanted = WantedCategory(profile=profile, category=category, type_category=1)
-                wanted.save()
+                WantedCategory.create(element['pk'], profile, 1)
             for element in json.loads(i_search):
-                category = get_object_or_404(Category, id=element['pk'])
-                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                wanted = WantedCategory(profile=profile, category=category, type_category=2)
-                wanted.save()
+                WantedCategory.create(element['pk'], profile, 2)
             login(request, user)
             return JsonResponse({'success': True, 'url': '/dashboard/'})
         else:
