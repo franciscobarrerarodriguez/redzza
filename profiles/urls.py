@@ -14,12 +14,16 @@ urlpatterns = [
     url(r'^home/', views.home, name='home'),
     # Url dashboard con sesion
     url(r'^dashboard/', views.dashboard, name='dashboard'),
+    # Url configuracion del perfil
+    url(r'^setting/', views.setting, name='setting'),
     # Url - verificacion de la existencia correo electronico al momento de registrarse
     url(r'^ajax/validateEmail/$', views.validateEmail, name='validateEmail'),
     # Url - Retorna todos los lugares
     url(r'^ajax/places/$', views.getPlaces, name='getPlaces'),
     # Url - creacion de un nuevo usuario
     url(r'^createUser/', views.createUser, name='createUser'),
+    # Urls - Autenticacion con red social facebook
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     # Urls - Adicionales de registro e inicio de sesion - siempre deben estar al final
     url(r'^', include('registration.backends.default.urls')),
 ]

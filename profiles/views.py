@@ -59,6 +59,12 @@ def validateEmail(request):
     return JsonResponse(data)
 
 
+# Vista, configuracion del perfil
+@login_required
+def setting(request):
+    return render(request, 'setting.html')
+
+
 # Vista de obtencion de lugares
 def getPlaces(request):
     data = Place.objects.all()
