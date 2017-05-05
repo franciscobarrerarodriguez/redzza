@@ -61,8 +61,8 @@ def validateEmail(request):
 
 # Vista, configuracion del perfil
 @login_required
-def setting(request):
-    return render(request, 'setting.html')
+def settings(request):
+    return render(request, 'settings.html')
 
 
 # Vista de obtencion de lugares
