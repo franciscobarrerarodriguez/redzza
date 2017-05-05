@@ -9,11 +9,11 @@
 
   <!--Import Google Icon Font-->
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
   {% load staticfiles %}
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="{% static 'materialize-src/css/materialize.min.css' %}">
   <!-- Compiled and minified custom CSS -->
-  <link rel="stylesheet" href="{% static 'css/materialize/custom.css' %}">
+  <link rel="stylesheet" href="{% static 'materialize-src/css/custom.css' %}">
   <!-- Animate on scroll CDN CSS -->
   <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
   <!-- load external css -->{% block externalStyles %}{% endblock %}
@@ -23,28 +23,14 @@
 
 <body>
 
-  <!-- menu -->
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#!" class="brand-logo">Redzza</a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        {% block large-menu %}{% endblock %}
-        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
-      </ul>
-      <ul class="side-nav" id="mobile-demo">
-        {% block collapse-menu %}{% endblock %}
-        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i> Cerrar sesión</a></li>
-      </ul>
-    </div>
-  </nav>
-  <!-- ./menu -->
+  <!-- menu -->{% block nav_bar %}{% endblock %}<!-- ./menu -->
+
   <!-- content -->{% block content %}{% endblock %}<!-- ./content -->
 
   <!--Import jQuery before materialize.js-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+  <script src="{% static 'materialize-src/js/bin/materialize.min.js' %}"></script>
   <!-- Animate on scroll CDN JS -->
   <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
   <!-- load external javascript -->

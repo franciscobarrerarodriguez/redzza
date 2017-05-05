@@ -15,7 +15,7 @@ urlpatterns = [
     # Url dashboard con sesion
     url(r'^dashboard/', views.dashboard, name='dashboard'),
     # Url configuracion del perfil
-    url(r'^setting/', views.setting, name='setting'),
+    url(r'^settings/', views.settings, name='settings'),
     # Url - verificacion de la existencia correo electronico al momento de registrarse
     url(r'^ajax/validateEmail/$', views.validateEmail, name='validateEmail'),
     # Url - Retorna todos los lugares

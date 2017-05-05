@@ -31,7 +31,7 @@ def home(request):
 
 
 # Vista perfil personal, con sesion
-@login_required
+# @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
@@ -61,8 +61,8 @@ def validateEmail(request):
 
 # Vista, configuracion del perfil
 @login_required
-def setting(request):
-    return render(request, 'setting.html')
+def settings(request):
+    return render(request, 'settings.html')
 
 
 # Vista de obtencion de lugares
