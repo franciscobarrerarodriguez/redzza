@@ -31,7 +31,7 @@ def home(request):
 
 
 # Vista perfil personal, con sesion
-@login_required
+# @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
