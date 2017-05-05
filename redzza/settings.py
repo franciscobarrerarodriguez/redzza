@@ -35,6 +35,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'categories.apps.CategoriesConfig',
+    'things.apps.ThingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

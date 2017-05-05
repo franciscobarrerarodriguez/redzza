@@ -8,7 +8,7 @@ from .models import Profile, Place
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
-    list_display = ('user',)
+    list_display = ('user', 'location')
 
 
 @admin.register(Place)
