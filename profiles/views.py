@@ -1,3 +1,5 @@
+from random import choice
+from string import ascii_lowercase, digits
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.core import serializers
@@ -7,11 +9,11 @@ from .models import Profile, Place
 from .forms import EmailAuthenticationForm
 import json
 from categories.models import WantedCategory
+from django.contrib.auth.models import User
 # Create your views here.
 
+
 # Vista de login por correo electronico y contraseña
-
-
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)
     if form.is_valid():
@@ -31,7 +33,7 @@ def home(request):
 
 
 # Vista perfil personal, con sesion
-# @login_required
+@login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
@@ -65,7 +67,7 @@ def settings(request):
     return render(request, 'settings.html')
 
 
-# Vista de obtencion de lugares
+# Vista de obtención de lugares
 def getPlaces(request):
     data = Place.getCities()
     data_serialized = serializers.serialize('json', data)
@@ -75,7 +77,7 @@ def getPlaces(request):
 # Vista para la creacion de un usuario
 def createUser(request):
     email = request.POST.get('email', None)
-    username = request.POST.get('name', None)
+    username = generate_random_username(request.POST.get('name', None))
     name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     password = request.POST.get('password', None)
@@ -86,9 +88,7 @@ def createUser(request):
     if email and username and name and last_name and password and place and i_search and i_have:
         if Profile.createUser(email, username, name, last_name, password):
             user = Profile.searchUser(email)
-
             profile = Profile.create(place, user)
-            print("Profile" + str(profile))
             # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
             for element in json.loads(i_have):
                 WantedCategory.create(element['pk'], profile, 1)
@@ -100,3 +100,16 @@ def createUser(request):
             return JsonResponse({'success': False, 'err': 'User not created'})
     else:
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
+
+
+# Metodo para la generacion del username unico para un nuevo usuario
+def generate_random_username(name, length=16, chars=ascii_lowercase + digits, split=4, delimiter='-'):
+    username = ''.join([choice(chars) for i in range(length)])
+    if split:
+        username = delimiter.join([username[start:start + split] for start in range(0, len(username), split)])
+    username = name + '-' + username
+    try:
+        User.objects.get(username=username)
+        return generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
+    except User.DoesNotExist:
+        return username

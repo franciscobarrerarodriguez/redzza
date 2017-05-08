@@ -4,7 +4,7 @@ from categories.models import Category
 # Create your views here.
 
 
-# Vista de obtencion de categorias
+# Vista de obtención de categorias
 def getCategories(request):
     data = Category.getCategories()
     data_serialized = serializers.serialize('json', data)
