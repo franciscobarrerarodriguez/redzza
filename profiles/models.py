@@ -1,5 +1,3 @@
-from random import choice
-from string import ascii_lowercase, digits
 from django.db import models
 from django.shortcuts import get_object_or_404
 from registration.signals import user_registered
@@ -38,10 +36,10 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def createUser(email, name, last_name, password):
+    def createUser(email, username, name, last_name, password):
         user, created = User.objects.get_or_create(
             email=email,
-            username=Profile.generate_random_username(name),
+            username=username,
             first_name=name,
             last_name=last_name
         )
@@ -61,18 +59,6 @@ class Profile(models.Model):
 
     def searchUser(email):
         return get_object_or_404(User, email=email)
-
-    # Metodo para la generacion del username unico para un nuevo usuario
-    def generate_random_username(name, length=16, chars=ascii_lowercase + digits, split=4, delimiter='-'):
-        username = ''.join([choice(chars) for i in range(length)])
-        if split:
-            username = delimiter.join([username[start:start + split] for start in range(0, len(username), split)])
-        username = name + '-' + username
-        try:
-            User.objects.get(username=username)
-            return Profile.generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
-        except User.DoesNotExist:
-            return username
 
     def user_registered_callback(sender, user, request, **kwargs):
         profile = Profile(user=user)

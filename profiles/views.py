@@ -1,3 +1,5 @@
+from random import choice
+from string import ascii_lowercase, digits
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.core import serializers
@@ -84,6 +86,7 @@ def getUser(request):
 # Vista para la creacion de un usuario
 def createUser(request):
     email = request.POST.get('email', None)
+    username = generate_random_username(request.POST.get('name', None))
     name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     password = request.POST.get('password', None)
@@ -91,8 +94,8 @@ def createUser(request):
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
 
-    if email and name and last_name and password and place and i_search and i_have:
-        user, created = Profile.createUser(email, name, last_name, password)
+    if email and username and name and last_name and password and place and i_search and i_have:
+        user, created = Profile.createUser(email, username, name, last_name, password)
         if created:
             # #######################################################
             profile = Profile.create(place, user)
@@ -110,8 +113,21 @@ def createUser(request):
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
 
 
+# Metodo para la generacion del username unico para un nuevo usuario
+def generate_random_username(name, length=16, chars=ascii_lowercase + digits, split=4, delimiter='-'):
+    username = ''.join([choice(chars) for i in range(length)])
+    if split:
+        username = delimiter.join([username[start:start + split] for start in range(0, len(username), split)])
+    username = name + '-' + username
+    try:
+        User.objects.get(username=username)
+        return Profile.generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
+    except User.DoesNotExist:
+        return username
+
+
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
-# redzza/pepito
+# www.redzza.com/[username]
 class UserDetailView(DetailView):
     model = User
     context_object_name = 'user'
