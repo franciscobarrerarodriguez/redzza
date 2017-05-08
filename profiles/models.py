@@ -34,7 +34,7 @@ class Profile(models.Model):
     location = models.ForeignKey(Place, default="")
 
     def __str__(self):
-        return self.gender
+        return self.user.username
 
     def createUser(email, username, name, last_name, password):
         user, created = User.objects.get_or_create(
