@@ -7,6 +7,8 @@ from .models import Profile, Place
 from .forms import EmailAuthenticationForm
 import json
 from categories.models import WantedCategory
+from django.views.generic.detail import DetailView
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -71,6 +73,14 @@ def getPlaces(request):
     return JsonResponse(data_serialized, safe=False)
 
 
+# Vista de obtención de usuario
+def getUser(request):
+    email = request.GET.get('email', None)
+    data = Profile.searchUser(email)
+    data_serialized = serializers.serialize('json', data)
+    return JsonResponse(data_serialized, safe=False)
+
+
 # Vista para la creacion de un usuario
 def createUser(request):
     email = request.POST.get('email', None)
@@ -98,3 +108,12 @@ def createUser(request):
             return JsonResponse({'success': False, 'err': 'User not created'})
     else:
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
+
+
+# Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
+# redzza/pepito
+class UserDetailView(DetailView):
+    model = User
+    context_object_name = 'user'
+    template_name = 'user.html'
+    slug_field = 'username'

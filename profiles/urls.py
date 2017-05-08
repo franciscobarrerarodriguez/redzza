@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^ajax/places/$', views.getPlaces, name='getPlaces'),
     # Url - creacion de un nuevo usuario
     url(r'^createUser/', views.createUser, name='createUser'),
+    # Url - visitar perfil
+    url(r'^(?P<slug>[-_\w]+)/$', views.UserDetailView.as_view(), name='userDetail'),
     # Urls - Autenticacion con red social facebook
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     # Urls - Adicionales de registro e inicio de sesion - siempre deben estar al final
