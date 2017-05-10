@@ -60,7 +60,7 @@ def validateEmail(request):
 
 
 # Vista, configuracion del perfil
-@login_required
+# @login_required
 def settings(request):
     return render(request, 'settings.html')
 
