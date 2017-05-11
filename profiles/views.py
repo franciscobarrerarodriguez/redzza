@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Profile, Place
 from .forms import EmailAuthenticationForm
+from django.shortcuts import get_object_or_404
 import json
 from categories.models import WantedCategory
 from django.views.generic.detail import DetailView
@@ -63,9 +64,11 @@ def validateEmail(request):
 
 
 # Vista, configuracion del perfil
-# @login_required
+@login_required
 def settings(request):
-    return render(request, 'settings.html')
+    user = request.user
+    context = {'profile': get_object_or_404(Profile, user=user)}
+    return render(request, 'settings.html', context)
 
 
 # Vista de obtención de lugares
@@ -81,6 +84,30 @@ def getUser(request):
     data = Profile.searchUser(email)
     data_serialized = serializers.serialize('json', data)
     return JsonResponse(data_serialized, safe=False)
+
+
+# Vista de modificacion de informacion del usuario
+def updateUser(request):
+    user = request.user
+    if request.POST.get('email', None):
+        user.update(email=request.POST.get('email', None))
+        return JsonResponse({'success': True, 'msg': 'email-update'})
+    elif request.POST.get('password', None):
+        user.update(password=request.POST.get('password', None))
+        return JsonResponse({'success': True, 'msg': 'password-update'})
+    elif request.POST.get('username', None):
+        user.update(username=request.POST.get('username', None))
+        return JsonResponse({'success': True, 'msg': 'username-update'})
+    # user.profile???????? - DIEGO
+    elif request.POST.get('phone', None):
+        user.profile.update(phone=request.POST.get('phone', None))
+        return JsonResponse({'success': True, 'msg': 'phone-update'})
+    # location debe ser con una llave - DIEGO
+    elif request.POST.get('location', None):
+        user.profile.update(location=request.POST.get('location', None))
+        return JsonResponse({'success': True, 'msg': 'location-update'})
+    else:
+        return JsonResponse({'success': False, 'msg': 'nothing-update'})
 
 
 # Vista para la creacion de un usuario
