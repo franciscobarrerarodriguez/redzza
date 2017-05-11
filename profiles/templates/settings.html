@@ -13,82 +13,107 @@
     <div class="col s12 m4 l4">
       <img class="full-width-responsive responsive-img" src="{% static 'img/redzza/default-profile.jpg' %}">
       <div class="collection">
-        <a href="#!" class="collection-item active">Datos personales</a>
+        <a href="#!" class="collection-item active">Datos de cuenta</a>
+        <a href="#!" class="collection-item">Datos personales</a>
       </div>
     </div>
     <!-- ./left -->
     <!-- right -->
     <div class="col s12 m8 l8">
-      <h6>Datos de cuenta</h6>
-      <hr>
+      <!-- row -->
+      <div class="row">
+
+        <h6>Datos de cuenta</h6>
+        <hr>
+        <br>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>E-mail: </b></span><span>{{request.user.email}}</span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modificar</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>Usuario: </b></span><span>{{request.user.username }}</span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn" href="#modal2">Modificar</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>Contraseña: </b></span><span>********</span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn" href="#modal3">Modificar</a>
+          </div>
+        </div>
+      </div>
+      <!-- ./row -->
+
       <br>
-
+      <!-- row -->
       <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>E-mail: </b></span><span>{{request.user.email}}</span>
+        <h6>Datos personales</h6>
+        <hr>
+        <br>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>Nombre y apellido: </b></span><span>{{request.user.first_name}} {{request.user.last_name}}</span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn disabled" href="#modal4">Modificar</a>
+          </div>
         </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modificar</a>
+
+        <div class="row">
+          <div class="col s2 m2 l2">
+            <span><b>Género: </b></span><span>{{request.user.first_name}}</span>
+          </div>
+          <div class="col s10 m10 l10">
+            <div class="input-field col s12">
+    <select>
+      <option value="" disabled selected>Choose your option</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+    </select>
+    <label>Materialize Select</label>
+  </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>Teléfono: </b></span><span>{{request.user.phone}} </span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn" href="#modal5">Modificar</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s8 m8 l8">
+            <span><b>Dirección: </b></span><span>{{request.user.address}} </span>
+          </div>
+          <div class="col s4 m4 l4">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger waves-effect waves-light btn" href="#modal6">Modificar</a>
+          </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>Usuario: </b></span><span>{{request.user.username }}</span>
-        </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal2">Modificar</a>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>Contraseña: </b></span><span>********</span>
-        </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal3">Modificar</a>
-        </div>
-      </div>
-
-      <br>
-
-      <h6>Datos de cuenta</h6>
-      <hr>
-      <br>
-
-      <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>Nombre y apellido: </b></span><span>{{request.user.first_name}} {{request.user.last_name}}</span>
-        </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn disabled" href="#modal4">Modificar</a>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>Teléfono: </b></span><span>{{request.user.phone}} </span>
-        </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal5">Modificar</a>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s8 m8 l8">
-          <span><b>Dirección: </b></span><span>{{request.user.address}} </span>
-        </div>
-        <div class="col s4 m4 l4">
-          <!-- Modal Trigger -->
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal6">Modificar</a>
-        </div>
-      </div>
-
+      <!-- ./row -->
       <hr>
 
     </div>

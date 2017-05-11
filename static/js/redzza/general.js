@@ -1,5 +1,7 @@
 $(document).on("ready", function () {
-  // Init all aropdown
+  /* Init select */
+  $('select').material_select();
+  /* Init all aropdown */
   $(".dropdown-button").dropdown();
   /* Init button for mobile-devices */
   $(".button-collapse").sideNav();
