@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Profile, Place
 from .forms import EmailAuthenticationForm
+from django.shortcuts import get_object_or_404
 import json
 from categories.models import WantedCategory
 from django.views.generic.detail import DetailView
@@ -63,9 +64,11 @@ def validateEmail(request):
 
 
 # Vista, configuracion del perfil
-# @login_required
+@login_required
 def settings(request):
-    return render(request, 'settings.html')
+    user = request.user
+    context = {'profile': get_object_or_404(Profile, user=user)}
+    return render(request, 'settings.html', context)
 
 
 # Vista de obtención de lugares
