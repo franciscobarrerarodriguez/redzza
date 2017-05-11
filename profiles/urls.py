@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^ajax/validateEmail/$', views.validateEmail, name='validateEmail'),
     # Url - Retorna todos los lugares
     url(r'^ajax/places/$', views.getPlaces, name='getPlaces'),
+    # Url - Actualiza datos de usuario
+    url(r'^ajax/updateUser/$', views.updateUser, name='updateUser'),
     # Url - creacion de un nuevo usuario
     url(r'^createUser/', views.createUser, name='createUser'),
     # Url - visitar perfil
