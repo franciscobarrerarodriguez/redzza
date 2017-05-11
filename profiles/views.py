@@ -83,6 +83,30 @@ def getUser(request):
     return JsonResponse(data_serialized, safe=False)
 
 
+# Vista de modificacion de informacion del usuario
+def updateUser(request):
+    user = request.user
+    if request.POST.get('email', None):
+        user.update(email=request.POST.get('email', None))
+        return JsonResponse({'success': True, 'msg': 'email-update'})
+    elif request.POST.get('password', None):
+        user.update(password=request.POST.get('password', None))
+        return JsonResponse({'success': True, 'msg': 'password-update'})
+    elif request.POST.get('username', None):
+        user.update(username=request.POST.get('username', None))
+        return JsonResponse({'success': True, 'msg': 'username-update'})
+    # user.profile???????? - DIEGO
+    elif request.POST.get('phone', None):
+        user.profile.update(phone=request.POST.get('phone', None))
+        return JsonResponse({'success': True, 'msg': 'phone-update'})
+    # location debe ser con una llave - DIEGO
+    elif request.POST.get('location', None):
+        user.profile.update(location=request.POST.get('location', None))
+        return JsonResponse({'success': True, 'msg': 'location-update'})
+    else:
+        return JsonResponse({'success': False, 'msg': 'nothing-update'})
+
+
 # Vista para la creacion de un usuario
 def createUser(request):
     email = request.POST.get('email', None)
