@@ -89,22 +89,34 @@ def getUser(request):
 # Vista de modificacion de informacion del usuario
 def updateUser(request):
     user = request.user
-    if request.POST.get('email', None):
-        user.update(email=request.POST.get('email', None))
-        return JsonResponse({'success': True, 'msg': 'email-update'})
-    elif request.POST.get('password', None):
-        user.update(password=request.POST.get('password', None))
+    profile = get_object_or_404(Profile, user=user)
+    email = request.POST.get('email', None)
+    password = request.POST.get('password', None)
+    username = request.POST.get('username', None)
+    phone = request.POST.get('phone', None)
+    location = request.POST.get('location', None)
+    if email:
+        if Profile.searchEmail(email) is False:
+            user.update(email=email)
+            return JsonResponse({'success': True, 'msg': 'email-update'})
+        else:
+            return JsonResponse({'success': False, 'msg': 'email-exists'})
+    elif password:
+        user.set_password(password)
+        user.save()
         return JsonResponse({'success': True, 'msg': 'password-update'})
-    elif request.POST.get('username', None):
-        user.update(username=request.POST.get('username', None))
-        return JsonResponse({'success': True, 'msg': 'username-update'})
-    # user.profile???????? - DIEGO
-    elif request.POST.get('phone', None):
-        user.profile.update(phone=request.POST.get('phone', None))
+    elif username:
+        if Profile.searchUsername(username) is False:
+            user.update(username=username)
+            return JsonResponse({'success': True, 'msg': 'username-update'})
+        else:
+            return JsonResponse({'success': False, 'msg': 'username-exists'})
+    elif phone:
+        profile.update(phone=phone)
         return JsonResponse({'success': True, 'msg': 'phone-update'})
-    # location debe ser con una llave - DIEGO
-    elif request.POST.get('location', None):
-        user.profile.update(location=request.POST.get('location', None))
+    elif location:
+        place = get_object_or_404(Place, id=location)
+        profile.update(location=place)
         return JsonResponse({'success': True, 'msg': 'location-update'})
     else:
         return JsonResponse({'success': False, 'msg': 'nothing-update'})
