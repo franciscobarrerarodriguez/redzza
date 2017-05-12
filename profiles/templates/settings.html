@@ -28,32 +28,41 @@
         <br>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>E-mail: </b></span><span>{{request.user.email}}</span>
+          <div class="col s12 m4 l4">
+            <p><b>E-mail: </b></p>
           </div>
-          <div class="col s4 m4 l4">
+          <div class="col s12 m6 l6">
+            <p>{{request.user.email}}</p>
+          </div>
+          <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modificar</a>
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal1"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>Usuario: </b></span><span>{{request.user.username }}</span>
+          <div class="col s12 m4 l4">
+            <p><b>Usuario: </b></p>
           </div>
-          <div class="col s4 m4 l4">
+          <div class="col s12 m6 l6">
+            <p>{{request.user.username }}</p>
+          </div>
+          <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn" href="#modal2">Modificar</a>
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal2"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>Contraseña: </b></span><span>********</span>
+          <div class="col s12 m4 l4">
+            <p><b>Contraseña: </b></p>
           </div>
-          <div class="col s4 m4 l4">
+          <div class="col s12 m6 l6">
+            <p>********</p>
+          </div>
+          <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn" href="#modal3">Modificar</a>
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal3"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
       </div>
@@ -61,35 +70,38 @@
 
       <br>
       <!-- row -->
+
       <div class="row">
         <h6>Datos personales</h6>
         <hr>
         <br>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>Nombre y apellido: </b></span><span>{{request.user.first_name}} {{request.user.last_name}}</span>
+          <div class="col s12 m4 l4">
+            <p><b>Nombre y apellido: </b></p>
           </div>
-          <div class="col s4 m4 l4">
+          <div class="col s12 m6 l6">
+            <p>{{request.user.first_name}} {{request.user.last_name}}</p>
+          </div>
+          <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn disabled" href="#modal4">Modificar</a>
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light disabled" href="#modal4"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
 
         <div class="row">
-          <div class="col s2 m2 l2">
-            <span><b>Género: </b></span><span>{{request.user.first_name}}</span>
+          <div class="col s12 m4 l4">
+            <p><b>Género: </b></p>
           </div>
-          <div class="col s10 m10 l10">
-            <div class="input-field col s12">
-    <select>
-      <option value="" disabled selected>Choose your option</option>
-      <option value="1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
-    </select>
-    <label>Materialize Select</label>
-  </div>
+          <div class="input-field  col s12 m6 l6">
+              <select>
+                <option value="{{profile.gender}}" disabled selected>{% if profile.gender == "M" %}{{"Masculino"}}{% elif profile.gender == "F" %}{{"Femeníno"}}{% endif %}</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femeníno</option>
+              </select>
+                      </div>
+          <div class="col s12 m2 l2">
+            &nbsp;
           </div>
         </div>
 
