@@ -88,7 +88,7 @@ def getUser(request):
 
 # Vista de modificacion de informacion del usuario
 def updateUser(request):
-    user = request.user
+    user = Profile.searchUser(email=request.user.email)
     profile = get_object_or_404(Profile, user=user)
     email = request.POST.get('email', None)
     password = request.POST.get('password', None)
@@ -97,7 +97,8 @@ def updateUser(request):
     location = request.POST.get('location', None)
     if email:
         if Profile.searchEmail(email) is False:
-            user.update(email=email)
+            user.email = email
+            user.save()
             return JsonResponse({'success': True, 'msg': 'email-update'})
         else:
             return JsonResponse({'success': False, 'msg': 'email-exists'})
@@ -107,16 +108,19 @@ def updateUser(request):
         return JsonResponse({'success': True, 'msg': 'password-update'})
     elif username:
         if Profile.searchUsername(username) is False:
-            user.update(username=username)
+            user.username = username
+            user.save()
             return JsonResponse({'success': True, 'msg': 'username-update'})
         else:
             return JsonResponse({'success': False, 'msg': 'username-exists'})
     elif phone:
-        profile.update(phone=phone)
+        profile.phone = phone
+        profile.save()
         return JsonResponse({'success': True, 'msg': 'phone-update'})
     elif location:
         place = get_object_or_404(Place, id=location)
-        profile.update(location=place)
+        profile.location = place
+        profile.save()
         return JsonResponse({'success': True, 'msg': 'location-update'})
     else:
         return JsonResponse({'success': False, 'msg': 'nothing-update'})
