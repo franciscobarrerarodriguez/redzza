@@ -37,7 +37,9 @@ def home(request):
 # Vista perfil personal, con sesion
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    user = request.user
+    context = {'profile': get_object_or_404(Profile, user=user)}
+    return render(request, 'dashboard.html', context)
 
 
 # Vista para el registro en fases, la fase se recibe por parametro de la url
