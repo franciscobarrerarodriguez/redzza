@@ -15,6 +15,7 @@
       <div class="collection">
         <a href="#!" class="collection-item active">Datos de cuenta</a>
         <a href="#!" class="collection-item">Datos personales</a>
+        <a href="#!" class="collection-item">Personalización </a>
       </div>
     </div>
     <!-- ./left -->
@@ -91,42 +92,80 @@
 
         <div class="row">
           <div class="col s12 m4 l4">
-            <p><b>Género: </b></p>
+            <p><b>Fecha de nacimiento:</b></p>
           </div>
-          <div class="input-field  col s12 m6 l6">
-              <select>
-                <option value="{{profile.gender}}" disabled selected>{% if profile.gender == "M" %}{{"Masculino"}}{% elif profile.gender == "F" %}{{"Femeníno"}}{% endif %}</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femeníno</option>
-              </select>
-                      </div>
+          <div class="col s12 m6 l6">
+            <input type="date" class="datepicker" data-value="{{profile.birth_date}}">
+          </div>
           <div class="col s12 m2 l2">
             &nbsp;
           </div>
         </div>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>Teléfono: </b></span><span>{{request.user.phone}} </span>
+          <div class="col s12 m4 l4">
+            <p><b>Género: </b></p>
           </div>
-          <div class="col s4 m4 l4">
-            <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn" href="#modal5">Modificar</a>
+          <div class="input-field  col s12 m6 l6">
+            <select>
+              <option value="{{profile.gender}}" disabled selected>{% if profile.gender == "M" %}{{"Masculino"}}{% elif profile.gender == "F" %}{{"Femeníno"}}{% endif %}</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femeníno</option>
+            </select>
+          </div>
+          <div class="col s12 m2 l2">
+            &nbsp;
           </div>
         </div>
 
         <div class="row">
-          <div class="col s8 m8 l8">
-            <span><b>Dirección: </b></span><span>{{request.user.address}} </span>
+          <div class="col s12 m4 l4">
+            <p><b>Teléfono: </b></p>
           </div>
-          <div class="col s4 m4 l4">
+          <div class="col s12 m6 l6">
+            <p>{{profile.phone}} </p>
+          </div>
+          <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
-            <a class="modal-trigger waves-effect waves-light btn" href="#modal6">Modificar</a>
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal5"><i class="material-icons">mode_edit</i></a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 m4 l4">
+            <p><b>Ubicación: </b></p>
+          </div>
+          <div class="col s12 m6 l6">
+            <p>{{profile.location}} </p>
+          </div>
+          <div class="col s12 m2 l2">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal6"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
       </div>
       <!-- ./row -->
-      <hr>
+      <br>
+      <!-- row -->
+      <div class="row">
+        <h6>Personalización</h6>
+        <hr>
+        <br>
+        <div class="row">
+          <div class="col s12 m4 l4">
+            <p><b>Biografía: </b></p>
+          </div>
+          <div class="col s12 m6 l6">
+            <p>{{profile.biography}}</p>
+          </div>
+          <div class="col s12 m2 l2">
+            <!-- Modal Trigger -->
+            <a class="modal-trigger btn-floating btn-large waves-effect waves-light" href="#modal7"><i class="material-icons">mode_edit</i></a>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <!-- ./row -->
 
     </div>
     <!-- ./right -->
@@ -138,96 +177,129 @@
 
 {% block modals %}
 <div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Modificar E-mail</h4>
-    <br>
-    <div class="row">
-      <div class="col s12 m6 l6">
-        <div class="input-field col s12">
-          <input id="email-1" type="email" class="validate">
-          <label for="email-1">Nuevo E-mail</label>
+  <form  id="new-email" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar E-mail</h4>
+      <br>
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <div class="input-field col s12">
+            <input id="email-1" name="email" type="email" class="validate">
+            <label for="email-1">Nuevo E-mail</label>
+          </div>
         </div>
-      </div>
-      <div class="col s12 m6 l6">
-        <div class="input-field col s12">
-          <input id="email-2" type="email" class="validate">
-          <label for="email-2">Confirmar E-mail</label>
+        <div class="col s12 m6 l6">
+          <div class="input-field col s12">
+            <input id="email-2" name="email2" type="email" class="validate">
+            <label for="email-2">Confirmar E-mail</label>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button id="new-email" class="modal-action waves-effect waves-green btn-flat ">Listo</button>
-    <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
-  </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat " type="submit" type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
 </div>
 
 <div id="modal2" class="modal">
-  <div class="modal-content">
-    <h4>Modificar usuario</h4>
-    <br>
-    <div class="input-field col s12">
-      <input id="new-username" type="text" class="validate">
-      <label for="new-username">Nuevo usuario</label>
+  <form id="update-user" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar usuario</h4>
+      <br>
+      <div class="input-field col s12">
+        <input id="new-username" name="username" type="text" class="validate">
+        <label for="new-username">Nuevo usuario</label>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button id="update-user" class="modal-action waves-effect waves-green btn-flat ">Listo</button>
-    <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
-  </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat " type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
 </div>
 
 <div id="modal3" class="modal">
-  <div class="modal-content">
-    <h4>Modificar contraseña</h4>
-    <div class="row">
-      <div class="col s12 m6 l6">
-        <div class="input-field col s12">
-          <input id="new-password" type="password" class="validate">
-          <label for="new-password">Nueva contraseña</label>
+  <form id="update-password" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar contraseña</h4>
+      <div class="row">
+        <div class="col s12 m6 l6">
+          <div class="input-field col s12">
+            <input id="new-password" name="password" type="password" class="validate">
+            <label for="new-password">Nueva contraseña</label>
+          </div>
         </div>
-      </div>
-      <div class="col s12 m6 l6">
-        <div class="input-field col s12">
-          <input id="new-password-2" type="password" class="validate">
-          <label for="new-password-2">Confirmar nueva contraseña</label>
+        <div class="col s12 m6 l6">
+          <div class="input-field col s12">
+            <input id="new-password-2" type="password" class="validate">
+            <label for="new-password-2">Confirmar nueva contraseña</label>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button id="update-password" class="modal-action waves-effect waves-green btn-flat ">Listo</button>
-    <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
-  </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat" type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
 </div>
 
 <div id="modal5" class="modal">
-  <div class="modal-content">
-    <h4>Modificar teléfono</h4>
-    <div class="input-field col s12">
-      <input id="new-phone" type="text" data-length="13">
-      <label for="new-phone">Teléfono</label>
+  <form id="update-phone" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar teléfono</h4>
+      <div class="input-field col s12">
+        <input id="new-phone" name="phone" type="text" data-length="13">
+        <label for="new-phone">Teléfono</label>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button id="update-phone" class="modal-action waves-effect waves-green btn-flat ">Listo</button>
-    <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
-  </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat" type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
 </div>
 
 <div id="modal6" class="modal">
+  <form id="update-address" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar ubicación</h4>
+      <br>
+      <div class="input-field col s12">
+        <input id="new-address" name="location" type="text" data-length="20">
+        <label for="new-address">Ubicación nueva</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat " type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div id="modal7" class="modal">
+<form id="update-bio" data-url="{% url 'updateUser' %}">
+  {% csrf_token %}
   <div class="modal-content">
-    <h4>Modificar dirección</h4>
+    <h4>Modificar biografía</h4>
     <br>
     <div class="input-field col s12">
-      <input id="new-address" type="text" data-length="20">
-      <label for="new-address">Dirección nueva</label>
+      <textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
+      <label for="textarea1">Escribe aqui algo acerca de ti</label>
     </div>
   </div>
   <div class="modal-footer">
-    <button id="update-address" class="modal-action waves-effect waves-green btn-flat ">Listo</button>
+    <button class="modal-action waves-effect waves-green btn-flat" type="submit">Listo</button>
     <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
   </div>
+</form>
 </div>
 {% endblock %}
 
