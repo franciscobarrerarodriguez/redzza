@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.db import models
 from profiles.models import Profile, Place
 from categories.models import Category

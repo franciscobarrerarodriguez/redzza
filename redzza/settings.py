@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Django settings for redzza project.
 
@@ -157,6 +158,6 @@ LOGIN_REDIRECT_URL = 'dashboard'
 
 # Backends
 AUTHENTICATION_BACKENDS = (
-    # Agregado de backend, para la autenticacion con correo y contraseña
+    # Agregado de backend, para la autenticacion con correo y contrasena
     'profiles.backends.EmailBackend',
 )
