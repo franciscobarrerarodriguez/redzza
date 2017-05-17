@@ -5,6 +5,7 @@ Django==1.11
 django-model-utils==2.6.1
 django-notifications-hq==1.2
 django-registration==2.2
+gunicorn==19.7.1
 jsonfield==2.0.1
 oauthlib==2.0.2
 olefile==0.44
