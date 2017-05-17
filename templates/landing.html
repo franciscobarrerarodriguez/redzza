@@ -57,7 +57,7 @@
       <div class="col-4">
         <!-- Card -->
         <div class="card">
-          <div class="card-header" style="background-image: url('{% staticfiles 'img/redzza/in_the_works.png' %}')">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/in_the_works.png' %}')">
             <h3 class="card-title">Publica</h3>
           </div>
           <div class="card-body">
@@ -74,7 +74,7 @@
       <div class="col-4">
         <!-- Card -->
         <div class="card">
-          <div class="card-header" style="background-image: url('{% staticfiles 'img/redzza/teasing.png' %}')">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/teasing.png' %}')">
             <h3 class="card-title">Busca</h3>
           </div>
           <div class="card-body">
@@ -91,7 +91,7 @@
       <div class="col-4">
         <!-- Card -->
         <div class="card">
-          <div class="card-header" style="background-image: url('{% staticfiles 'img/redzza/st.png' %}')">
+          <div class="card-header" style="background-image: url('{% static 'img/redzza/st.png' %}')">
             <h3 class="card-title">Intercambia</h3>
           </div>
           <div class="card-body">
@@ -258,5 +258,5 @@
 
 
 {% block externalfiles %}
-<script src="{% staticfiles 'js/redzza/primary-menu.js'%}" charset="utf-8"></script>
+<script src="{% static 'js/redzza/primary-menu.js'%}" charset="utf-8"></script>
 {% endblock %}
