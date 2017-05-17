@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
 from . import views
 from . import settings
 
@@ -14,5 +15,5 @@ urlpatterns = [
     # Urls - referente a categorias
     url(r'^', include('categories.urls')),
     # staticfiles
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
