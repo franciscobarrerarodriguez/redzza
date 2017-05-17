@@ -32,6 +32,9 @@ class Profile(models.Model):
     phone = models.IntegerField(null=True, blank=True)
     biography = models.TextField(blank=True)  # opcional
     location = models.ForeignKey(Place, default="")
+    company = models.CharField(max_length=40, blank=True)
+    profession = models.CharField(max_length=30, blank=True)
+    adress = models.CharField(max_length=40, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -69,3 +72,12 @@ class Profile(models.Model):
         profile.save(commit=False)
 
     user_registered.connect(user_registered_callback)
+
+
+class Label(models.Model):
+    label = models.CharField(max_length=50)
+
+
+class LabelProfile(models.Model):
+    label = models.ForeignKey(Label)
+    profile = models.ForeignKey(Profile)
