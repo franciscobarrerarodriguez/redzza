@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from . import views
+from . import settings
 
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     url(r'^', include('profiles.urls')),
     # Urls - referente a categorias
     url(r'^', include('categories.urls')),
+    # staticfiles
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 ]
