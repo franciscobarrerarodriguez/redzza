@@ -10,10 +10,13 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # Url - index de la aplicacion, sin sesion
     url(r'^$', views.index, name='index'),
-    # Urls - referente a usuarios y sus perfiles
-    url(r'^', include('profiles.urls')),
     # Urls - referente a categorias
     url(r'^', include('categories.urls')),
+    # Urls - referente a cosas
+    url(r'^', include('things.urls')),
+    # Urls - referente a usuarios y sus perfiles
+    # ---- Debe estar de ultimas - url de usuario -----
+    url(r'^', include('profiles.urls')),
     # staticfiles
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
