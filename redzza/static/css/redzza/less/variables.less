@@ -1,0 +1,123 @@
+// === Colors
+
+// @red-base:              #C21124;
+// @dark-blue-base:        #0E8D7C;
+// @sky-blue-base:         #46C8D0;
+// @green-base:            #D5E445;
+// @beige-base:            #DBD7CC;
+// @purple-base:           #0E0024; // 14, 0, 36
+// @green-base:            #00FD81;
+
+@primary-color:         #283946; // 41,57,70
+@hover-primary-color:   lighten(@primary-color, 5%);
+@light-primary:         lighten(@primary-color, 40%);
+
+@secondary-color:       #00C88F; // 0, 200, 143
+@hover-secondary-color: lighten(@secondary-color, 5%);
+@light-green:           lighten(@secondary-color, 20%);
+
+@white-base:            #FFFFFF;
+
+@black-base:            #000000;
+@light-gray:            lighten(@black-base, 70%);
+
+@blue-facebook:         #3B5998;
+@hover-facebook-color:  lighten(@blue-facebook, 5%);
+
+@danger-color:          #C21124;
+
+
+// === Size Bootstrap tool
+
+// Extra small screen / phone
+@screen-xs:                  480px;
+//** Deprecated `@screen-xs-min` as of v3.2.0
+@screen-xs-min:              @screen-xs;
+//** Deprecated `@screen-phone` as of v3.0.1
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+//** Deprecated `@screen-sm` as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+//** Deprecated `@screen-tablet` as of v3.0.1
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+//** Deprecated `@screen-md` as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+//** Deprecated `@screen-desktop` as of v3.0.1
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+//** Deprecated `@screen-lg` as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+//** Deprecated `@screen-lg-desktop` as of v3.0.1
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+// === Fonts
+
+// font-family: 'Titillium Web', sans-serif;
+// Titulos botones
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,700');
+
+// font-family: 'Yanone Kaffeesatz', sans-serif;
+// Subtitulos descripciones, parrafos pequeños, listas, links
+@import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700');
+
+// font-family: 'Fauna One', serif;
+// parrafos
+@import url('https://fonts.googleapis.com/css?family=Fauna+One');
+
+// === Grid
+@container-xs:        95%;
+@container-sm:        95%;
+@container-md:        90%;
+@container-lg:        90%;
+
+@container-padding:   10px;
+
+@row-padding:         @container-padding / 2;
+@col-padding:         @container-padding /2;
+
+@cols:                12; // Numero de columnas
+@col-size:            100% / @cols;
+
+
+// === Size
+
+/* 1em = 16px;
+Formula pixels/16=em;
+Example 40px/16=2.5em */
+
+@caption-h1:                        5em;
+
+@default-input-font-size:          1.125em;
+@default-button-font-size:         0.9375em;
+@default-p-font-size:              0.812em;
+
+// === Margin
+
+@general-margin-bottom:   15px;
+
+// === Padding
+
+
+@modal-content-padding:   10px;
+@step-content-padding:    20px;
+
+@large-button-padding:    10px;
+
+// Para cada una de las secciones
+@card-section-padding:    15px;
+
+// === Modal
+
+@modal-border-radius:     3px;

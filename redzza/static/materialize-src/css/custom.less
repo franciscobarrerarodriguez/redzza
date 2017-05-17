@@ -1,0 +1,101 @@
+// Clearfix
+//
+// For modern browsers
+// 1. The space content is one way to avoid an Opera bug when the
+//    contenteditable attribute is included anywhere else in the document.
+//    Otherwise it causes space to appear at the top and bottom of elements
+//    that are clearfixed.
+// 2. The use of `table` rather than `block` is only necessary if using
+//    `:before` to contain the top-margins of child elements.
+//
+// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+.clearfix() {
+  &:before,
+  &:after {
+    display: table; // 2
+
+    content: " "; // 1
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// === Helpers
+.clearfix {
+  .clearfix();
+}
+
+/* Change default toast position */
+#toast-container {
+  top: 20px !important;
+  right: auto !important;
+  left: 20px;
+}
+
+.brand-logo {
+  margin-left: 30px;
+}
+
+.full-screen {
+  position: absolute;
+
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  .row, .col, .parallax-container {
+    height: 100%;
+    margin: 0;
+  }
+}
+
+.form-container {
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+#categories {
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  width: 100%;
+  height: 210px;
+  margin-bottom: 15px;
+}
+
+.parallax-profile-container {
+  height: 180px;
+}
+
+.banner-info {
+  margin-top: -80px;
+
+}
+
+.border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: lighten(black, 95%);
+}
+
+/* Full with for responsive images in a container. */
+.full-width-responsive {
+  width: 100%;
+}
+
+.tab-height {
+  height: auto !important;
+}
+
+.container-margin-top {
+  margin-top: 20px;
+}
+
+.img-center {
+  display: block;
+  margin: auto;
+}
