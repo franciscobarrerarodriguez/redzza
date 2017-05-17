@@ -91,6 +91,19 @@ $(document).on("ready", function () {
     Materialize.toast(response.msg, 4000) // 4000 is the duration of the toast
   });
 
+  /* Post */
+  $('#product-post').click(function (e) {
+    e.preventDefault();
+    sessionStorage.setItem('thing', 'P');
+    window.location.href = $(this).attr('data-url');
+  });
+
+  $('#service-post').click(function (e) {
+    e.preventDefault();
+    sessionStorage.setItem('thing', 'S');
+    window.location.href = $(this).attr('data-url');
+  });
+
 });
 
 function ajaxPostCall(dataUrl, data) {

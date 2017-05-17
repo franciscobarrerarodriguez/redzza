@@ -1,12 +1,14 @@
 {% extends 'materialize-base.html' %}
 
+{% load staticfiles %}
+
 {% block nav_bar %}
 <nav>
   <div class="nav-wrapper">
     <a href="{% url 'dashboard' %}" class="brand-logo">Redzza</a>
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
-      <li><a href="#!"><i class="material-icons left">add</i>Publicar</a></li>
+      <li><a href="#modal-post" class="modal-trigger"><i class="material-icons left">add</i>Publicar</a></li>
       <li><a href="#!"><i class="material-icons">notifications</i></a></li>
       <li><a href="{% url 'settings' %}"><i class="material-icons">settings</i></a></li>
       <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i></a></li>
@@ -19,4 +21,44 @@
     </ul>
   </div>
 </nav>
+{% endblock %}
+
+{% block post %}
+<!-- Modal-post -->
+<div id="modal-post" class="modal">
+  <div class="modal-content">
+    <h4>¿Que quieres publicar?</h4>
+    <div class="row">
+      <div class="col s6 m6 l6">
+        <!-- card -->
+        <div class="card">
+          <div class="card-image">
+            <img src="{% static 'img/redzza/product.jpg' %}">
+            <a id="product-post" data-url="{% url 'post' %}" href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
+          </div>
+          <div class="card-content">
+            <span class="card-title">Productos</span>
+            <p>Puedes publicar cualquier cosa, técnologia, arte, propiedades o cualquier cosa que se te ocurra.</p>
+          </div>
+        </div>
+        <!-- ./card -->
+      </div>
+      <div class="col s6 m6 l6">
+        <!-- card -->
+        <div class="card">
+          <div class="card-image">
+            <img src="{% static 'img/redzza/service.png' %}">
+            <a id="service-post" data-url="{% url 'post' %}" href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
+          </div>
+          <div class="card-content">
+            <span class="card-title">Servicios</span>
+            <p>¿Sabes hacer algo?, ¿Ofreces algún servicio?, de seguro a alguien le interesa y lo podras intercambiar.</p>
+          </div>
+        </div>
+        <!-- ./card -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./Modal-post -->
 {% endblock %}
