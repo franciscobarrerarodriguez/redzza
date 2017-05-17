@@ -1,0 +1,179 @@
+// @media (max-width: @screen-xs-max) {
+//   }
+//   @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+//   }
+//   @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+//   }
+//   @media (min-width: @screen-lg-min) {
+//   }
+
+// https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_sidenav_push_opacity
+
+// === Mixins
+/*
+* Extra-small and medium devices.
+*/
+.extra-small-small-nav-menu (){
+
+  .nav-brand{
+    margin-left: 20px;
+  }
+
+  .nav-menu {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    overflow-x: hidden;
+
+    width: 0;
+    height: 100%;
+
+    transition: .5s;
+
+    background-color: @primary-color;
+
+    > ul {
+      display: block;
+
+      margin-top: 11px;
+      margin-left: 15px;
+
+      list-style: none;
+      > li {
+        margin-bottom: 20px;
+
+        cursor: pointer;
+        text-align: center;
+
+        // font-weight: bold;
+      }
+    }
+
+    button.nav-close-button {
+      visibility: visible;
+
+      width: 23px;
+      height: 23px;
+      margin-top: 11px;
+      margin-left: 15px;
+
+      color: @white-base;
+      border: 0;
+      background-color: transparent;
+
+      font-size: 20px;
+    }
+  }
+
+  .nav-button {
+    visibility: visible;
+    float: right;
+
+    width: 23px;
+    height: 23px;
+    margin-right: 20px !important;
+    margin-bottom: 10px;
+
+    color: @white-base;
+    border: 0;
+    background-color: transparent;
+  }
+}
+/*
+* Medium and large devices.
+*/
+.medium-large-nav-menu() {
+
+  .nav-brand{
+    margin-left: 100px;
+  }
+
+  .nav-button {
+    visibility: hidden;
+  }
+
+  .nav-menu {
+    float: right;
+
+    margin-right: 100px !important;
+
+    button.nav-close-button {
+      visibility: hidden;
+    }
+
+    > ul {
+      float: right;
+
+      margin-top: 5px;
+
+      list-style: none;
+      >li {
+        display: inline;
+
+        padding-right: 5px;
+        padding-left: 5px;
+
+        cursor: pointer;
+
+        // font-weight: bold;
+      }
+    }
+  }
+}
+// /...
+
+// ./Mixins
+
+
+/* Landing nav-bar */
+.nav {
+  position: absolute;
+  z-index: 1;
+
+  width: 100%;
+  margin-top: 0px;
+  padding-top: 11px;
+  padding-bottom: 5px;
+
+  color: @white-base;
+
+  .clearfix();
+
+  .nav-brand {
+    float: left;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 12.5px;
+  }
+
+  .nav-menu {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 18px;
+  }
+
+}
+
+.nav {
+  // For extra-small devices
+  @media (max-width: @screen-xs-max) {
+    .extra-small-small-nav-menu ();
+  }
+  // For small devices
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    .extra-small-small-nav-menu ();
+  }
+  // For medium devices
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    .medium-large-nav-menu();
+  }
+  // For large devices
+  @media (min-width: @screen-lg-min) {
+    .medium-large-nav-menu();
+  }
+}

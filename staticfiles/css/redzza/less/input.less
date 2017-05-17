@@ -1,0 +1,23 @@
+/* Default input for all */
+.default-input {
+  color: @primary-color;
+
+  font-size: @default-input-font-size;
+
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 2px;
+
+  border-style: solid;
+  border-color: @light-gray;
+
+  border-radius: 0;
+
+  padding: 5px;
+
+  &:focus {
+    border-color: @primary-color;
+    .input-transition();
+  }
+}
