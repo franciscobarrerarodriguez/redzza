@@ -1,0 +1,82 @@
+// Redzza Grid System
+.container {
+  padding: @container-padding;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  // background-color: green;
+  .clearfix();
+  @media (max-width: @screen-xs-max) {
+    width: @container-xs;
+  }
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    width: @container-sm;
+  }
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    width: @container-md;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: @container-lg;
+  }
+}
+
+.row {
+  display: block;
+  width: 100%;
+  // background-color: red;
+  padding: @row-padding;
+  .clearfix();
+}
+
+.col-1 {
+  width: @col-size * 1;
+}
+.col-2 {
+  width: @col-size * 2;
+}
+.col-3 {
+  width: @col-size * 3;
+}
+.col-4 {
+  width: @col-size * 4;
+}
+.col-5 {
+  width: @col-size * 5;
+}
+.col-6 {
+  width: @col-size * 6;
+}
+.col-7 {
+  width: @col-size * 7;
+}
+.col-8 {
+  width: @col-size * 8;
+}
+.col-9 {
+  width: @col-size *9;
+}
+.col-10 {
+  width: @col-size *10;
+}
+.col-11 {
+  width: @col-size *11;
+}
+.col-12 {
+  width: @col-size * 12;
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+  @media (max-width: @screen-xs-max) {
+    width: 100%;
+  }
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    width: 100%;
+  }
+}
+
+[class*="col-"] {
+  float: left;
+  // background-color: yellow;
+  padding: @col-padding;
+  .clearfix();
+}

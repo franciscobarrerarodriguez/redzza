@@ -1,0 +1,43 @@
+// lessc redzza.less ../redzza.css -x to compress
+// lessc redzza.less redzza.css -x / to compress
+// Redzza style
+
+/*
+Removing ul default values
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+*/
+
+/* To centering position absolute and top 50% */
+
+@import "variables.less";
+
+@import "mixins/clearfix.less";
+@import "mixins/image.less";
+@import "mixins/transitions";
+@import "mixins/button.less";
+@import "mixins/shadows.less";
+
+@import "main.less";
+
+@import "grid.less";
+@import "parallax.less";
+
+
+@import "form.less";
+@import "input.less";
+@import "select.less";
+@import "button.less";
+@import "modal.less";
+@import "nav.less";
+@import "card.less";
+@import "footer.less";
+@import "hr.less";
+
+@import "alert.less";
+
+
+@import "custom.less";
