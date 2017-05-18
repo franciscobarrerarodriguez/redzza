@@ -1,1 +1,32 @@
-post_1.html
+{% extends 'materialize-nav-bar.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Publicar{% endblock %}
+
+{% block content %}
+<form>
+  <div class="input-field col s6 m6 l6">
+          <input id="post-title" type="text" class="validate">
+          <label for="post-title">Título</label>
+        </div>
+        <div class="input-field col s6 m6 l6">
+                  <textarea id="post-description" class="materialize-textarea"></textarea>
+                  <label for="post-description">Descripción</label>
+                </div>
+
+                <div class="input-field col s12">
+      <select multiple id="post-prefer" data-url="{% url 'getCategories' %}">
+        <option value="" disabled selected>¿Que te interesa recibir a cambio?</option>
+        <!-- <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+        <option value="3">Option 3</option> -->
+      </select>
+      <label>Me interesa</label>
+    </div>
+</form>
+{% endblock %}
+
+{% block externalfiles %}
+<script src="{% static 'js/redzza/general.js' %}" charset="utf-8"></script>
+{% endblock%}

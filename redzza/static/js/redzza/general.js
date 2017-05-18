@@ -104,6 +104,18 @@ $(document).on("ready", function () {
     window.location.href = $(this).attr('data-url');
   });
 
+  if ($('#post-prefer').length) {
+    var postPrefer = $('#post-prefer');
+    $.get(postPrefer.attr('data-url'), function (json) {
+      var categories = JSON.parse(json);
+      categories.map(function (categorie, index) {
+        $(postPrefer).append(`<option value="${categorie.pk}">${capitalize(categorie.fields.name)}</option>`);
+        /* Init select for places */
+        $(postPrefer).material_select();
+      });
+    });
+  }
+
 });
 
 function ajaxPostCall(dataUrl, data) {
@@ -112,4 +124,8 @@ function ajaxPostCall(dataUrl, data) {
     json = response;
   });
   return json;
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
