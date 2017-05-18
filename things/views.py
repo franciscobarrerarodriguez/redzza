@@ -1,5 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import Notice, CityNotice, CategoryTrade, Product, Color, Service, Image, Video
+from profiles.models import Profile
+from categories.models import Category
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -12,36 +17,28 @@ def post(request):
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
 def newPost(request):
-    return render(request, 'post.html')
+    # user = request.user
+    # profile = get_object_or_404(Profile, user=user)
+    # thing = request.POST.get('thing', None)
+    # title = request.POST.get('title', None)
+    # description = request.POST.get('description', None)
+    # category_father = get_object_or_404(Profile, pattern=request.POST.get('category_father', None))
+    # category_son = request.POST.get('category_son', None)
+    # locations = request.POST.get('locations', None)
+    # place = request.POST.get('place', None)
+    # i_search = request.POST.get('i_search', None)
+    # i_have = request.POST.get('i_have', None)
 
-
-# # Vista para la creacion de un usuario
-# def createUser(request):
-#     thing = request.POST.get('thing', None)
-#     title = request.POST.get('title', None)
-#     description = request.POST.get('description', None)
-#     category_father = request.POST.get('category_father', None)
-#     category_son = request.POST.get('category_son', None)
-#     locations = request.POST.get('locations', None)
-    
-#     place = request.POST.get('place', None)
-#     i_search = request.POST.get('i_search', None)
-#     i_have = request.POST.get('i_have', None)
-
-#     if email and username and name and last_name and password and place and i_search and i_have:
-#         user, created = Profile.createUser(email, username, name, last_name, password)
-#         if created:
-#             # #######################################################
-#             profile = Profile.create(place, user)
-#             # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-#             for element in json.loads(i_have):
-#                 WantedCategory.create(element['pk'], profile, 1)
-#             for element in json.loads(i_search):
-#                 WantedCategory.create(element['pk'], profile, 2)
-#             # #######################################################
-#             login(request, user)
-#             return JsonResponse({'success': True, 'url': '/dashboard/'})
-#         else:
-#             return JsonResponse({'success': False, 'err': 'User not created'})
-#     else:
-#         return JsonResponse({'success': False, 'err': 'Incomplete data'})
+    # if thing == 'P':
+    #     # donde agrego las dos categorias ??????????????????
+    #     notice = Notice.create(profile, category, title, description, optionTrade)
+    #     cityNotice = CityNotice.create(city, notice)
+    #     categoryTrade = CategoryTrade.create(category, notice)
+    #     product = Product.create(notice, quantity)
+    #     color = Color.create(hexa, product)
+    #     service = Service.create(notice, time)
+    #     image = Image.create(notice, image)
+    #     video = Video.create(notice, video)
+    #     return JsonResponse({'success': True, 'url': '/dashboard/'})
+    # else:
+    return JsonResponse({'success': True, 'url': '/dashboard/'})

@@ -13,7 +13,7 @@ class Category(models.Model):
         return self.name
 
     def getCategories():
-        return Category.objects.order_by('name')
+        return Category.objects.filter(pattern__isnull=True).order_by('name')
 
 
 class WantedCategory(models.Model):

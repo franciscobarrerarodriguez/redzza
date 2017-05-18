@@ -142,14 +142,12 @@ def createUser(request):
     if email and username and name and last_name and password and place and i_search and i_have:
         user, created = Profile.createUser(email, username, name, last_name, password)
         if created:
-            # #######################################################
             profile = Profile.create(place, user)
             # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
             for element in json.loads(i_have):
                 WantedCategory.create(element['pk'], profile, 1)
             for element in json.loads(i_search):
                 WantedCategory.create(element['pk'], profile, 2)
-            # #######################################################
             login(request, user)
             return JsonResponse({'success': True, 'url': '/dashboard/'})
         else:
