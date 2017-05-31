@@ -18,6 +18,9 @@ class Place(models.Model):
     def getCities():
         return Place.objects.exclude(pattern__isnull=True)
 
+    def searchCity(location):
+        return get_object_or_404(Place, id=location)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -35,6 +38,8 @@ class Profile(models.Model):
     company = models.CharField(max_length=40, blank=True)
     profession = models.CharField(max_length=30, blank=True)
     adress = models.CharField(max_length=40, blank=True)
+    # horario de atencion
+    avialability = models.CharField(max_length=40, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -56,6 +61,12 @@ class Profile(models.Model):
         profile = Profile(user=user, location=location)
         profile.save()
         return profile
+
+    def search(user):
+        return Profile.objects.filter(user=user)
+
+    def updatePhone(profile, phone):
+        profile.update(phone=phone)
 
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
@@ -81,3 +92,28 @@ class Label(models.Model):
 class LabelProfile(models.Model):
     label = models.ForeignKey(Label)
     profile = models.ForeignKey(Profile)
+
+    def create(label, profile):
+        labelProfile = LabelProfile(label=label, profile=profile)
+        labelProfile.save()
+        return labelProfile
+
+    def searchLabels(profile):
+        return LabelProfile.objects.filter(profile__iexact=profile)
+
+    def searchProfiles(label):
+        return LabelProfile.objects.filter(label__iexact=label)
+
+    def delete(profile, label):
+        labelProfile = get_object_or_404(LabelProfile, profile=profile, label=label)
+        return labelProfile.delete()
+
+
+class Follow(models.Model):
+    following = models.ForeignKey(Profile, related_name="following")
+    follower = models.ForeignKey(Profile, related_name="follower")
+
+    def create(profile1, profile2):
+        follow = Follow(following=profile1, follower=profile2)
+        follow.save()
+        return follow

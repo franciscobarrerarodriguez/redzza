@@ -15,6 +15,9 @@ class Category(models.Model):
     def getCategories():
         return Category.objects.filter(pattern__isnull=True).order_by('name')
 
+    def getSubCategories(category):
+        return Category.objects.filter(pattern=category).order_by('name')
+
 
 class WantedCategory(models.Model):
     category = models.ForeignKey(Category)
@@ -29,6 +32,12 @@ class WantedCategory(models.Model):
         category = get_object_or_404(Category, id=element)
         wanted = WantedCategory(profile=profile, category=category, type_category=kind)
         return wanted.save()
+
+    def searchHave(profile):
+        return WantedCategory.objects.filter(profile__iexact=profile, type_category=2)
+
+    def searchOffer(profile):
+        return WantedCategory.objects.filter(profile__iexact=profile, type_category=1)
 
 
 class SuggestedCategory(models.Model):

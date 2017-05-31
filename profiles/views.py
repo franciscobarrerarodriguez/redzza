@@ -9,13 +9,14 @@ from .models import Profile, Place
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
-from categories.models import WantedCategory
+from categories.models import WantedCategory, Category
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 # Create your views here.
 
-
 # Vista de login por correo electronico y contraseña
+
+
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)
     if form.is_valid():
