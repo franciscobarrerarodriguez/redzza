@@ -13,5 +13,6 @@ def index(request):
 
 
 def queries(request):
-    city = Category.getSubCategories(get_object_or_404(Category, id=50))
-    return HttpResponse(city)
+    # get_object_or_404(Category, gender="Femenino")
+    query = WantedCategory.searchOffer(get_object_or_404(Profile, gender='F'))
+    return HttpResponse(query)
