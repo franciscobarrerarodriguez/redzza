@@ -26,33 +26,33 @@
 {% block post %}
 <!-- Modal-post -->
 <div id="modal-post" class="modal">
-  <div class="modal-content">
-    <h4>¿Que quieres publicar?</h4>
+  <div class="modal-content ">
+    <h5>¿Que quieres publicar?</h5>
     <div class="row">
       <div class="col s12 m12 l6">
         <!-- card -->
-        <div class="card">
+        <div class="card pointer" id="product-post" data-url="{% url 'post' %}" >
           <div class="card-image">
-            <img src="{% static 'img/redzza/product.jpg' %}">
-            <a id="product-post" data-url="{% url 'post' %}" href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
+            <img src="{% static 'redzza/img/product.jpg' %}">
+            <a href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
           </div>
           <div class="card-content">
             <span class="card-title">Productos</span>
-            <p>Puedes publicar cualquier cosa, técnologia, arte, propiedades o cualquier cosa que se te ocurra.</p>
+            <p>Puedes publicar cualquier cosa, técnologia, arte, propiedades y más.</p>
           </div>
         </div>
         <!-- ./card -->
       </div>
       <div class="col s12 m12 l6">
         <!-- card -->
-        <div class="card">
+        <div class="card pointer" id="service-post" data-url="{% url 'post' %}">
           <div class="card-image">
-            <img src="{% static 'img/redzza/service.png' %}">
-            <a id="service-post" data-url="{% url 'post' %}" href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
+            <img src="{% static 'redzza/img/service.png' %}">
+            <a href="#!" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">trending_flat</i></a>
           </div>
           <div class="card-content">
             <span class="card-title">Servicios</span>
-            <p>¿Sabes hacer algo?, ¿Ofreces algún servicio?, de seguro a alguien le interesa y lo podras intercambiar.</p>
+            <p>¿Ofreces algún servicio?, de seguro a alguien le interesa.</p>
           </div>
         </div>
         <!-- ./card -->

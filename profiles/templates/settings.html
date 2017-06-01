@@ -4,6 +4,10 @@
 
 {% block title%}Settings{% endblock %}
 
+{% block externalfiles %}
+<script src="{% static 'redzza/js/general.js' %}" charset="utf-8"></script>
+{% endblock%}
+
 {% block content %}
 <!-- container -->
 <div class="container container-margin-top">
@@ -11,7 +15,7 @@
   <div class="row">
     <!-- left -->
     <div class="col s12 m4 l4">
-      <img class="full-width-responsive responsive-img" src="{% static 'img/redzza/default-profile.jpg' %}">
+      <img class="full-width-responsive responsive-img" src="{% static 'redzza/img/default-profile.jpg' %}">
       <div class="collection">
         <a href="#!" class="collection-item active">Datos de cuenta</a>
         <a href="#!" class="collection-item">Datos personales</a>
@@ -302,7 +306,3 @@
 </form>
 </div>
 {% endblock %}
-
-{% block externalfiles %}
-<script src="{% static 'js/redzza/general.js' %}" charset="utf-8"></script>
-{% endblock%}

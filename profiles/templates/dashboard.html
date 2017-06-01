@@ -4,9 +4,13 @@
 
 {% block title%}Dashboard{% endblock %}
 
+{% block externalfiles %}
+<script src="{% static 'redzza/js/general.js' %}" charset="utf-8"></script>
+{% endblock%}
+
 {% block content %}
 <div class="parallax-container parallax-profile-container">
-  <div class="parallax"><img src="{% static 'img/redzza/parallax.jpg'%}"></div>
+  <div class="parallax"><img src="{% static 'redzza/img/parallax.jpg'%}"></div>
 </div>
 
 <!-- container -->
@@ -17,7 +21,7 @@
       &nbsp;
     </div>
     <div class="col s12 m4 l4">
-      <img class="circle responsive-img img-center" src="{% static 'img/redzza/default-profile.jpg' %}">
+      <img class="circle responsive-img img-center" src="{% static 'redzza/img/default-profile.jpg' %}">
     </div>
     <div class="col hide-on-small-only m4 l4">
       &nbsp;
@@ -33,7 +37,3 @@
 </div>
 <!-- ./container -->
 {% endblock %}
-
-{% block externalfiles %}
-<script src="{% static 'js/redzza/general.js' %}" charset="utf-8"></script>
-{% endblock%}

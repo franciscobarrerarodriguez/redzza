@@ -6,6 +6,18 @@
 
 {% block title %}Redzza{% endblock %}
 
+{% block externalStyles %}
+<!-- Animate on scroll CDN CSS -->
+<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
+{% block externalfiles %}
+<script src="{% static 'redzza/js/primary-menu.js'%}" charset="utf-8"></script>
+<!-- Animate on scroll CDN JS -->
+<script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+<script src="{% static 'redzza/js/animate.js' %}" charset="utf-8"></script>
+{% endblock %}
+
 {% block menu %}
 <nav class="nav">
   <div class="nav-brand">
@@ -37,7 +49,7 @@
   </div>
 </div>
 
-<div class="section" id="first">
+<div class="section">
   <div class="follow-fb">
     <iframe src="https://www.facebook.com/plugins/follow.php?href=https%3A%2F%2Fwww.facebook.com%2Fzuck&width=450&height=80&layout=standard&size=small&show_faces=true&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
   </div>
@@ -51,13 +63,13 @@
   </div>
 </div>
 
-<div class="section">
+<div class="section" id="section1">
   <div class="container">
     <div class="row">
       <div class="col-4">
         <!-- Card -->
-        <div class="card">
-          <div class="card-header" style="background-image: url('{% static 'img/redzza/in_the_works.png' %}')">
+        <div class="card card-shadow-hover slide-right" onclick="getModal('modal-video1')">
+          <div class="card-header" style="background-image: url('{% static 'redzza/img/in_the_works.png' %}')">
             <h3 class="card-title">Publica</h3>
           </div>
           <div class="card-body">
@@ -73,8 +85,8 @@
       </div>
       <div class="col-4">
         <!-- Card -->
-        <div class="card">
-          <div class="card-header" style="background-image: url('{% static 'img/redzza/teasing.png' %}')">
+        <div class="card card-shadow-hover slide-up" onclick="getModal('modal-video2')">
+          <div class="card-header" style="background-image: url('{% static 'redzza/img/teasing.png' %}')">
             <h3 class="card-title">Busca</h3>
           </div>
           <div class="card-body">
@@ -90,8 +102,8 @@
       </div>
       <div class="col-4">
         <!-- Card -->
-        <div class="card">
-          <div class="card-header" style="background-image: url('{% static 'img/redzza/st.png' %}')">
+        <div class="card card-shadow-hover slide-left" onclick="getModal('modal-video3')">
+          <div class="card-header" style="background-image: url('{% static 'redzza/img/st.png' %}')">
             <h3 class="card-title">Intercambia</h3>
           </div>
           <div class="card-body">
@@ -110,6 +122,17 @@
   </div>
   <!-- ./Container -->
 </div>
+
+<div class="section">
+  <div class="container">
+    <div class="brand-sen">
+      <h3><i class="fa fa-bookmark-o" aria-hidden="true"></i> DESTACADOS</h3>
+    </div>
+  </div>
+</div>
+
+<br><br><!--Borrar-->
+
 {% endblock %}
 
 {% block footer %}
@@ -253,10 +276,4 @@
   </div>
 </div>
 <!-- ./modal video-intercambia -->
-{% endblock %}
-
-
-
-{% block externalfiles %}
-<script src="{% static 'js/redzza/primary-menu.js'%}" charset="utf-8"></script>
 {% endblock %}
