@@ -18,7 +18,7 @@ class Category(models.Model):
     def getSubCategories():
         return Category.objects.exclude(pattern__isnull=True).order_by('name')
 
-    def get(category):
+    def getSeconds(category):
         return Category.objects.filter(pattern=category).order_by('name')
 
 

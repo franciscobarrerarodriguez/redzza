@@ -5,37 +5,41 @@ from profiles.models import Profile, Place
 from categories.models import Category
 from datetime import datetime
 from django.core.validators import validate_comma_separated_integer_list
+from django.core.files import File
 # Create your models here.
 
 
 class Notice(models.Model):
-    profile = models.ForeignKey(Profile, default="")
-    category = models.ForeignKey(Category, default="")
     # Aviso de publicacion de un nuevo producto o servicio
     date = models.DateField(default=datetime.now)
+    profile = models.ForeignKey(Profile, default="")
+    category = models.ForeignKey(Category, default="")
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=300)
+    description = models.TextField(blank=True)
+    # KIND: 1 --> propio | 2 --> deseado
+    kind = models.IntegerField(default=1)
+    visibility = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
 
-    # la categoria que se envio es la macro
+    # la categoria que se envio es la subcategoria, en caso de que no se haya seleccionado se envia la macro
 
-    def create(profile, category, title, description):
-        notice = Notice(profile=profile, category=category, title=title, description=description)
+    def create(profile, category, title, description, kind):
+        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind)
         notice.save()
         return notice
 
     def getNotice(profile):
-        return Notice.objects.filter(profile__iexact=profile)
+        return Notice.objects.filter(profile=profile)
 
     # para unir cosnultas se usa |
 
     def searchTitle(title, city):
-        return CityNotice.searchNotices(city).objects.filter(title__icontains=title).order_by('date')
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title).order_by('notice__date')
 
     def searchCategory(title, category, city):
-        return CityNotice.searchNotices(city).objects.filter(title__icontains=title, category__iexact=category).order_by('date')
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category).order_by('notice__date')
 
 
 class CityNotice(models.Model):
@@ -48,11 +52,14 @@ class CityNotice(models.Model):
         cityNotice.save()
         return cityNotice
 
+    def __str__(self):
+        return '%s %s' % (self.city, self.notice)
+
     def searchNotices(city):
-        return CityNotice.objects.filter(city__iexact=city)
+        return CityNotice.objects.filter(city=city).order_by('date')
 
     def searchCities(notice):
-        return CityNotice.objects.filter(notice__iexact=notice)
+        return CityNotice.objects.filter(notice=notice).order_by('date')
 
 
 class CategoryTrade(models.Model):
@@ -75,7 +82,8 @@ class Product(models.Model):
         ('E', 'Por Encargo'),
         # bring back
         ('B', 'Restaurado'),
-        ('N', 'Renovado'),
+        ('R', 'Renovado'),
+        ('C', 'Cualquiera'),
     )
     state = models.CharField(max_length=1, choices=STATE, default='Nuevo')
     # tamaño - dimensiones
@@ -126,20 +134,25 @@ class Service(models.Model):
         service.save()
         return service
 
+# https://openwebinars.net/blog/tutorial-django-modelos-bbdd-donde-guardar-informacion/
+
 
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='productos')
+    title = models.CharField(max_length=60)
 
-    def create(notice, image):
-        image = Image(notice=notice, image=image)
+    def create(notice, title, pathimage):
+        image = Image(notice=notice, title=title)
+        f = open(pathimage)
+        image.image.save(title + '.jpg', File(f))
         image.save()
         return image
 
 
 class Video(models.Model):
     notice = models.ForeignKey(Notice)
-    video = models.FileField(upload_to='uploads')
+    video = models.FileField(upload_to='videos')
 
     def create(notice, video):
         video = Video(notice=notice, video=video)

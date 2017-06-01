@@ -2,6 +2,7 @@ from django.shortcuts import render
 # Create your views here.
 from categories.models import WantedCategory, Category
 from profiles.models import Profile, Label, LabelProfile, Place, Follow
+from things.models import Notice, Image
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
@@ -21,5 +22,8 @@ def queries(request):
     #    query = LabelProfile.create(get_object_or_404(Label, id=1), get_object_or_404(Profile, gender='F'))
     # else:
     #    query = LabelProfile.delete(get_object_or_404(Label, id=1), get_object_or_404(Profile, gender='F'))
-    query = Follow.searchFollowings(get_object_or_404(Profile, gender='M'))
-    return HttpResponse(query)
+    # query = Notice.create(get_object_or_404(Profile, gender='F'), Category.objects.get(id=60), "carro renault 4", "mi carrito de siempre", 1)
+    # query = Notice.searchTitle("arro", Place.searchCity(3))
+    notice = Notice.searchTitle("arro", Place.searchCity(3))
+    # query = Image.create(notice, notice.title, "/home/dsierra/Imágenes/gif.png")
+    return HttpResponse(notice)
