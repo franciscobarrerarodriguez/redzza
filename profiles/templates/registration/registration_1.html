@@ -4,6 +4,12 @@
 
 {% block title %}Registro{% endblock %}
 
+{% block externalfiles %}
+<!-- Animate on scroll CDN JS -->
+<script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+<script src="{% static 'redzza/js/registration.js' %}" charset="utf-8"></script>
+{% endblock%}
+
 {% block content %}
 <!-- full-screen -->
 <div class="full-screen" data-aos="fade-right" data-aos-delay="200">
@@ -64,7 +70,7 @@
       <!-- parallax -->
       <div class="parallax-container">
         <div class="parallax">
-          <img src="{% static 'img/redzza/parallax.jpg' %}">
+          <img src="{% static 'redzza/img/parallax.jpg' %}">
         </div>
       </div>
       <!-- ./parallax -->
@@ -75,7 +81,3 @@
 </div>
 <!-- ./full-screen -->
 {% endblock %}
-
-{% block externalfiles %}
-<script src="{% static 'js/redzza/registration.js' %}" charset="utf-8"></script>
-{% endblock%}

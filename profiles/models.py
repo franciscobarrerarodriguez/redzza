@@ -120,6 +120,7 @@ class Label(models.Model):
 
 
 class LabelProfile(models.Model):
+    # etiquetas asignadas a las personas
     label = models.ForeignKey(Label)
     profile = models.ForeignKey(Profile)
 
@@ -145,6 +146,7 @@ class LabelProfile(models.Model):
 
 
 class Follow(models.Model):
+    # manejo de seguidores y personas seguidas
     following = models.ForeignKey(Profile, related_name="following")
     follower = models.ForeignKey(Profile, related_name="follower")
 

@@ -1,14 +1,17 @@
 .landing-footer {
   padding-top: 20px;
   padding-bottom: 20px;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  font-size: @default-p-font-size;
   background-color: @primary-color;
   color: @white-base;
+  a, p {
+      font-size: @default-button-font-size !important;
+    color: @white-base;
+  }
   a:visited {
     color: inherit;
   }
   a, p {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
     display: block;
     width: 100%;
     text-align: center;
