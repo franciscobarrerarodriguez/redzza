@@ -25,6 +25,7 @@ class Place(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
+    icono = models.ImageField(upload_to='iconos', default='iconos/icono.png')
     birth_date = models.DateField(default=datetime.now)
     GENDER = (
         ('F', 'Femenino'),
@@ -37,7 +38,7 @@ class Profile(models.Model):
     location = models.ForeignKey(Place, default="")
     company = models.CharField(max_length=40, blank=True)
     profession = models.CharField(max_length=30, blank=True)
-    adress = models.CharField(max_length=40, blank=True)
+    address = models.CharField(max_length=40, blank=True)
     # horario de atencion
     avialability = models.CharField(max_length=40, blank=True)
 
@@ -66,7 +67,40 @@ class Profile(models.Model):
         return Profile.objects.filter(user=user)
 
     def updatePhone(profile, phone):
-        profile.update(phone=phone)
+        profile.phone = phone
+        return profile.save()
+
+    def updateAvialability(profile, avialability):
+        profile.avialability = avialability
+        return profile.save()
+
+    def updateAdress(profile, address):
+        profile.address = address
+        return profile.save()
+
+    def updateProfession(profile, profession):
+        profile.profession = profession
+        return profile.save()
+
+    def updateCompany(profile, company):
+        profile.company = company
+        return profile.save()
+
+    def updateBiography(profile, biography):
+        profile.biography = biography
+        return profile.save()
+
+    def updateGender(profile, gender):
+        profile.gender = gender
+        return profile.save()
+
+    def updateBirthdate(profile, date):
+        profile.birth_date = date
+        return profile.save()
+
+    def updateLocation(profile, location):
+        profile.location = location
+        return profile.save()
 
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
@@ -76,13 +110,6 @@ class Profile(models.Model):
 
     def searchUser(email):
         return get_object_or_404(User, email=email)
-
-    def user_registered_callback(sender, user, request, **kwargs):
-        profile = Profile(user=user)
-        # profile.location = get_object_or_404(Place, name=request.POST["location"])
-        profile.save(commit=False)
-
-    user_registered.connect(user_registered_callback)
 
 
 class Label(models.Model):

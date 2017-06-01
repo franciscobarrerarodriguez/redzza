@@ -13,6 +13,9 @@ def index(request):
 
 
 def queries(request):
-    # get_object_or_404(Category, gender="Femenino")
-    query = WantedCategory.searchOffer(get_object_or_404(Profile, gender='F'))
+    # get_object_or_404(Profile, gender='F')
+    # query = Profile.updateBirthdate(get_object_or_404(Profile, gender='F'), "2015-11-06")
+    # query = Profile.updateGender(get_object_or_404(Profile, gender='F'), 'M')
+    # tunja -> 3
+    query = Profile.updateLocation(get_object_or_404(Profile, gender='F'), Place.searchCity(3))
     return HttpResponse(query)
