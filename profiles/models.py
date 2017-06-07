@@ -25,6 +25,7 @@ class Place(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
+    icono = models.ImageField(upload_to='iconos', default='iconos/icono.png')
     birth_date = models.DateField(default=datetime.now)
     GENDER = (
         ('F', 'Femenino'),
@@ -37,7 +38,7 @@ class Profile(models.Model):
     location = models.ForeignKey(Place, default="")
     company = models.CharField(max_length=40, blank=True)
     profession = models.CharField(max_length=30, blank=True)
-    adress = models.CharField(max_length=40, blank=True)
+    address = models.CharField(max_length=40, blank=True)
     # horario de atencion
     avialability = models.CharField(max_length=40, blank=True)
 
@@ -66,7 +67,40 @@ class Profile(models.Model):
         return Profile.objects.filter(user=user)
 
     def updatePhone(profile, phone):
-        profile.update(phone=phone)
+        profile.phone = phone
+        return profile.save()
+
+    def updateAvialability(profile, avialability):
+        profile.avialability = avialability
+        return profile.save()
+
+    def updateAdress(profile, address):
+        profile.address = address
+        return profile.save()
+
+    def updateProfession(profile, profession):
+        profile.profession = profession
+        return profile.save()
+
+    def updateCompany(profile, company):
+        profile.company = company
+        return profile.save()
+
+    def updateBiography(profile, biography):
+        profile.biography = biography
+        return profile.save()
+
+    def updateGender(profile, gender):
+        profile.gender = gender
+        return profile.save()
+
+    def updateBirthdate(profile, date):
+        profile.birth_date = date
+        return profile.save()
+
+    def updateLocation(profile, location):
+        profile.location = location
+        return profile.save()
 
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
@@ -77,21 +111,21 @@ class Profile(models.Model):
     def searchUser(email):
         return get_object_or_404(User, email=email)
 
-    def user_registered_callback(sender, user, request, **kwargs):
-        profile = Profile(user=user)
-        # profile.location = get_object_or_404(Place, name=request.POST["location"])
-        profile.save(commit=False)
-
-    user_registered.connect(user_registered_callback)
-
 
 class Label(models.Model):
     label = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.label
+
 
 class LabelProfile(models.Model):
+    # etiquetas asignadas a las personas
     label = models.ForeignKey(Label)
     profile = models.ForeignKey(Profile)
+
+    def __str__(self):
+        return '%s %s' % (self.label, self.profile)
 
     def create(label, profile):
         labelProfile = LabelProfile(label=label, profile=profile)
@@ -99,21 +133,39 @@ class LabelProfile(models.Model):
         return labelProfile
 
     def searchLabels(profile):
-        return LabelProfile.objects.filter(profile__iexact=profile)
+        return LabelProfile.objects.filter(profile=profile).values('label')
 
     def searchProfiles(label):
-        return LabelProfile.objects.filter(label__iexact=label)
+        return LabelProfile.objects.filter(label=label).values('profile')
 
-    def delete(profile, label):
-        labelProfile = get_object_or_404(LabelProfile, profile=profile, label=label)
-        return labelProfile.delete()
+    def foundRepeated(profile, label):
+        return LabelProfile.objects.filter(profile=profile, label=label).exists()
+
+    def delete(label, profile):
+        return LabelProfile.objects.filter(label=label, profile=profile).delete()
 
 
 class Follow(models.Model):
+    # manejo de seguidores y personas seguidas
     following = models.ForeignKey(Profile, related_name="following")
     follower = models.ForeignKey(Profile, related_name="follower")
+
+    def __str__(self):
+        return '%s %s' % (self.following, self.follower)
 
     def create(profile1, profile2):
         follow = Follow(following=profile1, follower=profile2)
         follow.save()
         return follow
+
+    def searchFollowings(profile):
+        return Follow.objects.filter(follower=profile).values('following')
+
+    def searchFollowers(profile):
+        return Follow.objects.filter(following=profile).values('follower')
+
+    def foundRepeated(profile1, profile2):
+        return Follow.objects.filter(following=profile1, follower=profile2).exists()
+
+    def delete(profile1, profile2):
+        return Follow.objects.filter(following=profile1, follower=profile2).delete()

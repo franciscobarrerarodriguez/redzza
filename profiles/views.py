@@ -117,13 +117,11 @@ def updateUser(request):
         else:
             return JsonResponse({'success': False, 'msg': 'username-exists'})
     elif phone:
-        profile.phone = phone
-        profile.save()
+        Profile.updatePhone(profile, phone)
         return JsonResponse({'success': True, 'msg': 'phone-update'})
     elif location:
-        place = get_object_or_404(Place, id=location)
-        profile.location = place
-        profile.save()
+        place = Place.searchCity(location)
+        Profile.updateLocation(profile, place)
         return JsonResponse({'success': True, 'msg': 'location-update'})
     else:
         return JsonResponse({'success': False, 'msg': 'nothing-update'})
