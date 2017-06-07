@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 def post(request):
     return render(request, 'post.html')
 
-
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
 def newPost(request):
