@@ -5,28 +5,91 @@
 {% block title %}Publicar{% endblock %}
 
 {% block content %}
-<form>
-  <div class="input-field col s6 m6 l6">
-          <input id="post-title" type="text" class="validate">
-          <label for="post-title">Título</label>
-        </div>
-        <div class="input-field col s6 m6 l6">
-                  <textarea id="post-description" class="materialize-textarea"></textarea>
-                  <label for="post-description">Descripción</label>
-                </div>
+<!-- container -->
+<div class="container container-margin-top">
+  <form>
+    <!-- row -->
+    <div class="row row-post" id="row-1">
+      <div class="input-field col s12 m6 l6">
+        <input id="post-title" type="text" class="validate">
+        <label for="post-title">Título</label>
+      </div>
 
-                <div class="input-field col s12">
-      <select multiple id="post-prefer" data-url="{% url 'getCategories' %}">
-        <option value="" disabled selected>¿Que te interesa recibir a cambio?</option>
-        <!-- <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-        <option value="3">Option 3</option> -->
-      </select>
-      <label>Me interesa</label>
+      <div class="input-field col s12 m6 l6">
+        <select>
+          <option value="" disabled selected>¿En que estado se encuentra tu producto?</option>
+          <option value="N">Nuevo</option>
+          <option value="U">Usado</option>
+          <option value="E">Por encargo</option>
+          <option value="B">Restaurado</option>
+          <option value="R">Renovado</option>
+        </select>
+        <label>Estado</label>
+      </div>
+
+      <div class="input-field col s12 m12 l12">
+        <textarea id="post-description" class="materialize-textarea"></textarea>
+        <label for="post-description">Descripción</label>
+      </div>
+
+      <div class="col s12 m12 l12">
+        <button class="btn waves-effect waves-light btn-right" type="button" name="action" id="post-step1">
+          Siguiente <i class="fa fa-angle-right"></i>
+        </button>
+      </div>
     </div>
-</form>
+    <!-- ./row -->
+    <!-- row -->
+    <div class="row row-post hide" id="row-2">
+      <div class="input-field col s12">
+        <select required="" aria-required="true" id="post-place" data-url="{% url 'getPlaces' %}" name="post-place">
+          <option value="" disabled selected>Escoge un lugar</option>
+        </select>
+        <label>Ubicación</label>
+      </div>
+      <div class="input-field col s12">
+        <select required="" aria-required="true" id="post-place-ad" data-url="{% url 'getPlaces' %}" name="post-place-ad">
+          <option value="" disabled selected>Escoge un lugar</option>
+        </select>
+        <label>Ubicación</label>
+      </div>
+
+      <div class="col s12 m12 l12">
+        <button class="btn waves-effect waves-light btn-left" type="button" name="action" id="back-step1">
+          <i class="fa fa-angle-left"></i> Atrás
+        </button>
+        <button class="btn waves-effect waves-light btn-right" type="button" name="action" id="post-step2">
+          Siguiente <i class="fa fa-angle-right"></i>
+        </button>
+      </div>
+    </div>
+    <!-- ./row -->
+    <!-- row -->
+    <div class="row row-post hide" id="row-3">
+      <div class="input-field col s12">
+        <select multiple id="post-prefer" data-url="{% url 'getCategories' %}">
+          <option value="" disabled selected>¿Que te interesa recibir a cambio?</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+        </select>
+        <label>Me interesa</label>
+      </div>
+      <div class="col s12 m12 l12">
+        <button class="btn waves-effect waves-light btn-left" type="button" name="action" id="back-step2">
+          <i class="fa fa-angle-left"></i> Atrás
+        </button>
+        <button class="btn waves-effect waves-light btn-right" type="submit" name="action" id="end-post">
+          Publicar <i class="fa fa-check"></i>
+        </button>
+      </div>
+    </div>
+    <!-- ./row -->
+  </form>
+</div>
+<!-- ./container -->
 {% endblock %}
 
 {% block externalfiles %}
-<script src="{% static 'js/redzza/general.js' %}" charset="utf-8"></script>
+<script src="{% static 'redzza/js/general.js' %}" charset="utf-8"></script>
 {% endblock%}
