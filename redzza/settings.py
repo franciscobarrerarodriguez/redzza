@@ -167,6 +167,8 @@ LOGIN_REDIRECT_URL = 'dashboard'
 
 # Backends
 AUTHENTICATION_BACKENDS = (
+    # Agregado backend, para la autenticacion mediante facebook
+    'social_core.backends.facebook.FacebookOAuth2',
     # Agregado de backend, para la autenticacion con correo y contrasena
     'profiles.backends.EmailBackend',
 )
