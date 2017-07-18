@@ -156,11 +156,6 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
-AUTHENTICATION_BACKENDS = (
-    # 'social_core.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
 SOCIAL_AUTH_FACEBOOK_KEY = '752059251636371'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'e185984029f40b557b0b46ae0d6d1e2e'  # App Secret
 
@@ -172,7 +167,7 @@ LOGIN_REDIRECT_URL = 'dashboard'
 # Backends
 AUTHENTICATION_BACKENDS = (
     # Agregado backend, para la autenticacion mediante facebook
-    'social_core.backends.facebook.FacebookOAuth2',
+    # 'social_core.backends.facebook.FacebookOAuth2',
     # Agregado de backend, para la autenticacion con correo y contrasena
     'profiles.backends.EmailBackend',
 )
