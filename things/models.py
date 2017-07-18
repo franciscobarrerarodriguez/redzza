@@ -85,14 +85,14 @@ class Product(models.Model):
         ('R', 'Renovado'),
         ('C', 'Cualquiera'),
     )
-    state = models.CharField(max_length=1, choices=STATE, default='Nuevo')
+    state = models.CharField(max_length=1, choices=STATE, default='N')
     # tamaño - dimensiones
     DELIVERY = (
         ('E', 'Yo mismo lo entrego'),
         ('C', 'Convenio'),
         ('R', 'Redzza service'),
     )
-    delivery = models.CharField(max_length=1, choices=DELIVERY, default='Convenio')
+    delivery = models.CharField(max_length=1, choices=DELIVERY, default='C')
     size = models.PositiveIntegerField(blank=True)
     measure = models.CharField(validators=[validate_comma_separated_integer_list], max_length=20, blank=True)
     # a pedido
