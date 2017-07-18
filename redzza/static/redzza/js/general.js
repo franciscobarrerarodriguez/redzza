@@ -115,8 +115,57 @@ $(document).on("ready", function () {
       });
     });
   }
+  /*Load post place*/
+  if ($("#post-place").length) {
+    loadPlaces("#post-place");
+  }
+  /*Load post place ad*/
+  if ($("#post-place-ad").length) {
+    loadPlaces("#post-place-ad");
+  }
 
+  $("#post-step1").click(function (e) {
+    e.preventDefault();
+    $("#row-1").addClass("hide");
+    $("#row-2").removeClass("hide");
+  });
+
+  $("#back-step1").click(function (e) {
+    e.preventDefault();
+    $("#row-2").addClass("hide");
+    $("#row-1").removeClass("hide");
+  });
+
+  $("#post-step2").click(function (e) {
+    e.preventDefault();
+    $("#row-2").addClass("hide");
+    $("#row-3").removeClass("hide");
+  });
+
+  $("#back-step2").click(function (e) {
+    e.preventDefault();
+    $("#row-3").addClass("hide");
+    $("#row-2").removeClass("hide");
+  });
+
+  $("#end-post").click(function (e) {
+    e.preventDefault();
+    alert("post");
+  });
+  /* ./post */
 });
+
+/* Load all places */
+function loadPlaces(tag) {
+  $.get($(tag).attr("data-url"), function (json) {
+    var places = JSON.parse(json);
+    places.map(function (place, index) {
+      $(tag).append(`<option value="${place.pk}">${capitalize(place.fields.name)}</option>`);
+      /* Init select for places */
+      $(tag).material_select();
+    });
+  });
+}
 
 function ajaxPostCall(dataUrl, data) {
   var json;
