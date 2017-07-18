@@ -140,7 +140,7 @@ class Service(models.Model):
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to='productos')
-    title = models.CharField(max_length=60)
+    title = models.CharField(max_length=60, default="")
 
     def create(notice, title, pathimage):
         image = Image(notice=notice, title=title)
