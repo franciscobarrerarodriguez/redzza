@@ -21,7 +21,7 @@
       <div class="form-container">
         <p>¿Estás interesado en alguna categoría? Escoge al menos una.</p>
         <br>
-        <form id="form_profile_info_2" data-url="{% url 'register' step='step3' %}">
+        <form name="myform" id="form_profile_info_2" data-url="{% url 'register' step='step3' %}">
           <div id="categories" data-url="{% url 'getCategories' %}"></div>
           <button class="btn waves-effect waves-light" type="submit" name="action">Siguiente
             <i class="material-icons right">done</i>
