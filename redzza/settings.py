@@ -88,18 +88,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'redzza.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-if 'PRODUCTION' in os.environ:
-    # this is the heroku environment
-    DATABASES = {'default': dj_database_url.config()}
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dend2egetq4i2n',
+        'USER': 'jezltyfwxeudmg',
+        'PASSWORD': '987bf649f3ca78833b2b9bfc464505b8761b83df0dc9f4f86deaef4bf73d8448',
+        'HOST': 'ec2-54-235-90-107.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
+}
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
