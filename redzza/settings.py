@@ -30,6 +30,7 @@ SECRET_KEY = '54o(ku$!g0k=6ppsa-h%+znjzn1=*bmjq*bcv4&r5_&)awu_9i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Permitir todos los nombres de dominio
 ALLOWED_HOSTS = ['*']  # Open for all
 
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -89,15 +90,20 @@ WSGI_APPLICATION = 'redzza.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if 'PRODUCTION' in os.environ:
+    # this is the heroku environment
+    DATABASES = {'default': dj_database_url.config()}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
 
-db_from_env = dj_database_url.config()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 
