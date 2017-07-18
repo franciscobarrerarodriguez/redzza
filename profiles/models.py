@@ -102,6 +102,7 @@ class Profile(models.Model):
         profile.location = location
         return profile.save()
 
+    @staticmethod
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
 
