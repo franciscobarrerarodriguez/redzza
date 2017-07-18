@@ -22,7 +22,7 @@
       <div class="form-container">
         <p>¿Ofreces algo? Tal vez pertenezca a alguna de estas categorías.</p>
         <br>
-        <form name="myform" id="form_profile_info_3" data-url="{% url 'createUser' %}">
+        <form name="myform" id="form_profile_info_3" data-url="{% url 'createUser' %}" novalidate>
           {% csrf_token %}
           <div id="categories" data-url="{% url 'getCategories' %}"></div>
           <button class="btn waves-effect waves-light" type="submit" name="action">Finalizar
