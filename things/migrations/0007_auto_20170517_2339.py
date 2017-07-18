@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='delivery',
-            field=models.CharField(choices=[('E', 'Yo mismo lo entrego'), ('C', 'Convenio'), ('R', 'Redzza service')], default='Convenio', max_length=1),
+            field=models.CharField(choices=[('E', 'Lo entrego'), ('C', 'Convenio'), ('R', 'Redzza service')], default='Convenio', max_length=1),
         ),
         migrations.AlterField(
             model_name='product',
