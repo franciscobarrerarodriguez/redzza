@@ -15,15 +15,20 @@ $(document).ready(function () {
     var response = $("#signup_response");
     if ($('#terms-checkbox').is(":checked")) {
       var input = $("#signup_input");
-      var url = input.attr("data-url") + "?email=" + input.val();
-      $.get(url, function (data) {
-        if (data.is_taken) {
-          response.html("<p class='danger-alert'>Este correo ya tiene una cuenta asociada, prueba iniciando sesion.</p>");
-        } else {
-          sessionStorage.setItem("email", input.val());
-          window.location.href = $("#form_signup").attr("data-url");
-        }
-      });
+      var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+      if (regex.test(input.val())) {
+        var url = input.attr("data-url") + "?email=" + input.val();
+        $.get(url, function (data) {
+          if (data.is_taken) {
+            response.html("<p class='danger-alert'>Este correo ya tiene una cuenta asociada, prueba iniciando sesion.</p>");
+          } else {
+            sessionStorage.setItem("email", input.val());
+            window.location.href = $("#form_signup").attr("data-url");
+          }
+        });
+      }else {
+        response.html("<p class='danger-alert'>Correo electrónico inválido.</p>");
+      }
     } else {
       response.html("<p class='danger-alert'>Para registrarte debes aceptar nuestros terminos y condiciones.</p>");
     }
