@@ -11,7 +11,7 @@ from .models import Profile, Place
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
-from categories.models import WantedCategory, Category
+from categories.models import WantedCategory
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 # Create your views here.
