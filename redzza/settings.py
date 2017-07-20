@@ -91,10 +91,10 @@ WSGI_APPLICATION = 'redzza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dend2egetq4i2n',
-        'USER': 'jezltyfwxeudmg',
-        'PASSWORD': '987bf649f3ca78833b2b9bfc464505b8761b83df0dc9f4f86deaef4bf73d8448',
-        'HOST': 'ec2-54-235-90-107.compute-1.amazonaws.com',
+        'NAME': 'dn5515dttcdms',
+        'USER': 'mhytxmydrlzlbr',
+        'PASSWORD': '2d42ad1b648ec8cad34e23efe30412af165c8728c217cb247e1dc467f8a40c4b',
+        'HOST': 'ec2-54-163-254-143.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
