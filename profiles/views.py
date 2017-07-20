@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import Profile, Place
+from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
@@ -16,7 +16,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 # Create your views here.
 
 
@@ -46,6 +46,7 @@ def dashboard(request):
     context = {}
     context['profile'] = get_object_or_404(Profile, user=user)
     context['durationUser'] = getDurationUser(user)
+    context['numberFollowersUser'] = getNumberFollowersUser(user)
     return render(request, 'dashboard.html', context)
 
 
@@ -195,6 +196,11 @@ def getDurationUser(user):
     return (datetime.now(timezone.utc) - user.date_joined).days
 
 
+# Metodo que retorma el numero de seguidores del usuario ingresado por parametro
+def getNumberFollowersUser(user):
+    return len(Follow.searchFollowers(get_object_or_404(Profile, user=user)))
+
+
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
 # www.redzza.com/[username]
 class UserDetailView(DetailView):
@@ -218,3 +224,6 @@ class UserDetailView(DetailView):
 
     def getDuration(self):
         return getDurationUser(user=self.object)
+
+    def getNumberFollowers(self):
+        return getNumberFollowersUser(user=self.object)
