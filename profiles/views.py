@@ -200,3 +200,9 @@ class UserDetailView(DetailView):
             return redirect('dashboard')
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    def getProfileCurrent(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
+    def getProfileSlug(self):
+        return get_object_or_404(Profile, user=self.object)

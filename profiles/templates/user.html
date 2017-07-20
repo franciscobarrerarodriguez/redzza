@@ -1,4 +1,9 @@
-user: {{user}}
+usuario al que se visita: {{user}}
 <br>
-current user: {{request.user}}
+Perfil del usuario al que se visita: {{view.getProfileSlug}}
+
+<br><br>
+usuario logueado y que visita el perfil: {{request.user}}
+<br>
+Perfil del usuario logueado y que visita: {{view.getProfileCurrent}}
 
