@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url, include
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -27,7 +28,7 @@ urlpatterns = [
     # Url - creacion de un nuevo usuario
     url(r'^createUser/', views.createUser, name='createUser'),
     # Url - visitar perfil
-    url(r'^(?P<slug>[-_\w]+)/$', views.UserDetailView.as_view(), name='userDetail'),
+    url(r'^(?P<slug>[-_\w]+)/$', login_required(views.UserDetailView.as_view()), name='userDetail'),
     # Urls - Autenticacion con red social facebook
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     # Urls - Adicionales de registro e inicio de sesion - siempre deben estar al final
