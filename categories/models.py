@@ -51,6 +51,5 @@ class SuggestedCategory(models.Model):
         return '%s %s' % (self.category, self.profile)
 
     def create(element, profile):
-        category = get_object_or_404(Category, id=element)
-        suggested = SuggestedCategory(profile=profile, category=category)
+        suggested = SuggestedCategory(profile=profile, category=str(element))
         return suggested.save()

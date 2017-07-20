@@ -11,7 +11,7 @@ from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
-from categories.models import WantedCategory
+from categories.models import WantedCategory, SuggestedCategory
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
@@ -158,6 +158,7 @@ def createUser(request):
                     WantedCategory.create(element['pk'], profile, 1)
                 for element in json.loads(i_search):
                     WantedCategory.create(element['pk'], profile, 2)
+                SuggestedCategory.create(suggestions, profile)
                 login(request, user)
                 return JsonResponse({'success': True, 'url': '/dashboard/'})
             else:
