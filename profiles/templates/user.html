@@ -12,6 +12,12 @@ Categorias que ofrece el perfil al que se visita:
         {{category}}
     </li>
 {% endfor %}
+Categorias que busca el perfil al que se visita: 
+{% for category in view.getSearchCategories %}
+    <li>
+        {{category}}
+    </li>
+{% endfor %}
 
 
 <br><br>
