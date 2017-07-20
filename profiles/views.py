@@ -138,6 +138,9 @@ def createUser(request):
     place = request.POST.get('place', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
+    i_have = request.POST.get('i_have', None)
+    # Sugerencias de nuevas categorias, opcional
+    suggestions = request.POST.get('suggestions', None)
 
     if email and username and name and last_name and password and place and i_search and i_have:
         user, created = Profile.createUser(email, username, name, last_name, password)
