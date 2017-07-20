@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from datetime import datetime, timezone, timedelta
 # Create your views here.
 
 
@@ -42,7 +43,9 @@ def home(request):
 @login_required
 def dashboard(request):
     user = request.user
-    context = {'profile': get_object_or_404(Profile, user=user)}
+    context = {}
+    context['profile'] = get_object_or_404(Profile, user=user)
+    context['durationUser'] = getDurationUser(user)
     return render(request, 'dashboard.html', context)
 
 
@@ -186,6 +189,12 @@ def validateStructureEmail(email):
         return False
 
 
+# Metodo que retorma el tiempo inscrito en redzza del usuario ingresado por parametro
+# Tiempo en dias
+def getDurationUser(user):
+    return (datetime.now(timezone.utc) - user.date_joined).days
+
+
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
 # www.redzza.com/[username]
 class UserDetailView(DetailView):
@@ -206,3 +215,6 @@ class UserDetailView(DetailView):
 
     def getProfileSlug(self):
         return get_object_or_404(Profile, user=self.object)
+
+    def getDuration(self):
+        return getDurationUser(user=self.object)
