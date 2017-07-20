@@ -14,6 +14,8 @@ import json
 from categories.models import WantedCategory
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 # Create your views here.
 
 
@@ -51,8 +53,8 @@ def dashboard(request):
 def singup(request, step):
     return {
         'step1': render(request, 'registration/registration_1.html'),
-        'step2': render(request, 'registration/registration_3.html'),
-        'step3': render(request, 'registration/registration_2.html'),
+        'step2': render(request, 'registration/registration_2.html'),
+        'step3': render(request, 'registration/registration_3.html'),
     }.get(step, redirect('index'))
 
 
@@ -143,18 +145,21 @@ def createUser(request):
     suggestions = request.POST.get('suggestions', None)
 
     if email and username and name and last_name and password and place and i_search and i_have:
-        user, created = Profile.createUser(email, username, name, last_name, password)
-        if created:
-            profile = Profile.create(place, user)
-            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-            for element in json.loads(i_have):
-                WantedCategory.create(element['pk'], profile, 1)
-            for element in json.loads(i_search):
-                WantedCategory.create(element['pk'], profile, 2)
-            login(request, user)
-            return JsonResponse({'success': True, 'url': '/dashboard/'})
+        if validateStructureEmail(email):
+            user, created = Profile.createUser(email, username, name, last_name, password)
+            if created:
+                profile = Profile.create(place, user)
+                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                for element in json.loads(i_have):
+                    WantedCategory.create(element['pk'], profile, 1)
+                for element in json.loads(i_search):
+                    WantedCategory.create(element['pk'], profile, 2)
+                login(request, user)
+                return JsonResponse({'success': True, 'url': '/dashboard/'})
+            else:
+                return JsonResponse({'success': False, 'err': 'User not created'})
         else:
-            return JsonResponse({'success': False, 'err': 'User not created'})
+            return JsonResponse({'success': False, 'err': 'Invalid Email'})
     else:
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
 
@@ -170,6 +175,15 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
         return Profile.generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
     except User.DoesNotExist:
         return username
+
+
+# Metodo de verificacion de estructura del email
+def validateStructureEmail(email):
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False
 
 
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
