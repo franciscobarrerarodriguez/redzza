@@ -193,3 +193,10 @@ class UserDetailView(DetailView):
     context_object_name = 'user'
     template_name = 'user.html'
     slug_field = 'username'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object == self.request.user:
+            return redirect('dashboard')
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
