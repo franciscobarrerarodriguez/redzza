@@ -51,8 +51,8 @@ def dashboard(request):
 def singup(request, step):
     return {
         'step1': render(request, 'registration/registration_1.html'),
-        'step2': render(request, 'registration/registration_2.html'),
-        'step3': render(request, 'registration/registration_3.html'),
+        'step2': render(request, 'registration/registration_3.html'),
+        'step3': render(request, 'registration/registration_2.html'),
     }.get(step, redirect('index'))
 
 
