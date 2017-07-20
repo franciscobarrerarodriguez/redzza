@@ -29,7 +29,7 @@ class WantedCategory(models.Model):
     type_category = models.IntegerField()
 
     def __str__(self):
-        return '%s %s %s' % (self.category, self.profile, self.type_category)
+        return str(self.category)
 
     def create(element, profile, kind):
         category = get_object_or_404(Category, id=element)

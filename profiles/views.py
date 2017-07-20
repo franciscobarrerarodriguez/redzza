@@ -45,8 +45,9 @@ def dashboard(request):
     user = request.user
     context = {}
     context['profile'] = get_object_or_404(Profile, user=user)
-    context['durationUser'] = getDurationUser(user)
-    context['numberFollowersUser'] = getNumberFollowersUser(user)
+    context['duration'] = getDurationUser(user)
+    context['numberFollowers'] = getNumberFollowersUser(user)
+    context['haveCategories'] = getHaveCategoriesUser(user)
     return render(request, 'dashboard.html', context)
 
 
@@ -202,6 +203,12 @@ def getNumberFollowersUser(user):
     return len(Follow.searchFollowers(get_object_or_404(Profile, user=user)))
 
 
+# Metodo que retorma las categorias que ofrece el usuario ingresado por parametro
+# i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+def getHaveCategoriesUser(user):
+    return WantedCategory.searchHave(get_object_or_404(Profile, user=user))
+
+
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
 # www.redzza.com/[username]
 class UserDetailView(DetailView):
@@ -228,3 +235,6 @@ class UserDetailView(DetailView):
 
     def getNumberFollowers(self):
         return getNumberFollowersUser(user=self.object)
+
+    def getHaveCategories(self):
+        return getHaveCategoriesUser(user=self.object)

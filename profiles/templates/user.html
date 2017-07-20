@@ -5,6 +5,14 @@ Perfil del usuario al que se visita: {{view.getProfileSlug}}
 Tiempo en redzza del perfil al que se visita: {{view.getDuration}} dias
 <br>
 Numero de seguidores del perfil al que se visita: {{view.getNumberFollowers}} seguidores
+<br>
+Categorias que ofrece el perfil al que se visita: 
+{% for category in view.getHaveCategories %}
+    <li>
+        {{category}}
+    </li>
+{% endfor %}
+
 
 <br><br>
 usuario logueado y que visita el perfil: {{request.user}}
