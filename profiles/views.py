@@ -55,7 +55,7 @@ def dashboard(request):
     context['searchCategories'] = getSearchCategoriesUser(user)
     context['noticesType1'] = getNoticesType1User(user)
     context['noticesType2'] = getNoticesType2User(user)
-    print('FALTA ETIQUETAS')
+    print('FALTA MOSTRAR ETIQUETAS')
     return render(request, 'dashboard.html', context)
 
 
@@ -128,7 +128,7 @@ def updateUser(request):
     avialability = request.POST.get('avialability', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
-    print('FALTA ETIQUETAS')
+    print('FALTA RECIBIR Y UPDATE ETIQUETAS')
 
     if username:
         if Profile.searchUsername(username) is False:
@@ -330,4 +330,4 @@ class UserDetailView(DetailView):
     def getNoticesType2(self):
         return getNoticesType2User(user=self.object)
 
-    print('FALTA ETIQUETAS')
+    print('FALTA MOSTRAR ETIQUETAS')
