@@ -18,7 +18,18 @@ Categorias que busca el perfil al que se visita:
         {{category}}
     </li>
 {% endfor %}
-
+Publicaciones propias del perfil al que se visita: 
+{% for notice in view.getNoticesType1 %}
+    <li>
+        {{notice}}
+    </li>
+{% endfor %}
+Publicaciones deseadas del perfil al que se visita: 
+{% for notice in view.getNoticesType2 %}
+    <li>
+        {{notice}}
+    </li>
+{% endfor %}
 
 <br><br>
 usuario logueado y que visita el perfil: {{request.user}}

@@ -12,6 +12,7 @@ from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
 from categories.models import WantedCategory, SuggestedCategory
+from things.models import Notice
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
@@ -49,6 +50,8 @@ def dashboard(request):
     context['numberFollowers'] = getNumberFollowersUser(user)
     context['haveCategories'] = getHaveCategoriesUser(user)
     context['searchCategories'] = getSearchCategoriesUser(user)
+    context['noticesType1'] = getNoticesType1User(user)
+    context['noticesType2'] = getNoticesType2User(user)
     return render(request, 'dashboard.html', context)
 
 
@@ -216,6 +219,16 @@ def getSearchCategoriesUser(user):
     return WantedCategory.searchOffer(get_object_or_404(Profile, user=user))
 
 
+# Metodo que retorma las publicaciones propias del usuario ingresado por parametro
+def getNoticesType1User(user):
+    return Notice.getNoticeType1(get_object_or_404(Profile, user=user))
+
+
+# Metodo que retorma las publicaciones deseadas del usuario ingresado por parametro
+def getNoticesType2User(user):
+    return Notice.getNoticeType2(get_object_or_404(Profile, user=user))
+
+
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
 # www.redzza.com/[username]
 class UserDetailView(DetailView):
@@ -248,3 +261,9 @@ class UserDetailView(DetailView):
 
     def getSearchCategories(self):
         return getSearchCategoriesUser(user=self.object)
+
+    def getNoticesType1(self):
+        return getNoticesType1User(user=self.object)
+
+    def getNoticesType2(self):
+        return getNoticesType2User(user=self.object)
