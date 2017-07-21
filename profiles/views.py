@@ -55,6 +55,7 @@ def dashboard(request):
     context['searchCategories'] = getSearchCategoriesUser(user)
     context['noticesType1'] = getNoticesType1User(user)
     context['noticesType2'] = getNoticesType2User(user)
+    print('FALTA ETIQUETAS')
     return render(request, 'dashboard.html', context)
 
 
@@ -107,38 +108,97 @@ def getUser(request):
 
 # Vista de modificacion de informacion del usuario
 def updateUser(request):
-    user = Profile.searchUser(email=request.user.email)
+    user = request.user
     profile = get_object_or_404(Profile, user=user)
+    username = request.POST.get('username', None)
+    name = request.POST.get('name', None)
+    last_name = request.POST.get('last_name', None)
     email = request.POST.get('email', None)
     password = request.POST.get('password', None)
-    username = request.POST.get('username', None)
+    avatar = request.POST.get('avatar', None)
+    icono = request.POST.get('icono', None)
+    birth_date = request.POST.get('birth_date', None)
+    gender = request.POST.get('gender', None)
     phone = request.POST.get('phone', None)
+    biography = request.POST.get('biography', None)
     location = request.POST.get('location', None)
-    if email:
-        if Profile.searchEmail(email) is False:
-            user.email = email
-            user.save()
-            return JsonResponse({'success': True, 'msg': 'email-update'})
-        else:
-            return JsonResponse({'success': False, 'msg': 'email-exists'})
-    elif password:
-        user.set_password(password)
-        user.save()
-        return JsonResponse({'success': True, 'msg': 'password-update'})
-    elif username:
+    company = request.POST.get('company', None)
+    profession = request.POST.get('profession', None)
+    address = request.POST.get('address', None)
+    avialability = request.POST.get('avialability', None)
+    i_search = request.POST.get('i_search', None)
+    i_have = request.POST.get('i_have', None)
+    print('FALTA ETIQUETAS')
+
+    if username:
         if Profile.searchUsername(username) is False:
             user.username = username
             user.save()
             return JsonResponse({'success': True, 'msg': 'username-update'})
         else:
             return JsonResponse({'success': False, 'msg': 'username-exists'})
+    elif name:
+        user.first_name = name
+        user.save()
+        return JsonResponse({'success': True, 'msg': 'name-update'})
+    elif last_name:
+        user.last_name = last_name
+        user.save()
+        return JsonResponse({'success': True, 'msg': 'last_name-update'})
+    elif email:
+        if Profile.searchEmail(email) is False:
+            if validateEmail(email) is True:
+                user.email = email
+                user.save()
+                return JsonResponse({'success': True, 'msg': 'email-update'})
+            else:
+                return JsonResponse({'success': False, 'msg': 'email-invalid'})
+        else:
+            return JsonResponse({'success': False, 'msg': 'email-exists'})
+    elif password:
+        user.set_password(password)
+        user.save()
+        return JsonResponse({'success': True, 'msg': 'password-update'})
+    elif avatar:
+        print('FALTA UPDATE DE AVATAR')
+        return JsonResponse({'success': True, 'msg': 'avatar-update'})
+    elif icono:
+        print('FALTA UPDATE DE ICONO')
+        return JsonResponse({'success': True, 'msg': 'icono-update'})
+    elif birth_date:
+        Profile.updateBirthdate(profile, birth_date)
+        return JsonResponse({'success': True, 'msg': 'birth_date-update'})
+    elif gender:
+        Profile.updateGender(profile, gender)
+        return JsonResponse({'success': True, 'msg': 'gender-update'})
     elif phone:
         Profile.updatePhone(profile, phone)
         return JsonResponse({'success': True, 'msg': 'phone-update'})
+    elif biography:
+        Profile.updateBiography(profile, biography)
+        return JsonResponse({'success': True, 'msg': 'biography-update'})
     elif location:
         place = Place.searchCity(location)
         Profile.updateLocation(profile, place)
         return JsonResponse({'success': True, 'msg': 'location-update'})
+    elif company:
+        Profile.updateComany(profile, company)
+        return JsonResponse({'success': True, 'msg': 'company-update'})
+    elif profession:
+        Profile.updateProfession(profile, profession)
+        return JsonResponse({'success': True, 'msg': 'profession-update'})
+    elif address:
+        Profile.updateAddress(profile, address)
+        return JsonResponse({'success': True, 'msg': 'address-update'})
+    elif avialability:
+        Profile.updateAvialability(profile, avialability)
+        return JsonResponse({'success': True, 'msg': 'avialability-update'})
+    elif i_search:
+        print('FALTA UPDATE DE CATEGORIAS')
+        return JsonResponse({'success': True, 'msg': 'i_search-update'})
+    elif i_have:
+        print('FALTA UPDATE DE CATEGORIAS')
+        return JsonResponse({'success': True, 'msg': 'i_have-update'})
     else:
         return JsonResponse({'success': False, 'msg': 'nothing-update'})
 
@@ -153,8 +213,6 @@ def createUser(request):
     place = request.POST.get('place', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
-    i_have = request.POST.get('i_have', None)
-    # Sugerencias de nuevas categorias, opcional
     suggestions = request.POST.get('suggestions', None)
 
     if email and username and name and last_name and password and place and i_search and i_have:
@@ -271,3 +329,5 @@ class UserDetailView(DetailView):
 
     def getNoticesType2(self):
         return getNoticesType2User(user=self.object)
+
+    print('FALTA ETIQUETAS')
