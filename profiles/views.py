@@ -37,7 +37,10 @@ def loginEmail(request):
 # Vista home, con sesion
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    user = request.user
+    context = {}
+    context['profile'] = get_object_or_404(Profile, user=user)
+    return render(request, 'home.html', context)
 
 
 # Vista perfil personal, con sesion
@@ -82,7 +85,8 @@ def validateEmail(request):
 @login_required
 def settings(request):
     user = request.user
-    context = {'profile': get_object_or_404(Profile, user=user)}
+    context = {}
+    context['profile'] = get_object_or_404(Profile, user=user)
     return render(request, 'settings.html', context)
 
 
