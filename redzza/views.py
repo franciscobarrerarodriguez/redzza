@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # Create your views here.
 from categories.models import WantedCategory, Category
 from profiles.models import Profile, Label, LabelProfile, Place, Follow
@@ -12,6 +12,8 @@ from django.shortcuts import get_object_or_404
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'landing.html')
 
 
