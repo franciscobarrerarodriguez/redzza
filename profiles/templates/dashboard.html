@@ -1,12 +1,15 @@
-{% extends 'materialize-nav-bar.html' %}
+{% extends 'materialize-base.html' %}
 
 {% load staticfiles %}
 
 {% block title%}Dashboard{% endblock %}
 
-{% block externalfiles %}
-<script src="{% static 'redzza/js/general.js' %}" charset="utf-8"></script>
-{% endblock%}
+{% block nav_bar %}
+
+{% include 'materialize-nav-bar.html'%}
+
+{% endblock %}
+
 
 {% block content %}
 <div class="parallax-container parallax-profile-container">
@@ -17,16 +20,45 @@
 <div class="container banner-info">
   <!-- row -->
   <div class="row ">
-    <div class="col hide-on-small-only m4 l4">
-      &nbsp;
+    <div class="col m3 l3">
+      <h6>¿Que tengo?</h6>
+      <ul>
+        {% for cat in haveCategories %}
+        <li>{{ cat }}</li>
+        {% endfor %}
+      </ul>
     </div>
-    <div class="col s12 m4 l4">
+    <div class="col hide-on-small-only m2 l2">
+      <br>
+      <i class="material-icons">av_timer</i>
+      <p>{{ duration }}&nbsp;Días en Redzza</p>
+    </div>
+    <div class="col s2 m2 l2">
       <img class="circle responsive-img img-center" src="{% static 'redzza/img/default-profile.jpg' %}">
     </div>
-    <div class="col hide-on-small-only m4 l4">
-      &nbsp;
+    <div class="col hide-on-small-only m2 l2">
+      <br>
+      <i class="material-icons">people_outline</i>
+      {% if numberFollowers > 0%}
+      <p>{{ numberFollowers }}&nbsp;<b>Seguidores</b></p>
+      {% else %}
+      <p>Aun no tienes seguidores</p>
+      {% endif %}
+    </div>
+    <div class="col m3 l3">
+      <h6>¿Que busco?</h6>
+      <ul>
+        {% for cat in searchCategories %}
+        <li>{{ cat }}</li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
+  <!-- ./row -->
+<!-- row -->
+<div class="row">
+  <h5>{{ profile }}</h5>
+</div>
   <!-- ./row -->
 </div>
 <!-- ./container -->
@@ -34,6 +66,7 @@
 <!-- container -->
 <div class="container">
 
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </div>
 <!-- ./container -->
 {% endblock %}

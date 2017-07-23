@@ -162,6 +162,7 @@ class Follow(models.Model):
     def searchFollowings(profile):
         return Follow.objects.filter(follower=profile).values('following')
 
+    @staticmethod
     def searchFollowers(profile):
         return Follow.objects.filter(following=profile).values('follower')
 

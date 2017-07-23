@@ -3,28 +3,43 @@
   padding-bottom: 20px;
   background-color: @primary-color;
   color: @white-base;
-  a, p {
-      font-size: @default-button-font-size !important;
-    color: @white-base;
-  }
-  a:visited {
-    color: inherit;
-  }
-  a, p {
+  h5, p, a {
     font-family: 'Yanone Kaffeesatz', sans-serif;
-    display: block;
-    width: 100%;
-    text-align: center;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 3.5em;
+  }
+  h5 {
+    color: @secondary-color;
+    margin-bottom: 20px;
   }
   ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+    list-style: none;
     li {
-      margin-bottom: @general-margin-bottom;
-      i {
-        font-size: @default-input-font-size * 2;
-      }
+      margin-top: 5px;
+      margin-bottom: 5px;
     }
+  }
+  a {
+    font-weight: 300;
+    color: @white-base;
+    text-decoration: none;
+    cursor: pointer;
+    &:visited {
+      color: @white-base;
+    }
+    &:hover {
+      color: @secondary-color;
+    }
+  }
+  p {
+    text-transform: capitalize;
+    text-align: center;
+    font-weight: 100;
   }
 }
