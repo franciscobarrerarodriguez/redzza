@@ -53,8 +53,8 @@ def dashboard(request):
     context['numberFollowers'] = getNumberFollowersUser(user)
     context['haveCategories'] = getHaveCategoriesUser(user)
     context['searchCategories'] = getSearchCategoriesUser(user)
-    context['noticesType1'] = getNoticesType1User(user)
-    context['noticesType2'] = getNoticesType2User(user)
+    context['noticesHave'] = getNoticesUser(user, 1)
+    context['noticesSearch'] = getNoticesUser(user, 2)
     print('FALTA MOSTRAR ETIQUETAS')
     return render(request, 'dashboard.html', context)
 
@@ -281,14 +281,9 @@ def getSearchCategoriesUser(user):
     return WantedCategory.searchOffer(get_object_or_404(Profile, user=user))
 
 
-# Metodo que retorma las publicaciones propias del usuario ingresado por parametro
-def getNoticesType1User(user):
-    return Notice.getNoticeType1(get_object_or_404(Profile, user=user))
-
-
-# Metodo que retorma las publicaciones deseadas del usuario ingresado por parametro
-def getNoticesType2User(user):
-    return Notice.getNoticeType2(get_object_or_404(Profile, user=user))
+# Metodo que retorma las publicaciones del usuario ingresado por parametro
+def getNoticesUser(user, kind):
+    return Notice.getNotice(get_object_or_404(Profile, user=user), kind)
 
 
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
@@ -324,10 +319,10 @@ class UserDetailView(DetailView):
     def getSearchCategories(self):
         return getSearchCategoriesUser(user=self.object)
 
-    def getNoticesType1(self):
-        return getNoticesType1User(user=self.object)
+    def getNoticesHave(self):
+        return getNoticesUser(user=self.object, kind=1)
 
-    def getNoticesType2(self):
-        return getNoticesType2User(user=self.object)
+    def getNoticesSearch(self):
+        return getNoticesUser(user=self.object, kind=2)
 
     print('FALTA MOSTRAR ETIQUETAS')

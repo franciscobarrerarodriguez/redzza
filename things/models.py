@@ -30,13 +30,9 @@ class Notice(models.Model):
         notice.save()
         return notice
 
-    # KIND: 1 --> propio
-    def getNoticeType1(profile):
-        return Notice.objects.filter(profile=profile, kind=1)
-
-    # KIND: 2 --> deseado
-    def getNoticeType2(profile):
-        return Notice.objects.filter(profile=profile, kind=2)
+    # KIND: 1 --> propio; 2 --> deseado
+    def getNotice(profile, kind):
+        return Notice.objects.filter(profile=profile, kind=kind)
 
     # para unir cosnultas se usa |
 

@@ -18,14 +18,14 @@ Categorias que busca el perfil al que se visita:
         {{category}}
     </li>
 {% endfor %}
-Publicaciones propias del perfil al que se visita: 
-{% for notice in view.getNoticesType1 %}
+Publicaciones QUE TENGO del perfil al que se visita: 
+{% for notice in view.getNoticesHave %}
     <li>
         {{notice}}
     </li>
 {% endfor %}
-Publicaciones deseadas del perfil al que se visita: 
-{% for notice in view.getNoticesType2 %}
+Publicaciones QUE BUSCO del perfil al que se visita: 
+{% for notice in view.getNoticesSearch %}
     <li>
         {{notice}}
     </li>
