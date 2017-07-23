@@ -1,12 +1,14 @@
-{% extends 'materialize-nav-bar.html' %}
+{% extends 'materialize-base.html' %}
 
 {% load staticfiles %}
 
 {% block title%}Settings{% endblock %}
 
-{% block externalfiles %}
-<script src="{% static 'redzza/js/general.js' %}" charset="utf-8"></script>
-{% endblock%}
+{% block nav_bar %}
+
+{% include 'materialize-nav-bar.html'%}
+
+{% endblock %}
 
 {% block content %}
 <!-- container -->
@@ -289,21 +291,21 @@
 </div>
 
 <div id="modal7" class="modal">
-<form id="update-bio" data-url="{% url 'updateUser' %}">
-  {% csrf_token %}
-  <div class="modal-content">
-    <h4>Modificar biografía</h4>
-    <br>
-    <div class="input-field col s12">
-      <textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
-      <label for="textarea1">Escribe aqui algo acerca de ti</label>
+  <form id="update-bio" data-url="{% url 'updateUser' %}">
+    {% csrf_token %}
+    <div class="modal-content">
+      <h4>Modificar biografía</h4>
+      <br>
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
+        <label for="textarea1">Escribe aqui algo acerca de ti</label>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="modal-action waves-effect waves-green btn-flat" type="submit">Listo</button>
-    <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
-  </div>
-</form>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat" type="submit">Listo</button>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat ">Cancelar</button>
+    </div>
+  </form>
 </div>
 {% endblock %}
 

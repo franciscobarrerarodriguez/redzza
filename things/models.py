@@ -31,10 +31,12 @@ class Notice(models.Model):
         return notice
 
     # KIND: 1 --> propio
+    @staticmethod
     def getNoticeType1(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
     # KIND: 2 --> deseado
+    @staticmethod
     def getNoticeType2(profile):
         return Notice.objects.filter(profile=profile, kind=2)
 
