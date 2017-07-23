@@ -99,14 +99,6 @@ def getPlaces(request):
     return JsonResponse(data_serialized, safe=False)
 
 
-# Vista de obtención de usuario
-def getUser(request):
-    email = request.GET.get('email', None)
-    data = Profile.searchUser(email)
-    data_serialized = serializers.serialize('json', data)
-    return JsonResponse(data_serialized, safe=False)
-
-
 # Vista de modificacion de informacion del usuario
 def updateUser(request):
     user = request.user
