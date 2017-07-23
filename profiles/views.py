@@ -17,7 +17,8 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from datetime import datetime, timezone
+from datetime import datetime#, timezone
+from django.utils import timezone
 # Create your views here.
 
 
