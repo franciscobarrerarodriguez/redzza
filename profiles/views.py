@@ -4,14 +4,13 @@ from random import choice
 from string import ascii_lowercase, digits
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
-from categories.models import WantedCategory, SuggestedCategory
+from categories.models import WantedCategory, SuggestedCategory, Category
 from things.models import Notice
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
@@ -22,6 +21,25 @@ from django.utils import timezone
 # Create your views here.
 
 
+# ---------------------------------VISTAS RENDER----------------------------------------
+
+# URL --> REGISTER
+# Vista para el registro en fases, la fase se recibe por parametro de la url
+# Paso 1 --> completar perfil
+# Paso 2 --> que busco categorias
+# Paso 3 --> que tengo categorias
+def register(request, step):
+    context = {}
+    context['categories'] = getCategoriesMacro()
+    context['places'] = getCities()
+    return {
+        'step1': render(request, 'registration/registration_1.html'),
+        'step2': render(request, 'registration/registration_2.html', context),
+        'step3': render(request, 'registration/registration_3.html', context),
+    }.get(step, redirect('index'))
+
+
+# URL --> LOGIN
 # Vista de login por correo electronico y contraseña
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)
@@ -35,6 +53,7 @@ def loginEmail(request):
         return JsonResponse({'success': False, 'errors': form.errors})
 
 
+# URL --> HOME
 # Vista home, con sesion
 @login_required
 def home(request):
@@ -44,6 +63,7 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+# URL --> DASHBOARD
 # Vista perfil personal, con sesion
 @login_required
 def dashboard(request):
@@ -60,18 +80,19 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 
-# Vista para el registro en fases, la fase se recibe por parametro de la url
-# Paso 1 --> completar perfil
-# Paso 2 --> que busco categorias
-# Paso 3 --> que tengo categorias
-def singup(request, step):
-    return {
-        'step1': render(request, 'registration/registration_1.html'),
-        'step2': render(request, 'registration/registration_2.html'),
-        'step3': render(request, 'registration/registration_3.html'),
-    }.get(step, redirect('index'))
+# URL --> SETTINGS
+# Vista, configuracion del perfil
+@login_required
+def settings(request):
+    user = request.user
+    context = {}
+    context['profile'] = get_object_or_404(Profile, user=user)
+    return render(request, 'settings.html', context)
 
 
+# ---------------------------------VISTAS AJAX----------------------------------------
+
+# URL --> AJAX/VALIDATEEMAIL
 # Vista para la validacion del correo que se intenta registrar
 # True --> Existe el correo, NO se puede usar
 # False --> No existe el correo, se puede usar
@@ -83,22 +104,41 @@ def validateEmail(request):
     return JsonResponse(data)
 
 
-# Vista, configuracion del perfil
-@login_required
-def settings(request):
-    user = request.user
-    context = {}
-    context['profile'] = get_object_or_404(Profile, user=user)
-    return render(request, 'settings.html', context)
+# URL --> AJAX/CREATEUSER
+# Vista para la creacion de un usuario
+def createUser(request):
+    email = request.POST.get('email', None)
+    username = generate_random_username(request.POST.get('name', None))
+    name = request.POST.get('name', None)
+    last_name = request.POST.get('last_name', None)
+    password = request.POST.get('password', None)
+    place = request.POST.get('place', None)
+    i_search = request.POST.get('i_search', None)
+    i_have = request.POST.get('i_have', None)
+    suggestions = request.POST.get('suggestions', None)
+
+    if email and username and name and last_name and password and place and i_search and i_have:
+        if validateStructureEmail(email):
+            user, created = Profile.createUser(email, username, name, last_name, password)
+            if created:
+                profile = Profile.create(place, user)
+                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                for element in json.loads(i_have):
+                    WantedCategory.create(element['pk'], profile, 1)
+                for element in json.loads(i_search):
+                    WantedCategory.create(element['pk'], profile, 2)
+                SuggestedCategory.create(suggestions, profile)
+                login(request, user)
+                return JsonResponse({'success': True, 'url': '/dashboard/'})
+            else:
+                return JsonResponse({'success': False, 'err': 'User not created'})
+        else:
+            return JsonResponse({'success': False, 'err': 'Invalid Email'})
+    else:
+        return JsonResponse({'success': False, 'err': 'Incomplete data'})
 
 
-# Vista de obtención de lugares
-def getPlaces(request):
-    data = Place.getCities()
-    data_serialized = serializers.serialize('json', data)
-    return JsonResponse(data_serialized, safe=False)
-
-
+# URL --> AJAX/UPDATEUSER
 # Vista de modificacion de informacion del usuario
 def updateUser(request):
     user = request.user
@@ -196,37 +236,15 @@ def updateUser(request):
         return JsonResponse({'success': False, 'msg': 'nothing-update'})
 
 
-# Vista para la creacion de un usuario
-def createUser(request):
-    email = request.POST.get('email', None)
-    username = generate_random_username(request.POST.get('name', None))
-    name = request.POST.get('name', None)
-    last_name = request.POST.get('last_name', None)
-    password = request.POST.get('password', None)
-    place = request.POST.get('place', None)
-    i_search = request.POST.get('i_search', None)
-    i_have = request.POST.get('i_have', None)
-    suggestions = request.POST.get('suggestions', None)
+# ---------------------------------METODOS LOGICOS----------------------------------------
 
-    if email and username and name and last_name and password and place and i_search and i_have:
-        if validateStructureEmail(email):
-            user, created = Profile.createUser(email, username, name, last_name, password)
-            if created:
-                profile = Profile.create(place, user)
-                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                for element in json.loads(i_have):
-                    WantedCategory.create(element['pk'], profile, 1)
-                for element in json.loads(i_search):
-                    WantedCategory.create(element['pk'], profile, 2)
-                SuggestedCategory.create(suggestions, profile)
-                login(request, user)
-                return JsonResponse({'success': True, 'url': '/dashboard/'})
-            else:
-                return JsonResponse({'success': False, 'err': 'User not created'})
-        else:
-            return JsonResponse({'success': False, 'err': 'Invalid Email'})
-    else:
-        return JsonResponse({'success': False, 'err': 'Incomplete data'})
+# Metodo de verificacion de estructura del email
+def validateStructureEmail(email):
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False
 
 
 # Metodo para la generacion del username unico para un nuevo usuario
@@ -242,39 +260,42 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
         return username
 
 
-# Metodo de verificacion de estructura del email
-def validateStructureEmail(email):
-    try:
-        validate_email(email)
-        return True
-    except ValidationError:
-        return False
+# ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
+
+# Metodo que retorna todas las categorias macro
+def getCategoriesMacro(user):
+    return Category.getCategories()
 
 
-# Metodo que retorma el tiempo inscrito en redzza del usuario ingresado por parametro
+# Metodo que retorna todas las categorias macro
+def getCities(user):
+    return Place.getCities()
+
+
+# Metodo que retorna el tiempo inscrito en redzza del usuario ingresado por parametro
 # Tiempo en dias
 def getDurationUser(user):
     return (datetime.now(timezone.utc) - user.date_joined).days
 
 
-# Metodo que retorma el numero de seguidores del usuario ingresado por parametro
+# Metodo que retorna el numero de seguidores del usuario ingresado por parametro
 def getNumberFollowersUser(user):
     return len(Follow.searchFollowers(get_object_or_404(Profile, user=user)))
 
 
-# Metodo que retorma las categorias que ofrece el usuario ingresado por parametro
+# Metodo que retorna las categorias que ofrece el usuario ingresado por parametro
 # i_have(Ofrezco) --> 1
 def getHaveCategoriesUser(user):
     return WantedCategory.searchHave(get_object_or_404(Profile, user=user))
 
 
-# Metodo que retorma las categorias que busca el usuario ingresado por parametro
+# Metodo que retorna las categorias que busca el usuario ingresado por parametro
 # i_search(Busco) --> 2
 def getSearchCategoriesUser(user):
     return WantedCategory.searchOffer(get_object_or_404(Profile, user=user))
 
 
-# Metodo que retorma las publicaciones del usuario ingresado por parametro
+# Metodo que retorna las publicaciones del usuario ingresado por parametro
 def getNoticesUser(user, kind):
     return Notice.getNotice(get_object_or_404(Profile, user=user), kind)
 
