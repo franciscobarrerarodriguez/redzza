@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 
 # ---------------------------------VISTAS RENDER----------------------------------------
 
+# URL --> POST
 # Vista para el formulario de una nueva publicacion de una cosa
 @login_required
 def post(request):
@@ -19,6 +20,7 @@ def post(request):
 
 # ---------------------------------VISTAS AJAX----------------------------------------
 
+# URL --> AJAX/NEWPOST
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
 def newPost(request):
