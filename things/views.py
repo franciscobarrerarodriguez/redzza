@@ -8,10 +8,16 @@ from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
+# ---------------------------------VISTAS RENDER----------------------------------------
+
 # Vista para el formulario de una nueva publicacion de una cosa
 @login_required
 def post(request):
-    return render(request, 'post.html')
+    context = {}
+    return render(request, 'post.html', context)
+
+
+# ---------------------------------VISTAS AJAX----------------------------------------
 
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
