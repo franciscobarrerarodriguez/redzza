@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Notice, CityNotice, CategoryTrade, Product, Color, Service, Image, Video
-from profiles.models import Profile
+from profiles.models import Profile, Place
 from categories.models import Category
+import json
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
@@ -24,28 +25,36 @@ def post(request):
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
 def newPost(request):
-    # user = request.user
-    # profile = get_object_or_404(Profile, user=user)
-    # thing = request.POST.get('thing', None)
-    # title = request.POST.get('title', None)
-    # description = request.POST.get('description', None)
-    # category_father = get_object_or_404(Profile, pattern=request.POST.get('category_father', None))
-    # category_son = request.POST.get('category_son', None)
-    # locations = request.POST.get('locations', None)
-    # place = request.POST.get('place', None)
-    # i_search = request.POST.get('i_search', None)
-    # i_have = request.POST.get('i_have', None)
+    user = request.user
+    profile = get_object_or_404(Profile, user=user)
+    # KIND: 1 --> have; 2 --> search
+    kind = request.POST.get('kind', None)
+    # THING P --> producto, S --> servicio
+    thing = request.POST.get('thing', None)
+    title = request.POST.get('title', None)
+    category = request.POST.get('category', None)
+    state = request.POST.get('state', None)
+    offer = request.POST.get('offer', None)
+    place = request.POST.get('place', None)
+    description = request.POST.get('description', None)
+    locations = request.POST.get('locations', None)
+    images = request.POST.get('images', None)
+    videos = request.POST.get('videos', None)
+    urgency = request.POST.get('urgency', None)
 
-    # if thing == 'P':
-    #     # donde agrego las dos categorias ??????????????????
-    #     notice = Notice.create(profile, category, title, description, optionTrade)
-    #     cityNotice = CityNotice.create(city, notice)
-    #     categoryTrade = CategoryTrade.create(category, notice)
-    #     product = Product.create(notice, quantity)
-    #     color = Color.create(hexa, product)
-    #     service = Service.create(notice, time)
-    #     image = Image.create(notice, image)
-    #     video = Video.create(notice, video)
-    #     return JsonResponse({'success': True, 'url': '/dashboard/'})
-    # else:
-    return JsonResponse({'success': True, 'url': '/dashboard/'})
+    if thing == 'P':
+        notice = Notice.create(profile, category, title, description, kind)
+        Product.create(notice, state)
+        for element in json.loads(locations):
+            location = get_object_or_404(Place, id=element)
+            CityNotice.create(location, notice)
+        return JsonResponse({'success': True, 'msg': 'product-posted'})
+    elif thing == 'S':
+        notice = Notice.create(profile, category, title, description, kind)
+        Service.create(notice)
+        for element in json.loads(locations):
+            location = get_object_or_404(Place, id=element)
+            CityNotice.create(location, notice)
+        return JsonResponse({'success': True, 'msg': 'service-posted'})
+    else:
+        return JsonResponse({'success': True, 'msg': 'Thing not defined'})
