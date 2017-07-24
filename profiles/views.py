@@ -29,9 +29,10 @@ from django.utils import timezone
 # Paso 2 --> que busco categorias
 # Paso 3 --> que tengo categorias
 def register(request, step):
+    user = request.user
     context = {}
-    context['categories'] = getCategoriesMacro()
-    context['places'] = getCities()
+    context['categories'] = getCategoriesMacro(user)
+    context['places'] = getCities(user)
     return {
         'step1': render(request, 'registration/registration_1.html'),
         'step2': render(request, 'registration/registration_2.html', context),
