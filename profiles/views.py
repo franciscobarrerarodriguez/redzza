@@ -34,7 +34,7 @@ def register(request, step):
     context['categories'] = getCategoriesMacro(user)
     context['places'] = getCities(user)
     return {
-        'step1': render(request, 'registration/registration_1.html'),
+        'step1': render(request, 'registration/registration_1.html', context),
         'step2': render(request, 'registration/registration_2.html', context),
         'step3': render(request, 'registration/registration_3.html', context),
     }.get(step, redirect('index'))
