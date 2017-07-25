@@ -16,8 +16,6 @@ import os
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
 
-from social.pipeline import DEFAULT_AUTH_PIPELINE
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
