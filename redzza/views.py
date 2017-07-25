@@ -13,7 +13,10 @@ from django.shortcuts import render, redirect
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        if request.user.is_staff:
+            return redirect('admin')
+        else:
+            return redirect('dashboard')
     return render(request, 'landing.html')
 
 
