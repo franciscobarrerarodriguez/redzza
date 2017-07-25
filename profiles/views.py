@@ -10,6 +10,7 @@ from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
+import urllib.request
 from categories.models import WantedCategory, SuggestedCategory, Category
 from things.models import Notice
 from django.views.generic.detail import DetailView
@@ -132,11 +133,11 @@ def createUser(request):
                 login(request, user)
                 return JsonResponse({'success': True, 'url': '/dashboard/'})
             else:
-                return JsonResponse({'success': False, 'err': 'User not created'})
+                return JsonResponse({'success': False, 'msg': 'User not created'})
         else:
-            return JsonResponse({'success': False, 'err': 'Invalid Email'})
+            return JsonResponse({'success': False, 'msg': 'Invalid Email'})
     else:
-        return JsonResponse({'success': False, 'err': 'Incomplete data'})
+        return JsonResponse({'success': False, 'msg': 'Incomplete data'})
 
 
 # URL --> AJAX/UPDATEUSER
@@ -259,6 +260,19 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
         return Profile.generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
     except User.DoesNotExist:
         return username
+
+
+# Metodo de creacion de perfil apartir del datos de facebook
+def saveProfileFacebook(backend, user, response, *args, **kwargs):
+    url = 'https://graph.facebook.com/{0}/?fields=first_name,last_name,gender,locale,picture&access_token={1}'.format(
+        response['id'],
+        response['access_token'],
+    )
+    request = urllib.request.Request(url)
+    result = urllib.request.urlopen(request)
+    resulttext = result.read().decode('utf8')
+    data = json.loads(resulttext)
+    print(data)
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
