@@ -111,7 +111,7 @@ def validateEmail(request):
 def createUser(request):
     email = request.POST.get('email', None)
     username = generate_random_username(request.POST.get('name', None))
-    name = request.POST.get('name', None)
+    first_name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     password = request.POST.get('password', None)
     place = request.POST.get('place', None)
@@ -119,9 +119,9 @@ def createUser(request):
     i_have = request.POST.get('i_have', None)
     suggestions = request.POST.get('suggestions', None)
 
-    if email and username and name and last_name and password and place and i_search and i_have:
+    if email and username and first_name and last_name and password and place and i_search and i_have:
         if validateStructureEmail(email):
-            user, created = Profile.createUser(email, username, name, last_name, password)
+            user, created = Profile.createUser(email, username, first_name, last_name, password)
             if created:
                 profile = Profile.create(place, user)
                 # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
@@ -129,7 +129,8 @@ def createUser(request):
                     WantedCategory.create(element['pk'], profile, 1)
                 for element in json.loads(i_search):
                     WantedCategory.create(element['pk'], profile, 2)
-                SuggestedCategory.create(suggestions, profile)
+                if suggestions:
+                    SuggestedCategory.create(suggestions, profile)
                 login(request, user)
                 return JsonResponse({'success': True, 'url': '/dashboard/'})
             else:
@@ -262,17 +263,24 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
         return username
 
 
-# Metodo de creacion de perfil apartir del datos de facebook
+# Metodo de creacion de perfil a partir del datos de facebook
 def saveProfileFacebook(backend, user, response, *args, **kwargs):
+    if len(Profile.search(user)) == 0:
+        data = getPublicProfileFacebook(response['id'], response['access_token'])
+        print(data)
+        return redirect('/register/step2')
+
+
+# Metodo de obtencion de datos publicos de facebook
+def getPublicProfileFacebook(id, access_token):
     url = 'https://graph.facebook.com/{0}/?fields=first_name,last_name,gender,locale,picture&access_token={1}'.format(
-        response['id'],
-        response['access_token'],
+        id,
+        access_token,
     )
     request = urllib.request.Request(url)
     result = urllib.request.urlopen(request)
     resulttext = result.read().decode('utf8')
-    data = json.loads(resulttext)
-    print(data)
+    return json.loads(resulttext)
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
