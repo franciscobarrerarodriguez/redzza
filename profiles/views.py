@@ -132,6 +132,7 @@ def createUser(request):
                 if suggestions:
                     SuggestedCategory.create(suggestions, profile)
                 login(request, user)
+                # Se responde con URL, se necesita controlar el borrado de datos en sessionstorage
                 return JsonResponse({'success': True, 'url': '/dashboard/'})
             else:
                 return JsonResponse({'success': False, 'msg': 'User not created'})
