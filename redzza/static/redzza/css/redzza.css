@@ -839,6 +839,26 @@ p {
   color: #C21124;
   font-size: 0.812em;
 }
+@media (max-width: 767px) {
+  .caption h1 {
+    font-size: 4em;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .caption h1 {
+    font-size: 4em;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .caption h1 {
+    font-size: 5em;
+  }
+}
+@media (min-width: 1200px) {
+  .caption h1 {
+    font-size: 5em;
+  }
+}
 /* Banner title and button */
 .caption {
   position: absolute;
@@ -857,9 +877,6 @@ p {
 }
 .caption:after {
   clear: both;
-}
-.caption h1 {
-  font-size: 5em;
 }
 .caption h3 {
   font-weight: normal;
@@ -968,7 +985,9 @@ p {
 .steps-bg img {
   width: 100%;
   padding-top: 20%;
-  padding-right: 60px;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin: auto;
 }
 .section-destacados {
   padding-top: 20px;

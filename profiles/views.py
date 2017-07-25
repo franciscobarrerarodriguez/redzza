@@ -10,7 +10,7 @@ from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
 import json
-import urllib.request
+# import urllib.request
 from categories.models import WantedCategory, SuggestedCategory, Category
 from things.models import Notice
 from django.views.generic.detail import DetailView
