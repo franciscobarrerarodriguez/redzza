@@ -9,7 +9,7 @@ urlpatterns = [
     # URL para comprobar el funcionamiento de las consultas a la base de datos
     url(r'^queries/', views.queries, name='query'),
     # Url - Administracion
-    url(r'^admin/', admin.site.urls, name='admin'),
+    url(r'^admin/', admin.site.urls,),
     # Url - index de la aplicacion, sin sesion
     url(r'^$', views.index, name='index'),
     # Urls - referente a categorias

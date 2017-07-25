@@ -327,7 +327,7 @@ class UserDetailView(DetailView):
         self.object = self.get_object()
         if self.object == self.request.user:
             if request.user.is_staff:
-                return redirect('admin')
+                return redirect('admin:index')
             else:
                 return redirect('dashboard')
         context = self.get_context_data(object=self.object)

@@ -14,7 +14,7 @@ from django.shortcuts import render, redirect
 def index(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
-            return redirect('admin')
+            return redirect('admin:index')
         else:
             return redirect('dashboard')
     return render(request, 'landing.html')
