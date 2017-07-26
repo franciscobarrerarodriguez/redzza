@@ -123,7 +123,7 @@ def createUser(request):
                         WantedCategory.create(element['pk'], profile, 2)
                     if suggesting:
                         SuggestedCategory.create(suggesting, profile)
-                    login(request, user)
+                    login(request, user, 'profiles.backends.EmailBackend')
                     return JsonResponse({'success': True, 'url': '/home/'})
                 else:
                     return JsonResponse({'success': False, 'err': 'User not created'})
