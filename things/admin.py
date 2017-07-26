@@ -12,7 +12,7 @@ class AdminNotice(admin.ModelAdmin):
 
 @admin.register(Product)
 class AdminProduct(admin.ModelAdmin):
-    list_display = ('notice', 'quantity')
+    list_display = ('notice', 'state')
 
 
 @admin.register(Color)
