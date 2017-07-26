@@ -16,7 +16,7 @@ def index(request):
         if request.user.is_staff:
             return redirect('admin:index')
         else:
-            return redirect('dashboard')
+            return redirect('home')
     return render(request, 'landing.html')
 
 

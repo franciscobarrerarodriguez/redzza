@@ -136,7 +136,7 @@ def createUser(request):
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
 
 
-# URL --> LOGIN
+# URL --> AJAX/LOGIN
 # Vista de login por correo electronico y contraseña
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)

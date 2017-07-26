@@ -9,8 +9,6 @@ urlpatterns = [
 
     # Url para el registro en fases, la fase se recibe por parametro de la url
     url(r'register/(?P<step>[\w\-\W]+)/', views.register, name='register'),
-    # Url - inicio de sesion a la aplicacion, se realiza mediante correo y contraseña
-    url(r'^login/', views.loginEmail, name='login'),
     # Url home con sesion
     url(r'^home/', views.home, name='home'),
     # Url dashboard con sesion
@@ -23,6 +21,8 @@ urlpatterns = [
     url(r'^ajax/validateEmail/$', views.validateEmail, name='validateEmail'),
     # Url - creacion de un nuevo usuario
     url(r'^ajax/createUser/', views.createUser, name='createUser'),
+    # Url - inicio de sesion a la aplicacion, se realiza mediante correo y contraseña
+    url(r'^ajax/login/', views.loginEmail, name='login'),
     # Url - Actualiza datos de usuario
     url(r'^ajax/updateUser/$', views.updateUser, name='updateUser'),
     # Url - visitar perfil
