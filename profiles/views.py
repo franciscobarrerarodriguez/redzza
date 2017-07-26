@@ -64,7 +64,6 @@ def dashboard(request):
     context['noticesHave'] = getNoticesUser(user, 1)
     context['noticesSearch'] = getNoticesUser(user, 2)
     print('FALTA MOSTRAR ETIQUETAS')
-    print('FALTA MOSTRAR ICONO')
     return render(request, 'dashboard.html', context)
 
 
@@ -80,7 +79,7 @@ def settings(request):
     context['searchCategories'] = getSearchCategoriesUser(user)
     context['profile'] = get_object_or_404(Profile, user=user)
     print('FALTA CARGA ETIQUETAS')
-    print('FALTA CARGA ICONOS PROPIO Y TODOS')
+    print('FALTA CARGA ICONOS')
     return render(request, 'settings.html', context)
 
 
@@ -366,4 +365,3 @@ class UserDetailView(DetailView):
         return getNoticesUser(user=self.object, kind=2)
 
     print('FALTA MOSTRAR ETIQUETAS')
-    print('FALTA MOSTRAR ICONO')
