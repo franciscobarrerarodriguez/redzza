@@ -65,7 +65,7 @@ $(document).ready(function() {
           place: sessionStorage.getItem('place'),
           i_search: sessionStorage.getItem('i_search'),
           i_have: JSON.stringify(aux),
-          suggesting = $('#textarea1').val(),
+          suggesting: $('#textarea1').val(),
           csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
         },
         success: function (response) {
