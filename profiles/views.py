@@ -40,20 +40,6 @@ def register(request, step):
     }.get(step, redirect('index'))
 
 
-# URL --> LOGIN
-# Vista de login por correo electronico y contraseña
-def loginEmail(request):
-    form = EmailAuthenticationForm(request.POST or None)
-    if form.is_valid():
-        login(request, form.get_user())
-        if form.get_user().is_staff:
-            return JsonResponse({'success': True, 'url': '/admin/'})
-        else:
-            return JsonResponse({'success': True, 'url': '/home/'})
-    else:
-        return JsonResponse({'success': False, 'errors': form.errors})
-
-
 # URL --> HOME
 # Vista home, con sesion
 @login_required
@@ -139,6 +125,20 @@ def createUser(request):
             return JsonResponse({'success': False, 'msg': 'Invalid Email'})
     else:
         return JsonResponse({'success': False, 'msg': 'Incomplete data'})
+
+
+# URL --> LOGIN
+# Vista de login por correo electronico y contraseña
+def loginEmail(request):
+    form = EmailAuthenticationForm(request.POST or None)
+    if form.is_valid():
+        login(request, form.get_user())
+        if form.get_user().is_staff:
+            return JsonResponse({'success': True, 'url': '/admin/'})
+        else:
+            return JsonResponse({'success': True, 'url': '/home/'})
+    else:
+        return JsonResponse({'success': False, 'errors': form.errors})
 
 
 # URL --> AJAX/UPDATEUSER
