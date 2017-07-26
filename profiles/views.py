@@ -267,21 +267,12 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
 # Metodo de creacion de perfil a partir del datos de facebook
 def saveProfileFacebook(backend, user, response, *args, **kwargs):
     if len(Profile.search(user)) == 0:
-        data = getPublicProfileFacebook(response['id'], response['access_token'])
-        print(data)
-        return redirect('/register/step2')
-
-
-# Metodo de obtencion de datos publicos de facebook
-def getPublicProfileFacebook(id, access_token):
-    url = 'https://graph.facebook.com/{0}/?fields=first_name,last_name,gender,locale,picture&access_token={1}'.format(
-        id,
-        access_token,
-    )
-    request = urllib.request.Request(url)
-    result = urllib.request.urlopen(request)
-    resulttext = result.read().decode('utf8')
-    return json.loads(resulttext)
+        profile = Profile.create(6, user)
+        if response['gender'] == 'male':
+            Profile.updateGender(profile, 'M')
+        else:
+            Profile.updateGender(profile, 'F')
+        print('FALTA UPDATE DE AVATAR')
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------

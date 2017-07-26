@@ -158,6 +158,10 @@ MEDIA_URL = '/media/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '752059251636371'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'e185984029f40b557b0b46ae0d6d1e2e'  # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, email, name, first_name, last_name, gender, picture'
+}
 
 LOGIN_URL = '/'
 LOGOUT_URL = 'logout'
@@ -170,10 +174,10 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',
-    'profiles.views.saveProfileFacebook',  # <--- set the path to the function
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    'profiles.views.saveProfileFacebook',
 )
 
 # Backends
