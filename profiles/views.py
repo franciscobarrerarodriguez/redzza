@@ -40,20 +40,6 @@ def register(request, step):
     }.get(step, redirect('index'))
 
 
-# URL --> LOGIN
-# Vista de login por correo electronico y contraseña
-def loginEmail(request):
-    form = EmailAuthenticationForm(request.POST or None)
-    if form.is_valid():
-        login(request, form.get_user())
-        if form.get_user().is_staff:
-            return JsonResponse({'success': True, 'url': '/admin/'})
-        else:
-            return JsonResponse({'success': True, 'url': '/home/'})
-    else:
-        return JsonResponse({'success': False, 'errors': form.errors})
-
-
 # URL --> HOME
 # Vista home, con sesion
 @login_required
@@ -87,7 +73,13 @@ def dashboard(request):
 def settings(request):
     user = request.user
     context = {}
+    context['categories'] = getCategoriesMacro(user)
+    context['places'] = getCities(user)
+    context['haveCategories'] = getHaveCategoriesUser(user)
+    context['searchCategories'] = getSearchCategoriesUser(user)
     context['profile'] = get_object_or_404(Profile, user=user)
+    print('FALTA CARGA ETIQUETAS')
+    print('FALTA CARGA ICONOS')
     return render(request, 'settings.html', context)
 
 
@@ -110,33 +102,51 @@ def validateEmail(request):
 def createUser(request):
     email = request.POST.get('email', None)
     username = generate_random_username(request.POST.get('name', None))
-    name = request.POST.get('name', None)
+    first_name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     password = request.POST.get('password', None)
     place = request.POST.get('place', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
-    suggestions = request.POST.get('suggestions', None)
+    suggesting = request.POST.get('suggesting', None)
 
-    if email and username and name and last_name and password and place and i_search and i_have:
-        if validateStructureEmail(email):
-            user, created = Profile.createUser(email, username, name, last_name, password)
-            if created:
-                profile = Profile.create(place, user)
-                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                for element in json.loads(i_have):
-                    WantedCategory.create(element['pk'], profile, 1)
-                for element in json.loads(i_search):
-                    WantedCategory.create(element['pk'], profile, 2)
-                SuggestedCategory.create(suggestions, profile)
-                login(request, user)
-                return JsonResponse({'success': True, 'url': '/dashboard/'})
+    if email and username and first_name and last_name and password and place and i_search and i_have:
+        if Profile.searchEmail(email) is False:
+            if validateStructureEmail(email):
+                user, created = Profile.createUser(email, username, first_name, last_name, password)
+                if created:
+                    profile = Profile.create(place, user)
+                    # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                    for element in json.loads(i_have):
+                        WantedCategory.create(element['pk'], profile, 1)
+                    for element in json.loads(i_search):
+                        WantedCategory.create(element['pk'], profile, 2)
+                    if suggesting:
+                        SuggestedCategory.create(suggesting, profile)
+                    login(request, user, 'profiles.backends.EmailBackend')
+                    return JsonResponse({'success': True, 'url': '/home/'})
+                else:
+                    return JsonResponse({'success': False, 'err': 'User not created'})
             else:
-                return JsonResponse({'success': False, 'err': 'User not created'})
+                return JsonResponse({'success': False, 'err': 'Invalid Email'})
         else:
-            return JsonResponse({'success': False, 'err': 'Invalid Email'})
+            return JsonResponse({'success': False, 'err': 'email-exists'})
     else:
         return JsonResponse({'success': False, 'err': 'Incomplete data'})
+
+
+# URL --> AJAX/LOGIN
+# Vista de login por correo electronico y contraseña
+def loginEmail(request):
+    form = EmailAuthenticationForm(request.POST or None)
+    if form.is_valid():
+        login(request, form.get_user())
+        if form.get_user().is_staff:
+            return JsonResponse({'success': True, 'url': '/admin/'})
+        else:
+            return JsonResponse({'success': True, 'url': '/home/'})
+    else:
+        return JsonResponse({'success': False, 'err': form.errors})
 
 
 # URL --> AJAX/UPDATEUSER
@@ -145,7 +155,7 @@ def updateUser(request):
     user = request.user
     profile = get_object_or_404(Profile, user=user)
     username = request.POST.get('username', None)
-    name = request.POST.get('name', None)
+    first_name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     email = request.POST.get('email', None)
     password = request.POST.get('password', None)
@@ -170,11 +180,11 @@ def updateUser(request):
             user.save()
             return JsonResponse({'success': True, 'msg': 'username-update'})
         else:
-            return JsonResponse({'success': False, 'msg': 'username-exists'})
-    elif name:
-        user.first_name = name
+            return JsonResponse({'success': False, 'err': 'username-exists'})
+    elif first_name:
+        user.first_name = first_name
         user.save()
-        return JsonResponse({'success': True, 'msg': 'name-update'})
+        return JsonResponse({'success': True, 'msg': 'first_name-update'})
     elif last_name:
         user.last_name = last_name
         user.save()
@@ -186,9 +196,9 @@ def updateUser(request):
                 user.save()
                 return JsonResponse({'success': True, 'msg': 'email-update'})
             else:
-                return JsonResponse({'success': False, 'msg': 'email-invalid'})
+                return JsonResponse({'success': False, 'err': 'email-invalid'})
         else:
-            return JsonResponse({'success': False, 'msg': 'email-exists'})
+            return JsonResponse({'success': False, 'err': 'email-exists'})
     elif password:
         user.set_password(password)
         user.save()
@@ -234,7 +244,7 @@ def updateUser(request):
         print('FALTA UPDATE DE CATEGORIAS')
         return JsonResponse({'success': True, 'msg': 'i_have-update'})
     else:
-        return JsonResponse({'success': False, 'msg': 'nothing-update'})
+        return JsonResponse({'success': False, 'err': 'nothing-update'})
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
@@ -259,6 +269,17 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
         return Profile.generate_random_username(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
     except User.DoesNotExist:
         return username
+
+
+# Metodo de creacion de perfil a partir del datos de facebook
+def saveProfileFacebook(backend, user, response, *args, **kwargs):
+    if len(Profile.search(user)) == 0:
+        profile = Profile.create(6, user)
+        if response['gender'] == 'male':
+            Profile.updateGender(profile, 'M')
+        else:
+            Profile.updateGender(profile, 'F')
+        print('FALTA UPDATE DE AVATAR')
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
@@ -312,7 +333,10 @@ class UserDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object == self.request.user:
-            return redirect('dashboard')
+            if request.user.is_staff:
+                return redirect('admin:index')
+            else:
+                return redirect('dashboard')
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 

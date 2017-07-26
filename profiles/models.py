@@ -15,6 +15,7 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
     def getCities():
         return Place.objects.exclude(pattern__isnull=True)
 
