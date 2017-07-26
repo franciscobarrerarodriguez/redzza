@@ -125,7 +125,7 @@ def createUser(request):
                     if suggesting:
                         SuggestedCategory.create(suggesting, profile)
                     login(request, user)
-                    return JsonResponse({'success': True, 'url': '/dashboard/'})
+                    return JsonResponse({'success': True, 'url': '/home/'})
                 else:
                     return JsonResponse({'success': False, 'err': 'User not created'})
             else:
