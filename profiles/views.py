@@ -18,6 +18,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.utils import timezone
+from redzza.decorators import require_AJAX
 # Create your views here.
 
 
@@ -89,6 +90,7 @@ def settings(request):
 # Vista para la validacion del correo que se intenta registrar
 # True --> Existe el correo, NO se puede usar
 # False --> No existe el correo, se puede usar
+@require_AJAX
 def validateEmail(request):
     email = request.GET.get('email', None)
     data = {
@@ -99,6 +101,7 @@ def validateEmail(request):
 
 # URL --> AJAX/CREATEUSER
 # Vista para la creacion de un usuario
+@require_AJAX
 def createUser(request):
     email = request.POST.get('email', None)
     username = generate_random_username(request.POST.get('name', None))
@@ -137,6 +140,7 @@ def createUser(request):
 
 # URL --> AJAX/LOGIN
 # Vista de login por correo electronico y contraseña
+@require_AJAX
 def loginEmail(request):
     form = EmailAuthenticationForm(request.POST or None)
     if form.is_valid():
@@ -151,6 +155,7 @@ def loginEmail(request):
 
 # URL --> AJAX/UPDATEUSER
 # Vista de modificacion de informacion del usuario
+@require_AJAX
 def updateUser(request):
     user = request.user
     profile = get_object_or_404(Profile, user=user)

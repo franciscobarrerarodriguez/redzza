@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from .models import Notice, CityNotice, CategoryTrade, Product, Color, Service, Image, Video
 from profiles.models import Profile, Place
 from categories.models import Category
+from redzza.decorators import require_AJAX
 import json
 from django.shortcuts import get_object_or_404
 # Create your views here.
@@ -24,6 +25,7 @@ def post(request):
 # URL --> AJAX/NEWPOST
 # Vista ajax que recibe nueva publicacion de cosa
 @login_required
+@require_AJAX
 def newPost(request):
     user = request.user
     profile = get_object_or_404(Profile, user=user)
