@@ -105,23 +105,26 @@ def createUser(request):
     suggesting = request.POST.get('suggesting', None)
 
     if email and username and first_name and last_name and password and place and i_search and i_have:
-        if validateStructureEmail(email):
-            user, created = Profile.createUser(email, username, first_name, last_name, password)
-            if created:
-                profile = Profile.create(place, user)
-                # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                for element in json.loads(i_have):
-                    WantedCategory.create(element['pk'], profile, 1)
-                for element in json.loads(i_search):
-                    WantedCategory.create(element['pk'], profile, 2)
-                if suggesting:
-                    SuggestedCategory.create(suggesting, profile)
-                login(request, user)
-                return JsonResponse({'success': True, 'url': '/dashboard/'})
+        if Profile.searchEmail(email) is False:
+            if validateStructureEmail(email):
+                user, created = Profile.createUser(email, username, first_name, last_name, password)
+                if created:
+                    profile = Profile.create(place, user)
+                    # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                    for element in json.loads(i_have):
+                        WantedCategory.create(element['pk'], profile, 1)
+                    for element in json.loads(i_search):
+                        WantedCategory.create(element['pk'], profile, 2)
+                    if suggesting:
+                        SuggestedCategory.create(suggesting, profile)
+                    login(request, user)
+                    return JsonResponse({'success': True, 'url': '/dashboard/'})
+                else:
+                    return JsonResponse({'success': False, 'msg': 'User not created'})
             else:
-                return JsonResponse({'success': False, 'msg': 'User not created'})
+                return JsonResponse({'success': False, 'msg': 'Invalid Email'})
         else:
-            return JsonResponse({'success': False, 'msg': 'Invalid Email'})
+            return JsonResponse({'success': False, 'msg': 'email-exists'})
     else:
         return JsonResponse({'success': False, 'msg': 'Incomplete data'})
 

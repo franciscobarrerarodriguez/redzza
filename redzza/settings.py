@@ -182,10 +182,10 @@ SOCIAL_AUTH_PIPELINE = (
 
 # Backends
 AUTHENTICATION_BACKENDS = (
+    # Agregado de backend, para la autenticacion con correo y contrasena
+    'profiles.backends.EmailBackend',
     # Backend inicio de sesion mediante username para administrador
     'django.contrib.auth.backends.ModelBackend',
     # Agregado backend, para la autenticacion mediante facebook
     'social_core.backends.facebook.FacebookOAuth2',
-    # Agregado de backend, para la autenticacion con correo y contrasena
-    'profiles.backends.EmailBackend',
 )
