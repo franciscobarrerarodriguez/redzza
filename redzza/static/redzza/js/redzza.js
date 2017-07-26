@@ -43,7 +43,7 @@ $(document).ready(function () {
       if (response.success) {
         window.location.href = response.url;
       }else{
-        document.getElementById('login-response').innerHTML = `<p class="danger-alert">${response.errors.__all__[0]}</p>`
+        document.getElementById('login-response').innerHTML = `<p class="danger-alert">${response.err.__all__[0]}</p>`
       }
     });
   });

@@ -120,13 +120,13 @@ def createUser(request):
                     login(request, user)
                     return JsonResponse({'success': True, 'url': '/dashboard/'})
                 else:
-                    return JsonResponse({'success': False, 'msg': 'User not created'})
+                    return JsonResponse({'success': False, 'err': 'User not created'})
             else:
-                return JsonResponse({'success': False, 'msg': 'Invalid Email'})
+                return JsonResponse({'success': False, 'err': 'Invalid Email'})
         else:
-            return JsonResponse({'success': False, 'msg': 'email-exists'})
+            return JsonResponse({'success': False, 'err': 'email-exists'})
     else:
-        return JsonResponse({'success': False, 'msg': 'Incomplete data'})
+        return JsonResponse({'success': False, 'err': 'Incomplete data'})
 
 
 # URL --> LOGIN
@@ -140,7 +140,7 @@ def loginEmail(request):
         else:
             return JsonResponse({'success': True, 'url': '/home/'})
     else:
-        return JsonResponse({'success': False, 'errors': form.errors})
+        return JsonResponse({'success': False, 'err': form.errors})
 
 
 # URL --> AJAX/UPDATEUSER
@@ -174,7 +174,7 @@ def updateUser(request):
             user.save()
             return JsonResponse({'success': True, 'msg': 'username-update'})
         else:
-            return JsonResponse({'success': False, 'msg': 'username-exists'})
+            return JsonResponse({'success': False, 'err': 'username-exists'})
     elif name:
         user.first_name = name
         user.save()
@@ -190,9 +190,9 @@ def updateUser(request):
                 user.save()
                 return JsonResponse({'success': True, 'msg': 'email-update'})
             else:
-                return JsonResponse({'success': False, 'msg': 'email-invalid'})
+                return JsonResponse({'success': False, 'err': 'email-invalid'})
         else:
-            return JsonResponse({'success': False, 'msg': 'email-exists'})
+            return JsonResponse({'success': False, 'err': 'email-exists'})
     elif password:
         user.set_password(password)
         user.save()
@@ -238,7 +238,7 @@ def updateUser(request):
         print('FALTA UPDATE DE CATEGORIAS')
         return JsonResponse({'success': True, 'msg': 'i_have-update'})
     else:
-        return JsonResponse({'success': False, 'msg': 'nothing-update'})
+        return JsonResponse({'success': False, 'err': 'nothing-update'})
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
