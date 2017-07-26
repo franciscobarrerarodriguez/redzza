@@ -117,7 +117,7 @@ def createUser(request):
     place = request.POST.get('place', None)
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
-    suggestions = request.POST.get('suggestions', None)
+    suggesting = request.POST.get('suggesting', None)
 
     if email and username and first_name and last_name and password and place and i_search and i_have:
         if validateStructureEmail(email):
@@ -129,8 +129,8 @@ def createUser(request):
                     WantedCategory.create(element['pk'], profile, 1)
                 for element in json.loads(i_search):
                     WantedCategory.create(element['pk'], profile, 2)
-                if suggestions:
-                    SuggestedCategory.create(suggestions, profile)
+                if suggesting:
+                    SuggestedCategory.create(suggesting, profile)
                 login(request, user)
                 # Se responde con URL, se necesita controlar el borrado de datos en sessionstorage
                 return JsonResponse({'success': True, 'url': '/dashboard/'})
