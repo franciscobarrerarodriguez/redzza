@@ -285,6 +285,7 @@ def saveProfileFacebook(backend, user, response, *args, **kwargs):
         else:
             Profile.updateGender(profile, 'F')
         print('FALTA UPDATE DE AVATAR')
+        redirect('register/step2')
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
