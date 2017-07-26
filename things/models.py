@@ -16,21 +16,22 @@ class Notice(models.Model):
     category = models.ForeignKey(Category, default="")
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True)
+    # si recibe u ofrece dinero a cambio
+    money = models.BooleanField(default=True)
+    # oferta preferente para el intercambio
+    offer = models.ForeignKey("self", blank=True, null=True)
     # KIND: 1 --> propio | 2 --> deseado
     kind = models.IntegerField(default=1)
     visibility = models.BooleanField(default=True)
+    # urgente un tiempo 24 horas
+    urgency = models.BooleanField(default=False)
+    # la categoria que se envia es la subcategoria, en caso de que no se haya seleccionado se envia la macro
 
-    def __str__(self):
-        return self.title
-
-    # la categoria que se envio es la subcategoria, en caso de que no se haya seleccionado se envia la macro
-
-    def create(profile, category, title, description, kind):
-        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind)
+    def create(profile, category, title, description, kind, urgency):
+        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency)
         notice.save()
         return notice
 
-    # KIND: 1 --> propio; 2 --> deseado
     @staticmethod
     def getNotice(profile, kind):
         return Notice.objects.filter(profile=profile, kind=kind)
@@ -42,6 +43,8 @@ class Notice(models.Model):
 
     def searchCategory(title, category, city):
         return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category).order_by('notice__date')
+
+# clase debil
 
 
 class CityNotice(models.Model):
@@ -65,7 +68,7 @@ class CityNotice(models.Model):
 
 
 class CategoryTrade(models.Model):
-    # categorias por las que se quiere intercambiar el bien o servicio
+    # categorias por las que se quiere intercambiar el bien o servicio, las propias del usuario. 
     category = models.ForeignKey(Category)
     notice = models.ForeignKey(Notice)
 
@@ -77,14 +80,15 @@ class CategoryTrade(models.Model):
 
 class Product(models.Model):
     notice = models.OneToOneField(Notice, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    # quantity = models.PositiveIntegerField()
     STATE = (
         ('N', 'Nuevo'),
         ('U', 'Usado'),
         ('E', 'Por Encargo'),
         # bring back
         ('B', 'Restaurado'),
-        ('R', 'Renovado'),
+        ('R', 'Reparado'),
+        ('M', 'Mejorado'),
         ('C', 'Cualquiera'),
     )
     state = models.CharField(max_length=1, choices=STATE, default='N')
@@ -95,10 +99,10 @@ class Product(models.Model):
         ('R', 'Redzza service'),
     )
     delivery = models.CharField(max_length=1, choices=DELIVERY, default='C')
-    size = models.PositiveIntegerField(blank=True)
-    measure = models.CharField(validators=[validate_comma_separated_integer_list], max_length=20, blank=True)
+    # size = models.PositiveIntegerField(blank=True)
+    # measure = models.CharField(validators=[validate_comma_separated_integer_list], max_length=20, blank=True)
     # a pedido
-    order = models.BooleanField(default=False)
+    # order = models.BooleanField(default=False)
 
     def __str__(self):
         return self.notice
@@ -153,11 +157,18 @@ class Image(models.Model):
 
 
 class Video(models.Model):
+    # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to='videos')
+    url = models.CharField(max_length=100, default="")
 
     def create(notice, video):
         video = Video(notice=notice, video=video)
+        video.save()
+        return video
+
+    def create(notice, url):
+        video = Video(notice=notice, url=url)
         video.save()
         return video
 
