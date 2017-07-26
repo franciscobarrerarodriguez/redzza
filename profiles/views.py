@@ -64,6 +64,7 @@ def dashboard(request):
     context['noticesHave'] = getNoticesUser(user, 1)
     context['noticesSearch'] = getNoticesUser(user, 2)
     print('FALTA MOSTRAR ETIQUETAS')
+    print('FALTA MOSTRAR ICONO')
     return render(request, 'dashboard.html', context)
 
 
@@ -73,7 +74,13 @@ def dashboard(request):
 def settings(request):
     user = request.user
     context = {}
+    context['categories'] = getCategoriesMacro(user)
+    context['places'] = getCities(user)
+    context['haveCategories'] = getHaveCategoriesUser(user)
+    context['searchCategories'] = getSearchCategoriesUser(user)
     context['profile'] = get_object_or_404(Profile, user=user)
+    print('FALTA CARGA ETIQUETAS')
+    print('FALTA CARGA ICONOS PROPIO Y TODOS')
     return render(request, 'settings.html', context)
 
 
@@ -149,7 +156,7 @@ def updateUser(request):
     user = request.user
     profile = get_object_or_404(Profile, user=user)
     username = request.POST.get('username', None)
-    name = request.POST.get('name', None)
+    first_name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
     email = request.POST.get('email', None)
     password = request.POST.get('password', None)
@@ -175,10 +182,10 @@ def updateUser(request):
             return JsonResponse({'success': True, 'msg': 'username-update'})
         else:
             return JsonResponse({'success': False, 'err': 'username-exists'})
-    elif name:
-        user.first_name = name
+    elif first_name:
+        user.first_name = first_name
         user.save()
-        return JsonResponse({'success': True, 'msg': 'name-update'})
+        return JsonResponse({'success': True, 'msg': 'first_name-update'})
     elif last_name:
         user.last_name = last_name
         user.save()
@@ -359,3 +366,4 @@ class UserDetailView(DetailView):
         return getNoticesUser(user=self.object, kind=2)
 
     print('FALTA MOSTRAR ETIQUETAS')
+    print('FALTA MOSTRAR ICONO')
