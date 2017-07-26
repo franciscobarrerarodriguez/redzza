@@ -49,8 +49,11 @@
 
           <div class="row">
             <div class="input-field col s12">
-              <select required="" aria-required="true" id="places" data-url="{% url 'getPlaces' %}">
+              <select required="" aria-required="true" id="places" data-url="">
                 <option value="" disabled selected>Escoge un lugar</option>
+                {% for place in places %}
+                <option value="{{ place.pk }}">{{ place.name | capfirst }}</option>
+                {% endfor %}
               </select>
               <label>Ubicación</label>
             </div>

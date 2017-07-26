@@ -12,6 +12,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
     def getCategories():
         return Category.objects.filter(pattern__isnull=True).order_by('name')
 
