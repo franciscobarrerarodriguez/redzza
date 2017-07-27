@@ -107,8 +107,8 @@ def validateEmail(request):
 def createUser(request):
     userFacebook = request.POST.get('userFacebook', None)
     email = request.POST.get('email', None)
-    username = generate_random_username(request.POST.get('fisrt_name', None))
-    first_name = request.POST.get('fisrt_name', None)
+    username = generate_random_username(request.POST.get('first_name', None))
+    first_name = request.POST.get('first_name', None)
     last_name = request.POST.get('last_name', None)
     password = request.POST.get('password', None)
     place = request.POST.get('place', None)
