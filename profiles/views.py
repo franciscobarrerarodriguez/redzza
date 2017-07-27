@@ -5,7 +5,8 @@ from string import ascii_lowercase, digits
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 from .models import Profile, Place, Follow
 from .forms import EmailAuthenticationForm
 from django.shortcuts import get_object_or_404
@@ -29,11 +30,12 @@ from redzza.decorators import require_AJAX
 # Paso 1 --> completar perfil
 # Paso 2 --> que busco categorias
 # Paso 3 --> que tengo categorias
-def register(request, step):
-    user = request.user
+def register(request, step, userFacebook=None):
+    print(step)
+    print(type(userFacebook))
     context = {}
-    context['categories'] = getCategoriesMacro(user)
-    context['places'] = getCities(user)
+    context['categories'] = getCategoriesMacro()
+    context['places'] = getCities()
     return {
         'step1': render(request, 'registration/registration_1.html', context),
         'step2': render(request, 'registration/registration_2.html', context),
@@ -74,8 +76,8 @@ def dashboard(request):
 def settings(request):
     user = request.user
     context = {}
-    context['categories'] = getCategoriesMacro(user)
-    context['places'] = getCities(user)
+    context['categories'] = getCategoriesMacro()
+    context['places'] = getCities()
     context['haveCategories'] = getHaveCategoriesUser(user)
     context['searchCategories'] = getSearchCategoriesUser(user)
     context['profile'] = get_object_or_404(Profile, user=user)
@@ -278,25 +280,25 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
 
 # Metodo de creacion de perfil a partir del datos de facebook
 def saveProfileFacebook(backend, user, response, *args, **kwargs):
-    if len(Profile.search(user)) == 0:
-        profile = Profile.create(6, user)
-        if response['gender'] == 'male':
-            Profile.updateGender(profile, 'M')
-        else:
-            Profile.updateGender(profile, 'F')
-        print('FALTA UPDATE DE AVATAR')
-        redirect('register/step2')
+    # if len(Profile.search(user)) == 0:
+        # profile = Profile.create(6, user)
+        # if response['gender'] == 'male':
+        #     Profile.updateGender(profile, 'M')
+        # else:
+        #     Profile.updateGender(profile, 'F')
+        # print('FALTA UPDATE DE AVATAR')
+    return HttpResponseRedirect(reverse('register_facebook', kwargs={'step': 'step2', 'userFacebook': user}))
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
 
 # Metodo que retorna todas las categorias macro
-def getCategoriesMacro(user):
+def getCategoriesMacro():
     return Category.getCategories()
 
 
 # Metodo que retorna todas las categorias macro
-def getCities(user):
+def getCities():
     return Place.getCities()
 
 

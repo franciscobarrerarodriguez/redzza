@@ -7,8 +7,10 @@ from . import views
 
 urlpatterns = [
 
+    # Url para el registro en fases, la fase se recibe por parametro de la url, registro para facebook
+    url(r'^register/(?P<userFacebook>[\w\-\W]+)/(?P<step>[\w\-\W]+)/', views.register, name='register_facebook'),
     # Url para el registro en fases, la fase se recibe por parametro de la url
-    url(r'register/(?P<step>[\w\-\W]+)/', views.register, name='register'),
+    url(r'^register/(?P<step>[\w\-\W]+)/', views.register, name='register'),
     # Url home con sesion
     url(r'^home/', views.home, name='home'),
     # Url dashboard con sesion
