@@ -115,10 +115,9 @@ def createUser(request):
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
     suggesting = request.POST.get('suggesting', None)
-    print(userFacebook)
+
     if userFacebook and i_search and i_have:
         user = getUser(userFacebook)
-        print(user.__dict__)
         profile = getProfile(user)
         # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
         for element in json.loads(i_have):
