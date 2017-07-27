@@ -11,7 +11,7 @@ $(document).ready(function() {
     var password2 = $("input[name=password_2]").val();
         if (password1 == password2) {
           if (password1.length >= 6) {
-            sessionStorage.setItem('name', $("input[name='name']").val()); // Name
+            sessionStorage.setItem('first_name', $("input[name='name']").val()); // Name
             sessionStorage.setItem('last_name', $("input[name='last_name']").val()); // Lastname
             sessionStorage.setItem('password', password1); // Password
             sessionStorage.setItem('place', $('#places').find(":selected").val()); // Place
@@ -60,7 +60,7 @@ $(document).ready(function() {
         data: {
           userFacebook: sessionStorage.getItem("userFacebook"),
           email: sessionStorage.getItem("email"),
-          name: sessionStorage.getItem("name"),
+          first_name: sessionStorage.getItem("first_name"),
           last_name: sessionStorage.getItem("last_name"),
           password: sessionStorage.getItem("password"),
           place: sessionStorage.getItem('place'),
