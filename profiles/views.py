@@ -31,11 +31,11 @@ from redzza.decorators import require_AJAX
 # Paso 2 --> que busco categorias
 # Paso 3 --> que tengo categorias
 def register(request, step, userFacebook=None):
-    print(step)
-    print(type(userFacebook))
     context = {}
     context['categories'] = getCategoriesMacro()
     context['places'] = getCities()
+    if userFacebook:
+        context['userFacebook'] = userFacebook
     return {
         'step1': render(request, 'registration/registration_1.html', context),
         'step2': render(request, 'registration/registration_2.html', context),
@@ -49,7 +49,7 @@ def register(request, step, userFacebook=None):
 def home(request):
     user = request.user
     context = {}
-    context['profile'] = get_object_or_404(Profile, user=user)
+    context['profile'] = getProfile(user)
     return render(request, 'home.html', context)
 
 
@@ -59,7 +59,7 @@ def home(request):
 def dashboard(request):
     user = request.user
     context = {}
-    context['profile'] = get_object_or_404(Profile, user=user)
+    context['profile'] = getProfile(user)
     context['duration'] = getDurationUser(user)
     context['numberFollowers'] = getNumberFollowersUser(user)
     context['haveCategories'] = getHaveCategoriesUser(user)
@@ -80,7 +80,7 @@ def settings(request):
     context['places'] = getCities()
     context['haveCategories'] = getHaveCategoriesUser(user)
     context['searchCategories'] = getSearchCategoriesUser(user)
-    context['profile'] = get_object_or_404(Profile, user=user)
+    context['profile'] = getProfile(user)
     print('FALTA CARGA ETIQUETAS')
     print('FALTA CARGA ICONOS')
     return render(request, 'settings.html', context)
@@ -105,6 +105,7 @@ def validateEmail(request):
 # Vista para la creacion de un usuario
 @require_AJAX
 def createUser(request):
+    userFacebook = request.POST.get('userFacebook', None)
     email = request.POST.get('email', None)
     username = generate_random_username(request.POST.get('name', None))
     first_name = request.POST.get('name', None)
@@ -114,6 +115,20 @@ def createUser(request):
     i_search = request.POST.get('i_search', None)
     i_have = request.POST.get('i_have', None)
     suggesting = request.POST.get('suggesting', None)
+    print(userFacebook)
+    if userFacebook and i_search and i_have:
+        user = getUser(userFacebook)
+        print(user.__dict__)
+        profile = getProfile(user)
+        # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+        for element in json.loads(i_have):
+            WantedCategory.create(element['pk'], profile, 1)
+        for element in json.loads(i_search):
+            WantedCategory.create(element['pk'], profile, 2)
+        if suggesting:
+            SuggestedCategory.create(suggesting, profile)
+        login(request, user, 'social_core.backends.facebook.FacebookOAuth2')
+        return JsonResponse({'success': True, 'url': '/home/'})
 
     if email and username and first_name and last_name and password and place and i_search and i_have:
         if Profile.searchEmail(email) is False:
@@ -160,7 +175,7 @@ def loginEmail(request):
 @require_AJAX
 def updateUser(request):
     user = request.user
-    profile = get_object_or_404(Profile, user=user)
+    profile = getProfile(user)
     username = request.POST.get('username', None)
     first_name = request.POST.get('name', None)
     last_name = request.POST.get('last_name', None)
@@ -280,14 +295,14 @@ def generate_random_username(name, length=8, chars=ascii_lowercase + digits, spl
 
 # Metodo de creacion de perfil a partir del datos de facebook
 def saveProfileFacebook(backend, user, response, *args, **kwargs):
-    # if len(Profile.search(user)) == 0:
-        # profile = Profile.create(6, user)
-        # if response['gender'] == 'male':
-        #     Profile.updateGender(profile, 'M')
-        # else:
-        #     Profile.updateGender(profile, 'F')
-        # print('FALTA UPDATE DE AVATAR')
-    return HttpResponseRedirect(reverse('register_facebook', kwargs={'step': 'step2', 'userFacebook': user}))
+    if len(Profile.search(user)) == 0:
+        profile = Profile.create(6, user)
+        if response['gender'] == 'male':
+            Profile.updateGender(profile, 'M')
+        else:
+            Profile.updateGender(profile, 'F')
+        print('FALTA UPDATE DE AVATAR')
+        return HttpResponseRedirect(reverse('register_facebook', kwargs={'step': 'step2', 'userFacebook': user}))
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
@@ -310,24 +325,34 @@ def getDurationUser(user):
 
 # Metodo que retorna el numero de seguidores del usuario ingresado por parametro
 def getNumberFollowersUser(user):
-    return len(Follow.searchFollowers(get_object_or_404(Profile, user=user)))
+    return len(Follow.searchFollowers(getProfile(user)))
 
 
 # Metodo que retorna las categorias que ofrece el usuario ingresado por parametro
 # i_have(Ofrezco) --> 1
 def getHaveCategoriesUser(user):
-    return WantedCategory.searchHave(get_object_or_404(Profile, user=user))
+    return WantedCategory.searchHave(getProfile(user))
 
 
 # Metodo que retorna las categorias que busca el usuario ingresado por parametro
 # i_search(Busco) --> 2
 def getSearchCategoriesUser(user):
-    return WantedCategory.searchOffer(get_object_or_404(Profile, user=user))
+    return WantedCategory.searchOffer(getProfile(user))
 
 
 # Metodo que retorna las publicaciones del usuario ingresado por parametro
 def getNoticesUser(user, kind):
-    return Notice.getNotice(get_object_or_404(Profile, user=user), kind)
+    return Notice.getNotice(getProfile(user), kind)
+
+
+# Metodo de obtencion de usuario
+def getUser(username):
+    return get_object_or_404(User, username=username)
+
+
+# Metodo de obtencion de perfil de usuario
+def getProfile(user):
+    return get_object_or_404(Profile, user=user)
 
 
 # Vista basada en clase generica, retorna en contexto los datos de usuario solicitado por url
@@ -349,10 +374,10 @@ class UserDetailView(DetailView):
         return self.render_to_response(context)
 
     def getProfileCurrent(self):
-        return get_object_or_404(Profile, user=self.request.user)
+        return getProfile(self.request.user)
 
     def getProfileSlug(self):
-        return get_object_or_404(Profile, user=self.object)
+        return getProfile(self.object)
 
     def getDuration(self):
         return getDurationUser(user=self.object)

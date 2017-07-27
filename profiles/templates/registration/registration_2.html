@@ -8,6 +8,11 @@
 <!-- Animate on scroll CDN JS -->
 <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
 <script src="{% static 'redzza/js/registration.js' %}" charset="utf-8"></script>
+{% if userFacebook %}
+   <script>
+      sessionStorage.setItem('userFacebook', '{{userFacebook}}');
+   </script>
+{% endif %}
 {% endblock%}
 
 {% block content %}
@@ -19,7 +24,7 @@
     <div class="col s12 m6 l6 valign-wrapper">
       <!-- form-container -->
       <div class="form-container">
-        <p>¿Estás interesado en alguna categoría? Escoge al menos una.</p>
+        <p>¿Estás interesado en alguna categoría? Escoge al menos una. {{userFacebook}}</p>
         <br>
         <form name="myform" id="form_profile_info_2" data-url="{% url 'register' step='step3' %}" novalidate>
           <div id="categories">

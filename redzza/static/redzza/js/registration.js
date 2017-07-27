@@ -58,6 +58,7 @@ $(document).ready(function() {
         type: "POST",
         url: $(this).attr("data-url"),
         data: {
+          userFacebook: sessionStorage.getItem("userFacebook"),
           email: sessionStorage.getItem("email"),
           name: sessionStorage.getItem("name"),
           last_name: sessionStorage.getItem("last_name"),
