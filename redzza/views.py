@@ -32,6 +32,8 @@ def queries(request):
     # query = Notice.create(get_object_or_404(Profile, gender='F'), Category.objects.get(id=60), "carro renault 4", "mi carrito de siempre", 1)
     # query = Notice.searchTitle("arro", Place.searchCity(3))
     notice = get_object_or_404(Notice, title="carro renault 4")
-    query = Image.create(notice, notice.title, "/home/diego/Documents/redzza/redzza/iconos/icono.png")
-    return HttpResponse(query)
+    query = Image.create(notice, "/home/diego/Documents/redzza/redzza/media/avatars/linea.png")
+    # para acceder a la url de la imagen se accede a Image.image.name
+    return HttpResponse(query.image.name)
+    # dir atributos de la clase
     pass

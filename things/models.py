@@ -145,18 +145,19 @@ class Service(models.Model):
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to='productos')
-    title = models.CharField(max_length=60, default="")
 
-    def create(notice, title, pathimage):
-        image = Image(notice=notice, title=title)
+    def create(notice, pathimage):
+        image = Image(notice=notice)
+        # se abre el archivo local en binario
         f = open(pathimage, 'rb')
-        image.image.save(title + '.jpg', File(f))
-        return "imagen guardada"
+        # se guarda el archivo con extension
+        image.image.save(notice.title + '.jpg', File(f))
+        return image
 
-    def createGoogle(notice, title, pathimage):
-        image = Image(notice=notice, title=title, image=pathimage)
+    def createGoogle(notice, pathimage):
+        image = Image(notice=notice, image=pathimage)
         image.save()
-        return "imagen guardada"
+        return image
 
 
 class Video(models.Model):
