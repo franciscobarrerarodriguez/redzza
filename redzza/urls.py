@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.views.static import serve
 from . import views
 from . import settings
-
+from django.conf.urls.static import static
 
 urlpatterns = [
     # URL para comprobar el funcionamiento de las consultas a la base de datos

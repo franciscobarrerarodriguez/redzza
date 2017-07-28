@@ -153,7 +153,7 @@ STATICFILES_DIRS = (
 )
 
 # Docs, pictures and more
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '752059251636371'  # App ID

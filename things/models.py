@@ -8,7 +8,6 @@ from django.core.validators import validate_comma_separated_integer_list
 from django.core.files import File
 # Create your models here.
 
-
 class Notice(models.Model):
     # Aviso de publicacion de un nuevo producto o servicio
     date = models.DateField(default=datetime.now)
@@ -150,10 +149,14 @@ class Image(models.Model):
 
     def create(notice, title, pathimage):
         image = Image(notice=notice, title=title)
-        f = open(pathimage)
+        f = open(pathimage, 'rb')
         image.image.save(title + '.jpg', File(f))
+        return "imagen guardada"
+
+    def createGoogle(notice, title, pathimage):
+        image = Image(notice=notice, title=title, image=pathimage)
         image.save()
-        return image
+        return "imagen guardada"
 
 
 class Video(models.Model):

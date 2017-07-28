@@ -2,11 +2,11 @@
 
 from django.shortcuts import render, redirect
 # Create your views here.
-# from categories.models import WantedCategory, Category
-# from profiles.models import Profile, Label, LabelProfile, Place, Follow
-# from things.models import Notice, Image
-# from django.http import HttpResponse
-# from django.shortcuts import get_object_or_404
+from categories.models import WantedCategory, Category
+from profiles.models import Profile, Label, LabelProfile, Place, Follow
+from things.models import Notice, Image
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 # Vista del index de la aplicacion, sin sesion
 
@@ -31,7 +31,7 @@ def queries(request):
     #    query = LabelProfile.delete(get_object_or_404(Label, id=1), get_object_or_404(Profile, gender='F'))
     # query = Notice.create(get_object_or_404(Profile, gender='F'), Category.objects.get(id=60), "carro renault 4", "mi carrito de siempre", 1)
     # query = Notice.searchTitle("arro", Place.searchCity(3))
-    # notice = Notice.searchTitle("arro", Place.searchCity(3))
-    # query = Image.create(notice, notice.title, "/home/dsierra/Imágenes/gif.png")
-    # return HttpResponse(notice)
+    notice = get_object_or_404(Notice, title="carro renault 4")
+    query = Image.create(notice, notice.title, "/home/diego/Documents/redzza/redzza/iconos/icono.png")
+    return HttpResponse(query)
     pass
