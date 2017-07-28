@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from categories.models import WantedCategory, Category
 from profiles.models import Profile, Label, LabelProfile, Place, Follow
-from things.models import Notice, Image
+from things.models import Notice, Image, Video
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
@@ -32,8 +32,10 @@ def queries(request):
     # query = Notice.create(get_object_or_404(Profile, gender='F'), Category.objects.get(id=60), "carro renault 4", "mi carrito de siempre", 1)
     # query = Notice.searchTitle("arro", Place.searchCity(3))
     notice = get_object_or_404(Notice, title="carro renault 4")
-    query = Image.create(notice, "/home/diego/Documents/redzza/redzza/media/avatars/linea.png")
+    # query = Image.create(notice, "/home/diego/Documents/redzza/redzza/media/avatars/linea.png")
+    query = Video.create(notice, "/home/diego/Documents/redzza/redzza/media/videos/Gorillaz.mp4")
     # para acceder a la url de la imagen se accede a Image.image.name
-    return HttpResponse(query.image.name)
+    return HttpResponse(query.video.name)
+    # type -> tipo de campo
     # dir atributos de la clase
     pass

@@ -141,7 +141,6 @@ class Service(models.Model):
 
 # https://openwebinars.net/blog/tutorial-django-modelos-bbdd-donde-guardar-informacion/
 
-
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to='productos')
@@ -164,15 +163,18 @@ class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to='videos')
-    url = models.CharField(max_length=100, default="")
 
-    def create(notice, video):
-        video = Video(notice=notice, video=video)
-        video.save()
+    def create(notice, path):
+        video = Video(notice=notice)
+        # se abre el archivo local en binario
+        f = open(path, 'rb')
+        # se guarda el archivo con extension mp4
+        video.video.save(notice.title + '.mp4', File(f))
         return video
 
-    def create(notice, url):
-        video = Video(notice=notice, url=url)
+    # metodo para los videos de youtube
+    def createYt(notice, url):
+        video = Video(notice=notice, video=url)
         video.save()
         return video
 
