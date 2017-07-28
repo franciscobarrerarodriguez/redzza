@@ -39,10 +39,12 @@
     <div class="col hide-on-small-only m2 l2">
       <br>
       <i class="material-icons">people_outline</i>
-      {% if numberFollowers > 0%}
-      <p>{{ numberFollowers }}&nbsp;<b>Seguidores</b></p>
+      {% if view.getNumberFollowers == 0 %}
+      <p>Aún no tienes seguidores</p>
+      {% elif view.getNumberFollowers == 1 %}
+      <p>{{ view.getNumberFollowers }}&nbsp;<b>Seguidor</b></p>
       {% else %}
-      <p>Aun no tienes seguidores</p>
+      <p>{{ view.getNumberFollowers }}&nbsp;<b>Seguidores</b></p>
       {% endif %}
     </div>
     <div class="col m3 l3">

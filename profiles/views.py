@@ -171,7 +171,7 @@ def loginEmail(request):
 
 # URL --> AJAX/UPDATEUSER
 # Vista de modificacion de informacion del usuario
-@require_AJAX
+# @require_AJAX
 def updateUser(request):
     user = request.user
     profile = getProfile(user)
