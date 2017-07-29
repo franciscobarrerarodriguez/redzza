@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from registration.signals import user_registered
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.core.files import File
 # Create your models here.
 # Si hay problemas con null constraint,
 # quitar campos del modelo que no han sido anadidos
@@ -70,6 +71,12 @@ class Profile(models.Model):
     def updatePhone(profile, phone):
         profile.phone = phone
         return profile.save()
+
+    def updateAvatar(profile, path):
+        # se abre el archivo local en binario
+        f = open(path, 'rb')
+        # se guarda el archivo con extension
+        return profile.avatar.save(profile.user.first_name + '.jpg', File(f))
 
     def updateAvialability(profile, avialability):
         profile.avialability = avialability

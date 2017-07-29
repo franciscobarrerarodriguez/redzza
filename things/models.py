@@ -6,6 +6,8 @@ from categories.models import Category
 from datetime import datetime
 from django.core.validators import validate_comma_separated_integer_list
 from django.core.files import File
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 # Create your models here.
 
 class Notice(models.Model):
@@ -151,7 +153,7 @@ class Image(models.Model):
         # se abre el archivo local en binario
         f = open(pathimage, 'rb')
         # se guarda el archivo con extension
-        image.image.save(notice.title + '.jpg', File(f))
+        image.image.save(notice.title, File(f))
         return image
 
     def createGoogle(notice, pathimage):
@@ -160,21 +162,37 @@ class Image(models.Model):
         return image
 
 
+# metodo para borrar archivos cuando se borre el registro
+@receiver(post_delete, sender=Image)
+def photo_delete(sender, instance, **kwargs):
+    """ Borra los ficheros de las fotos que se eliminan. """
+    instance.image.delete(False)
+
+
 class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to='videos')
-    url = models.CharField(max_length=100, default="")
 
-    def create(notice, video):
-        video = Video(notice=notice, video=video)
+    def create(notice, path):
+        video = Video(notice=notice)
+        # se abre el archivo local en binario
+        f = open(path, 'rb')
+        # se guarda el archivo con extension mp4
+        video.video.save(notice.title + '.mp4', File(f))
+        return video
+
+    # metodo para los videos de youtube
+    def createYt(notice, url):
+        video = Video(notice=notice, video=url)
         video.save()
         return video
 
-    def create(notice, url):
-        video = Video(notice=notice, url=url)
-        video.save()
-        return video
+# metodo para borrar archivos cuando se borre el registro
+@receiver(post_delete, sender=Video)
+def video_delete(sender, instance, **kwargs):
+    """ Borra los ficheros de los videos que se eliminan. """
+    instance.video.delete(False)
 
 
 class Commentary(models.Model):
