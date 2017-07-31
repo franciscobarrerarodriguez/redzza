@@ -36,12 +36,22 @@ class WantedCategory(models.Model):
         category = get_object_or_404(Category, id=element)
         wanted = WantedCategory(profile=profile, category=category, type_category=kind)
         return wanted.save()
+
     @staticmethod
     def searchHave(profile):
         return WantedCategory.objects.filter(profile=profile, type_category=1)
+
     @staticmethod
     def searchOffer(profile):
         return WantedCategory.objects.filter(profile=profile, type_category=2)
+
+    def updateHave(profile, oldcategory, category):
+        WantedCategory.objects.filter(profile=profile, type_category=1, category=oldcategory).delete()
+        return WantedCategory.create(category.id, profile, 1)
+
+    def updateOffer(profile, oldcategory, category):
+        WantedCategory.objects.filter(profile=profile, type_category=2, category=oldcategory).delete()
+        return WantedCategory.create(category.id, profile, 2)
 
 
 class SuggestedCategory(models.Model):
