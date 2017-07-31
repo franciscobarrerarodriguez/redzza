@@ -54,6 +54,10 @@ class WantedCategory(models.Model):
         return WantedCategory.create(category.id, profile, 2)
 
 
+class Label(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class SuggestedCategory(models.Model):
     category = models.CharField(max_length=100)
     profile = models.ForeignKey(Profile)

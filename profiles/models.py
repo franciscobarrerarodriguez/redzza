@@ -43,6 +43,7 @@ class Profile(models.Model):
     address = models.CharField(max_length=40, blank=True)
     # horario de atencion
     avialability = models.CharField(max_length=40, blank=True)
+    label = models.ForeignKey()
 
     def __str__(self):
         return self.user.username
@@ -119,13 +120,6 @@ class Profile(models.Model):
 
     def searchUser(email):
         return get_object_or_404(User, email=email)
-
-
-class Label(models.Model):
-    label = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.label
 
 
 class LabelProfile(models.Model):
