@@ -109,19 +109,22 @@
         </div>
 
         <div class="row">
+        <form id="update-gender" data-url="{% url 'updateUser' %}">
+          {% csrf_token %}
           <div class="col s12 m4 l4">
             <p><b>Género: </b></p>
           </div>
           <div class="input-field  col s12 m6 l6">
-            <select>
+            <select name="gender">
               <option value="{{profile.gender}}" disabled selected>{% if profile.gender == "M" %}{{"Masculino"}}{% elif profile.gender == "F" %}{{"Femeníno"}}{% endif %}</option>
               <option value="M">Masculino</option>
               <option value="F">Femeníno</option>
             </select>
           </div>
           <div class="col s12 m2 l2">
-            &nbsp;
+            <button class="btn-floating btn-large waves-effect waves-light" type="submit"><i class="material-icons">mode_edit</i></button>
           </div>
+        </form>
         </div>
 
         <div class="row">
@@ -142,7 +145,7 @@
             <p><b>Ubicación: </b></p>
           </div>
           <div class="col s12 m6 l6">
-            <p>{{profile.location}} </p>
+            <p>{{ profile.location|capfirst }} </p>
           </div>
           <div class="col s12 m2 l2">
             <!-- Modal Trigger -->
@@ -273,14 +276,19 @@
 </div>
 
 <div id="modal6" class="modal">
-  <form id="update-address" data-url="{% url 'updateUser' %}">
+  <form id="update-location" data-url="{% url 'updateUser' %}">
     {% csrf_token %}
     <div class="modal-content">
       <h4>Modificar ubicación</h4>
       <br>
       <div class="input-field col s12">
-        <input id="new-address" name="location" type="text" data-length="20">
-        <label for="new-address">Ubicación nueva</label>
+        <select name="location" required aria-required="true">
+          <option value="" disabled selected>Escoge un lugar</option>
+          {% for place in places %}
+          <option value="{{ place.pk }}">{{ place.name | capfirst }}</option>
+          {% endfor %}
+        </select>
+        <label>Ubicación</label>
       </div>
     </div>
     <div class="modal-footer">
@@ -297,7 +305,7 @@
       <h4>Modificar biografía</h4>
       <br>
       <div class="input-field col s12">
-        <textarea id="textarea1" class="materialize-textarea" data-length="120"></textarea>
+        <textarea id="textarea1" name="biography" class="materialize-textarea" data-length="120">{{ profile.biography }}</textarea>
         <label for="textarea1">Escribe aqui algo acerca de ti</label>
       </div>
     </div>
