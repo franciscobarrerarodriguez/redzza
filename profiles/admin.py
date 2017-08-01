@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Label, LabelProfile, Follow, Profile, Place
+from .models import Follow, Profile, Place
 
 # admin.site.register(Album)
 
@@ -14,16 +14,6 @@ class AdminProfile(admin.ModelAdmin):
 @admin.register(Place)
 class AdminPlace(admin.ModelAdmin):
     list_display = ('name', 'pattern')
-
-
-@admin.register(Label)
-class AdminLabel(admin.ModelAdmin):
-    list_display = ('label',)
-
-
-@admin.register(LabelProfile)
-class AdminLabelProfile(admin.ModelAdmin):
-    list_display = ('label', 'profile')
 
 
 @admin.register(Follow)

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'categories.apps.CategoriesConfig',
     'things.apps.ThingsConfig',
+    'tags.apps.TagsConfig',
+    'inbox.apps.InboxConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

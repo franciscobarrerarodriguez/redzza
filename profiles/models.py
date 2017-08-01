@@ -43,7 +43,6 @@ class Profile(models.Model):
     address = models.CharField(max_length=40, blank=True)
     # horario de atencion
     avialability = models.CharField(max_length=40, blank=True)
-    label = models.ForeignKey()
 
     def __str__(self):
         return self.user.username
@@ -120,32 +119,6 @@ class Profile(models.Model):
 
     def searchUser(email):
         return get_object_or_404(User, email=email)
-
-
-class LabelProfile(models.Model):
-    # etiquetas asignadas a las personas
-    label = models.ForeignKey(Label)
-    profile = models.ForeignKey(Profile)
-
-    def __str__(self):
-        return '%s %s' % (self.label, self.profile)
-
-    def create(label, profile):
-        labelProfile = LabelProfile(label=label, profile=profile)
-        labelProfile.save()
-        return labelProfile
-
-    def searchLabels(profile):
-        return LabelProfile.objects.filter(profile=profile).values('label')
-
-    def searchProfiles(label):
-        return LabelProfile.objects.filter(label=label).values('profile')
-
-    def foundRepeated(profile, label):
-        return LabelProfile.objects.filter(profile=profile, label=label).exists()
-
-    def delete(label, profile):
-        return LabelProfile.objects.filter(label=label, profile=profile).delete()
 
 
 class Follow(models.Model):

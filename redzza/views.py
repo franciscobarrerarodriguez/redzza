@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect
 # Create your views here.
 from categories.models import WantedCategory, Category
-from profiles.models import Profile, Label, LabelProfile, Place, Follow
+from profiles.models import Profile, Place, Follow
 from things.models import Notice, Image, Video
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
