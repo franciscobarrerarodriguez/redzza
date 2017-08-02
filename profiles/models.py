@@ -1,6 +1,5 @@
 from django.db import models
 from django.shortcuts import get_object_or_404
-from registration.signals import user_registered
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.files import File
