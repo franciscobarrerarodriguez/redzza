@@ -29,6 +29,4 @@ urlpatterns = [
     url(r'^ajax/updateUser/$', views.updateUser, name='updateUser'),
     # Url - visitar perfil
     url(r'^(?P<slug>[-_\w]+)/$', login_required(views.UserDetailView.as_view()), name='userDetail'),
-    # Urls - Adicionales de registro e inicio de sesion - siempre deben estar al final
-    url(r'^', include('registration.backends.default.urls')),
 ]
