@@ -1,23 +1,20 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.static import serve
-from . import views
-from . import settings
+from rest_framework import routers
+
+from profiles.urls import router as profiles_router
+from categories.urls import router as categories_router
+from things.urls import router as things_router
+from tags.urls import router as tags_router
+
+router = routers.DefaultRouter()
+router.registry.extend(profiles_router.registry)
+router.registry.extend(categories_router.registry)
+router.registry.extend(things_router.registry)
+router.registry.extend(tags_router.registry)
 
 urlpatterns = [
-    # URL para comprobar el funcionamiento de las consultas a la base de datos
-    url(r'^queries/', views.queries, name='query'),
-    # Url - Administracion
     url(r'^admin/', admin.site.urls,),
-    # Url - index de la aplicacion, sin sesion
-    url(r'^$', views.index, name='index'),
-    # Urls - referente a categorias
-    url(r'^', include('categories.urls')),
-    # Urls - referente a cosas
-    url(r'^', include('things.urls')),
-    # Urls - referente a usuarios y sus perfiles
-    # ---- Debe estar de ultimas - url de usuario -----
-    url(r'^', include('profiles.urls')),
-    # staticfiles
-    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^api/v1/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

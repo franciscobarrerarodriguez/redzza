@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Commentary, Video, Image, CategoryTrade, CityNotice, Notice, Color, Product, Service
+from .models import Commentary, Video, Image, CityNotice, Notice, Color, Product, Service
 
 
 @admin.register(Notice)
@@ -28,11 +28,6 @@ class AdminService(admin.ModelAdmin):
 @admin.register(CityNotice)
 class AdminCityNotice(admin.ModelAdmin):
     list_display = ('city', 'notice')
-
-
-@admin.register(CategoryTrade)
-class AdminCategoryTrade(admin.ModelAdmin):
-    list_display = ('category', 'notice')
 
 
 @admin.register(Image)

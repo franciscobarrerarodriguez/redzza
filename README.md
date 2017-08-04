@@ -1,48 +1,14 @@
 # Redzza
-#
-#
-# Requirements user guide: https://pip.pypa.io/en/stable/user_guide/
-
-Export: pip freeze > requirements.txt
-Import: pip install -r requirements.txt
 
 
-pip install pillow (para las imagenes)
+## Paquetes pip
 
-IMPORTANTE - INFORMACION SOBRE PRODUCTOS Y PERFILES
-
-Campo profesion, nombre de la empresa, birthdate, telefono en PROFILE 
-
-AVISO
-Titulo
-Descripcion
-Producto deseado preferiblemente
-
-PRODUCTOS
-- Color
-- Cantidad
-- Pedido
-o Tamaño/Dimensiones
-- Estado (nuevo, usado, reparado)
-o Metodo de intercambio, de envio
-o Listos/A pedido
-
-SERVICIOS
-- Horas semanales
-- Tipo
-
-CATEGORIA DEL PRODUCTO
-CATEGORIAS BUSCADAS - 5
-COMENTARIOS
-CIUDAD - 5 -> Ciudad origen mas la que escoja
-IMAGEN
-VIDEO
-
-CONSULTAS DE LOS PRODUCTOS
-Mostrar en el muro coincidencias de categorias entre productos
-Mostrar sugerencias de intercambio cuando se este observando un producto, dependiendo de las categorias
-
-
-
-
+- *Django==1.11* 							Django
+- *pytz==2017.2* 							Dependencia Django
+- *psycopg2==2.7.3* 						Paquete para gestion de base de datos PostgreSQL
+- *Pillow==4.2.1*							Manejo de imagenes 
+- *olefile==0.44*							Dependencia Pillow
+- *gunicorn==19.7.1* 						Ejecución en heroku
+- *dj-database-url==0.4.2* 					Ejecuión en heroku, base de datos
+- *djangorestframework==3.6.3*				Django REST framework - Api
 

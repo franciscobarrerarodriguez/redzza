@@ -1,7 +1,8 @@
-from django.conf.urls import url
-from . import views
+from rest_framework import routers
+from .views import *
 
 
-urlpatterns = [
-
-]
+router = routers.SimpleRouter()
+router.register(r'categories', CategoryViewSet)
+router.register(r'wantedCategories', WantedCategoryViewSet)
+router.register(r'suggestedCategories', SuggestedCategoryViewSet)
