@@ -1,15 +1,16 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
+
+from profiles.urls import router as profiles_router
+from categories.urls import router as categories_router
+
+router = routers.DefaultRouter()
+router.registry.extend(profiles_router.registry)
+router.registry.extend(categories_router.registry)
 
 urlpatterns = [
-    # Url - Administracion
     url(r'^admin/', admin.site.urls,),
-    # Urls - referente a usuarios y sus perfiles - v1
-    url(r'^api/v1/', include('profiles.urls')),
-    # Urls - referente a categorias - v1
-    url(r'^api/v1/', include('categories.urls')),
-    # Urls - referente a cosas - v1
-    url(r'^api/v1/', include('things.urls')),
-    # rest_framework
+    url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
