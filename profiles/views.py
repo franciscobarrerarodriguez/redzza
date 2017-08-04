@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from django.contrib.auth.models import User
-from .models import Profile, Place, Follow
-from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
+from .models import *
+from .serializers import *
 
 
 class ProfileViewSet(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .views import ProfileViewSet, UserViewSet, PlaceViewSet, FollowViewSet
+from .views import *
 
 
 router = routers.DefaultRouter()

@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .views import CategoryViewSet, WantedCategoryViewSet, SuggestedCategoryViewSet
+from .views import *
 
 
 router = routers.SimpleRouter()
