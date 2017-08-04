@@ -1,6 +1,5 @@
 from django.db import models
 from profiles.models import Profile
-from django.shortcuts import get_object_or_404
 
 
 class Category(models.Model):
