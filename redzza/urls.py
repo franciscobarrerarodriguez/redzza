@@ -1,21 +1,15 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from . import views
 
 urlpatterns = [
-    # URL para comprobar el funcionamiento de las consultas a la base de datos
-    url(r'^queries/', views.queries, name='query'),
     # Url - Administracion
     url(r'^admin/', admin.site.urls,),
-    # Url - index de la aplicacion, sin sesion
-    url(r'^$', views.index, name='index'),
+    # Urls - referente a usuarios y sus perfiles
+    url(r'^', include('profiles.urls')),
     # Urls - referente a categorias
     url(r'^', include('categories.urls')),
     # Urls - referente a cosas
     url(r'^', include('things.urls')),
     # rest_framework
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # Urls - referente a usuarios y sus perfiles
-    # ---- Debe estar de ultimas - url de usuario -----
-    url(r'^', include('profiles.urls')),
 ]
