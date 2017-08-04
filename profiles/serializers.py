@@ -1,6 +1,12 @@
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Place
 from rest_framework import serializers
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'email', 'groups')
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,7 +15,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = Place
         fields = '__all__'
