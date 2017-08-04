@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^', include('categories.urls')),
     # Urls - referente a cosas
     url(r'^', include('things.urls')),
+    # rest_framework
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # Urls - referente a usuarios y sus perfiles
     # ---- Debe estar de ultimas - url de usuario -----
     url(r'^', include('profiles.urls')),

@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from . import views
+from rest_framework import routers
+
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+
 
 urlpatterns = [
 
+    # rest_framework
+    url(r'^', include(router.urls)),
     # Url para el registro en fases, la fase se recibe por parametro de la url, registro para facebook
     url(r'^register/(?P<userFacebook>[\w\-\W]+)/(?P<step>[\w\-\W]+)/', views.register, name='register_facebook'),
     # Url para el registro en fases, la fase se recibe por parametro de la url

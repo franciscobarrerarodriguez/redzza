@@ -10,5 +10,5 @@
 - *olefile==0.44*							Dependencia Pillow
 - *gunicorn==19.7.1* 						Ejecución en heroku
 - *dj-database-url==0.4.2* 					Ejecuión en heroku, base de datos
-
+- *djangorestframework==3.6.3*				Django REST framework - Api
 
