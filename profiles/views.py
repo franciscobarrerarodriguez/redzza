@@ -11,7 +11,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().filter(is_staff=False)
     serializer_class = UserSerializer
 
 
