@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer
-from .models import Profile, Place
-# Create your views here.
+from django.contrib.auth.models import User
+from .models import Profile, Place, Follow
+from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -18,3 +17,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class PlaceViewSet(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
+
+
+class FollowViewSet(viewsets.ModelViewSet):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
