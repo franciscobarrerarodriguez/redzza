@@ -4,6 +4,8 @@ from django.db import models
 from profiles.models import Profile, Place
 from categories.models import Category
 from datetime import datetime
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 # Create your models here.
 
 
@@ -80,10 +82,24 @@ class Image(models.Model):
     image = models.ImageField(upload_to='productos')
 
 
+# metodo para borrar archivos cuando se borre el registro
+@receiver(post_delete, sender=Image)
+def photo_delete(sender, instance, **kwargs):
+    """ Borra los ficheros de las fotos que se eliminan. """
+    instance.image.delete(False)
+
+
 class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to='videos')
+
+
+# metodo para borrar archivos cuando se borre el registro
+@receiver(post_delete, sender=Video)
+def video_delete(sender, instance, **kwargs):
+    """ Borra los ficheros de los videos que se eliminan. """
+    instance.video.delete(False)
 
 
 class Commentary(models.Model):
