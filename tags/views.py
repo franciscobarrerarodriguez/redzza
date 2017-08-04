@@ -1,6 +1,13 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from rest_framework import viewsets
+from .models import *
+from .serializers import *
 
-from django.shortcuts import render
 
-# Create your views here.
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+class TagProfileViewSet(viewsets.ModelViewSet):
+    queryset = TagProfile.objects.all()
+    serializer_class = TagProfileSerializer

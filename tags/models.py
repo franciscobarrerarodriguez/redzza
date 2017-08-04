@@ -17,20 +17,3 @@ class TagProfile(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.tag, self.profile)
-
-    def create(tag, profile):
-        tagProfile = TagProfile(tag=tag, profile=profile)
-        tagProfile.save()
-        return tagProfile
-
-    def searchTags(profile):
-        return TagProfile.objects.filter(profile=profile).values('tag')
-
-    def searchProfiles(tag):
-        return TagProfile.objects.filter(tag=tag).values('profile')
-
-    def foundRepeated(profile, tag):
-        return TagProfile.objects.filter(profile=profile, tag=tag).exists()
-
-    def delete(tag, profile):
-        return TagProfile.objects.filter(tag=tag, profile=profile).delete()
