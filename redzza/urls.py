@@ -4,11 +4,11 @@ from django.contrib import admin
 urlpatterns = [
     # Url - Administracion
     url(r'^admin/', admin.site.urls,),
-    # Urls - referente a usuarios y sus perfiles
+    # Urls - referente a usuarios y sus perfiles - v1
     url(r'^api/v1/', include('profiles.urls')),
-    # Urls - referente a categorias
+    # Urls - referente a categorias - v1
     url(r'^api/v1/', include('categories.urls')),
-    # Urls - referente a cosas
+    # Urls - referente a cosas - v1
     url(r'^api/v1/', include('things.urls')),
     # rest_framework
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
