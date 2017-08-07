@@ -1,12 +1,13 @@
 # Redzza
 
 
-## EndPoints Api
-- 
+## Api endpoints
+| Endpoint | Parametros | Clase | Descripción |
+| --- | --- | --- | --- |
+| 1 | 2 | 3 | 4 |
 
 
 ## Paquetes pip
-
 
 | Paquete       | Descripción   |
 | ------------- | --------------|
