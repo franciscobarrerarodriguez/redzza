@@ -63,7 +63,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(minutes=1)
+EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=24)
 LOGIN_REDIRECT_URL = '/api/v1/'
 
 MIDDLEWARE = [
