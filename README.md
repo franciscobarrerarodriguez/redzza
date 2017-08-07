@@ -3,7 +3,7 @@
 
 ## Api endpoints
 | Endpoint | Parametros | Metodos | Retorno | Descripción |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
 | /rest-auth/logout/ |  | POST |  | Logout api |
 | /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
