@@ -63,7 +63,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=24)
+EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(minutes=1)
+LOGIN_REDIRECT_URL = '/api/v1/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
