@@ -9,13 +9,11 @@
 
 
 | Paquete       | Descripción   |
-| ------------- | -------------:|
+| ------------- | --------------|
 | Django==1.11  | Django 		|
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
+| pytz==2017.2 | Dependencia Django |
 
-||Django|
-|pytz==2017.2|Dependencia Django|
+|||
 - *psycopg2==2.7.3* 				Paquete para gestion de base de datos PostgreSQL
 - *Pillow==4.2.1*					Manejo de imagenes 
 - *olefile==0.44*					Dependencia Pillow
