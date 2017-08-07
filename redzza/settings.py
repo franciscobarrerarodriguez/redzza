@@ -4,6 +4,8 @@ import os
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
 
+import datetime
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_expiring_authtoken',
     'django.contrib.sites',
     'rest_auth',
     'allauth',
@@ -54,11 +57,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_expiring_authtoken.authentication.ExpiringTokenAuthentication'
     ],
 }
+
+EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=24)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
