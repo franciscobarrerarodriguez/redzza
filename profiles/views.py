@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import list_route, api_view
+from rest_framework.decorators import list_route
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
@@ -36,6 +37,7 @@ class ApiServices(viewsets.ViewSet):
         else:
             return Response({'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
 
+    @list_route(methods=['post'])
     def createUser(request):
         email = request.POST.get('email', None)
         username = generate_random_username(request.POST.get('first_name', None))
@@ -61,12 +63,13 @@ class ApiServices(viewsets.ViewSet):
                         if suggesting:
                             SuggestedCategory.create(suggesting, profile)
                         login(request, user, 'profiles.backends.EmailBackend')
-                        return Response({'success': True, 'url': '/home/'})
+                        token = Token.objects.create(user=user)
+                        return Response({'success': True, 'msg': 'user-created', 'token': token}, status=status.HTTP_201_CREATED)
                     else:
-                        return Response({'success': False, 'err': 'User not created'})
+                        return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response({'success': False, 'err': 'Invalid Email'})
+                    return Response({'success': False, 'err': 'Invalid Email'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({'success': False, 'err': 'email-exists'})
+                return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'success': False, 'err': 'Incomplete data'})
+            return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
