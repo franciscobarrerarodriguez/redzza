@@ -1,10 +1,14 @@
 # Redzza
 
 
+## EndPoints Api
+- 
+
+
 ## Paquetes pip
 
-- *Django==1.11* 					Django
-- *pytz==2017.2* 					Dependencia Django
+|Django==1.11|Django|
+|pytz==2017.2|Dependencia Django|
 - *psycopg2==2.7.3* 				Paquete para gestion de base de datos PostgreSQL
 - *Pillow==4.2.1*					Manejo de imagenes 
 - *olefile==0.44*					Dependencia Pillow
@@ -25,3 +29,5 @@
 - *certifi==2017.7.27.1*			Dependencia django-allauth
 - *idna==2.5*						Dependencia django-allauth
 - *djangorestframework-expiring-authtoken==0.1.4* Token con expiracion de tiempo
+
+
