@@ -4,11 +4,12 @@
 ## Api endpoints
 | Endpoint | Parametros | Metodos | Retorno | Descripción |
 | --- | --- | --- | --- | --- |
+| / |  |  |  | Admin Django - WEB |
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
 | /rest-auth/logout/ |  | POST |  | Logout api |
 | /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
-| /api-auth/login/ |  |  |  | Login browser Api |
-| /api-auth/login/ |  |  |  | Logout browser Api |
+| /api-auth/login/ |  |  |  | Login browser Api - WEB |
+| /api-auth/login/ |  |  |  | Logout browser Api - WEB |
 | /api/v1/ |  | GET | Lista de CRUDs | Modelos de la base de datos del negocio |
 | /api/v1/apiServices/validateEmail/ | email | POST | exists, data | Verificacion de existencia de correo en modelo user |
 | /api/v1/apiServices/createUser/ | email, first_name, last_name, password, place, i_search, i_have, suggesting | POST | token, success, msg, err | Creacion de un nuevo usuario |
