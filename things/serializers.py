@@ -5,46 +5,46 @@ from .models import Notice, CityNotice, Product, Color, Service, Image, Video, C
 class NoticeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Notice
-        fields = '__all__'
+        fields = ('id', 'url', 'date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')
 
 
 class CityNoticeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CityNotice
-        fields = '__all__'
+        fields = ('id', 'url', 'city', 'notice')
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'url', 'notice', 'state', 'delivery')
 
 
 class ColorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Color
-        fields = '__all__'
+        fields = ('id', 'url', 'hexa', 'product')
 
 
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Service
-        fields = '__all__'
+        fields = ('id', 'url', 'notice', 'time')
 
 
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Image
-        fields = '__all__'
+        fields = ('id', 'url', 'notice', 'image')
 
 
 class VideoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Video
-        fields = '__all__'
+        fields = ('id', 'url', 'notice', 'video')
 
 
 class CommentarySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Commentary
-        fields = '__all__'
+        fields = ('id', 'url', 'notice', 'profile', 'commentary')
