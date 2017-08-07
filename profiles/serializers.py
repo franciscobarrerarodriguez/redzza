@@ -6,22 +6,22 @@ from .models import *
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')
+        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ('id', 'url', 'user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Place
-        fields = '__all__'
+        fields = ('id', 'url', 'name', 'pattern')
 
 
 class FollowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Follow
-        fields = '__all__'
+        fields = ('id', 'url', 'following', 'follower')

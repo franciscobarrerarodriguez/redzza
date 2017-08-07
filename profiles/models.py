@@ -33,6 +33,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def searchEmail(email):
+        return User.objects.filter(email__iexact=email).exists()
+
 
 class Follow(models.Model):
     following = models.ForeignKey(Profile, related_name="following")
