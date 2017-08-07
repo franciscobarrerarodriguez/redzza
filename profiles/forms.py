@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
 from django import forms
-
 from django.contrib.auth import authenticate
 
 
@@ -21,9 +18,9 @@ class EmailAuthenticationForm(forms.Form):
         self.user_cache = authenticate(email=email, password=password)
 
         if self.user_cache is None:
-            raise forms.ValidationError('Usuario incorrecto')
+            raise forms.ValidationError('Incorrect user')
         elif not self.user_cache.is_active:
-            raise forms.ValidationError('Usuario inactivo')
+            raise forms.ValidationError('Inactive User')
 
         return self.cleaned_data
 

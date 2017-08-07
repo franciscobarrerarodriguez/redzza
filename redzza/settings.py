@@ -57,13 +57,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_expiring_authtoken.authentication.ExpiringTokenAuthentication'
     ],
 }
 
 EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=24)
+
 LOGIN_REDIRECT_URL = '/api/v1/'
 
 MIDDLEWARE = [

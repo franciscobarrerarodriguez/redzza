@@ -12,6 +12,8 @@ from random import choice
 import json
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from .forms import EmailAuthenticationForm
+from rest_framework_expiring_authtoken import views
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -82,6 +84,21 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Login por correo electronico y contraseña
+    @list_route(methods=['post'])
+    def loginEmail(self, request):
+        form = EmailAuthenticationForm(request.POST or None)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            token = 'configurando token'
+            if user.is_staff:
+                return Response({'success': True, 'msg': 'user-admin', 'token': token})
+            else:
+                return Response({'success': True, 'msg': 'user-normal', 'token': token})
+        else:
+            return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
