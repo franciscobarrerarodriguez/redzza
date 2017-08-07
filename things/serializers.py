@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import *
+from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
 
 
 class NoticeSerializer(serializers.HyperlinkedModelSerializer):

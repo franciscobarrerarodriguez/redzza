@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import *
-from .serializers import *
+from .models import Category, WantedCategory, SuggestedCategory
+from .serializers import CategorySerializer, WantedCategorySerializer, SuggestedCategorySerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

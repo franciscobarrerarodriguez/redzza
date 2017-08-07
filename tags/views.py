@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import *
-from .serializers import *
+from .models import Tag, TagProfile
+from .serializers import TagSerializer, TagProfileSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):

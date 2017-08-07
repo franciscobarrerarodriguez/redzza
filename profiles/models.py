@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 
 
 class Place(models.Model):
@@ -35,6 +36,24 @@ class Profile(models.Model):
 
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
+
+    def createUser(email, username, name, last_name, password):
+        user, created = User.objects.get_or_create(
+            email=email,
+            username=username,
+            first_name=name,
+            last_name=last_name
+        )
+        if created:
+            user.set_password(password)
+            user.save()
+        return user, created
+
+    def create(place, user):
+        location = get_object_or_404(Place, id=place)
+        profile = Profile(user=user, location=location)
+        profile.save()
+        return profile
 
 
 class Follow(models.Model):

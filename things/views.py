@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import *
-from .serializers import *
+from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
+from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 
 
 class NoticeViewSet(viewsets.ModelViewSet):

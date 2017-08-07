@@ -1,5 +1,6 @@
 from django.db import models
 from profiles.models import Profile
+from django.shortcuts import get_object_or_404
 
 
 class Category(models.Model):
@@ -20,6 +21,11 @@ class WantedCategory(models.Model):
     def __str__(self):
         return str(self.category)
 
+    def create(element, profile, kind):
+        category = get_object_or_404(Category, id=element)
+        wanted = WantedCategory(profile=profile, category=category, type_category=kind)
+        return wanted.save()
+
 
 class SuggestedCategory(models.Model):
     category = models.CharField(max_length=100)
@@ -27,3 +33,7 @@ class SuggestedCategory(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.category, self.profile)
+
+    def create(element, profile):
+        suggested = SuggestedCategory(profile=profile, category=str(element))
+        return suggested.save()

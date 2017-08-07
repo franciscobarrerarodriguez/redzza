@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import list_route
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-from .models import *
-from .serializers import *
+from categories.models import WantedCategory, SuggestedCategory
+from .models import Profile, Place, Follow
+from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
+from string import ascii_lowercase, digits
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -27,7 +29,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
 
 
-class ApiServices(viewsets.ViewSet):
+class ApiServicesViewSet(viewsets.ViewSet):
 
     @list_route(methods=['post'])
     def validateEmail(self, request):
@@ -38,9 +40,9 @@ class ApiServices(viewsets.ViewSet):
             return Response({'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
 
     @list_route(methods=['post'])
-    def createUser(request):
+    def createUser(self, request):
         email = request.POST.get('email', None)
-        username = generate_random_username(request.POST.get('first_name', None))
+        username = generateRandomUsername(request.POST.get('first_name', None))
         first_name = request.POST.get('first_name', None)
         last_name = request.POST.get('last_name', None)
         password = request.POST.get('password', None)
@@ -73,3 +75,27 @@ class ApiServices(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ---------------------------------METODOS LOGICOS----------------------------------------
+
+# Metodo de verificacion de estructura del email
+def validateStructureEmail(email):
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False
+
+
+# Metodo para la generacion del username unico para un nuevo usuario
+def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split=4, delimiter='-'):
+    username = ''.join([choice(chars) for i in range(length)])
+    if split:
+        username = delimiter.join([username[start:start + split] for start in range(0, len(username), split)])
+    username = name + '-' + username
+    try:
+        User.objects.get(username=username)
+        return Profile.generateRandomUsername(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
+    except User.DoesNotExist:
+        return username
