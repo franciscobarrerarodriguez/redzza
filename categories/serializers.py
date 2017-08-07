@@ -11,10 +11,10 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 class WantedCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = WantedCategory
-        fields = '__all__'
+        fields = ('id', 'url', 'category', 'profile', 'type_category')
 
 
 class SuggestedCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SuggestedCategory
-        fields = '__all__'
+        fields = ('id', 'url', 'category', 'profile', 'type_category')
