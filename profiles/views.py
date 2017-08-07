@@ -2,11 +2,16 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
 from .models import Profile, Place, Follow
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
+from random import choice
+import json
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -31,6 +36,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 class ApiServicesViewSet(viewsets.ViewSet):
 
+    # Validacion del correo que se intenta registrar
     @list_route(methods=['post'])
     def validateEmail(self, request):
         email = request.POST.get('email', None)
@@ -39,6 +45,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
         else:
             return Response({'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Creacion de un usuario
     @list_route(methods=['post'])
     def createUser(self, request):
         email = request.POST.get('email', None)
@@ -66,7 +73,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                             SuggestedCategory.create(suggesting, profile)
                         login(request, user, 'profiles.backends.EmailBackend')
                         token = Token.objects.create(user=user)
-                        return Response({'success': True, 'msg': 'user-created', 'token': token}, status=status.HTTP_201_CREATED)
+                        return Response({'success': True, 'msg': 'user-created', 'token': token.key}, status=status.HTTP_201_CREATED)
                     else:
                         return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
