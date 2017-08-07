@@ -5,10 +5,10 @@ from .models import Tag, TagProfile
 class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('id', 'url', 'name')
 
 
 class TagProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TagProfile
-        fields = '__all__'
+        fields = ('id', 'url', 'tag', 'profile')
