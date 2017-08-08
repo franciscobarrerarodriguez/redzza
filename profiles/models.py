@@ -11,6 +11,9 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+    def searchCity(location):
+        return get_object_or_404(Place, id=location)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -34,9 +37,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def searchEmail(email):
-        return User.objects.filter(email__iexact=email).exists()
-
     def createUser(email, username, name, last_name, password):
         user, created = User.objects.get_or_create(
             email=email,
@@ -54,6 +54,54 @@ class Profile(models.Model):
         profile = Profile(user=user, location=location)
         profile.save()
         return profile
+
+    def searchEmail(email):
+        return User.objects.filter(email__iexact=email).exists()
+
+    def searchUsername(username):
+        return User.objects.filter(username__iexact=username).exists()
+
+    def updateAvatar(profile, avatar):
+        print('falta update avatar')
+
+    def updateIcono(profile, icono):
+        print('falta update icono')
+
+    def updateBirthdate(profile, date):
+        profile.birth_date = date
+        return profile.save()
+
+    def updateGender(profile, gender):
+        profile.gender = gender
+        return profile.save()
+
+    def updatePhone(profile, phone):
+        profile.phone = phone
+        return profile.save()
+
+    def updateBiography(profile, biography):
+        profile.biography = biography
+        return profile.save()
+
+    def updateLocation(profile, location):
+        profile.location = location
+        return profile.save()
+
+    def updateCompany(profile, company):
+        profile.company = company
+        return profile.save()
+
+    def updateProfession(profile, profession):
+        profile.profession = profession
+        return profile.save()
+
+    def updateAddress(profile, address):
+        profile.address = address
+        return profile.save()
+
+    def updateAvialability(profile, avialability):
+        profile.avialability = avialability
+        return profile.save()
 
 
 class Follow(models.Model):

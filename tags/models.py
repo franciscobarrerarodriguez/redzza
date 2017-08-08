@@ -1,5 +1,6 @@
 from django.db import models
 from profiles.models import Profile
+from django.shortcuts import get_object_or_404
 # Create your models here.
 
 
@@ -17,3 +18,11 @@ class TagProfile(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.tag, self.profile)
+
+    def create(element, profile):
+        tag = get_object_or_404(Tag, id=element)
+        tagProfile = TagProfile(profile=profile, tag=tag)
+        return tagProfile.save()
+
+    def deleteAll(profile):
+        TagProfile.objects.filter(profile=profile).delete()

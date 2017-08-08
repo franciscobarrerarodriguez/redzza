@@ -15,7 +15,7 @@ class Category(models.Model):
 class WantedCategory(models.Model):
     category = models.ForeignKey(Category)
     profile = models.ForeignKey(Profile)
-    # Offer(Ofrezco) --> 1 ; Search(Busco) --> 2
+    # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
     type_category = models.IntegerField()
 
     def __str__(self):
@@ -25,6 +25,12 @@ class WantedCategory(models.Model):
         category = get_object_or_404(Category, id=element)
         wanted = WantedCategory(profile=profile, category=category, type_category=kind)
         return wanted.save()
+
+    def deleteAllHave(profile):
+        WantedCategory.objects.filter(profile=profile, type_category=1).delete()
+
+    def deleteAllSearch(profile):
+        WantedCategory.objects.filter(profile=profile, type_category=2).delete()
 
 
 class SuggestedCategory(models.Model):
