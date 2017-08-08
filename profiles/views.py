@@ -43,7 +43,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Validacion del correo que se intenta registrar
     @list_route(methods=['post'])
     def validateEmail(self, request):
-        email = request.POST.get('email', None)
+        email = request.data.get('email', None)
         if email:
             return Response({'exists': Profile.searchEmail(email), 'data': email})
         else:
@@ -52,15 +52,15 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Creacion de un usuario
     @list_route(methods=['post'])
     def createUser(self, request):
-        email = request.POST.get('email', None)
-        username = generateRandomUsername(request.POST.get('first_name', None))
-        first_name = request.POST.get('first_name', None)
-        last_name = request.POST.get('last_name', None)
-        password = request.POST.get('password', None)
-        place = request.POST.get('place', None)
-        i_search = request.POST.get('i_search', None)
-        i_have = request.POST.get('i_have', None)
-        suggesting = request.POST.get('suggesting', None)
+        email = request.data.get('email', None)
+        username = generateRandomUsername(request.data.get('first_name', None))
+        first_name = request.data.get('first_name', None)
+        last_name = request.data.get('last_name', None)
+        password = request.data.get('password', None)
+        place = request.data.get('place', None)
+        i_search = request.data.get('i_search', None)
+        i_have = request.data.get('i_have', None)
+        suggesting = request.data.get('suggesting', None)
 
         if email and username and first_name and last_name and password and place and i_search and i_have:
             if Profile.searchEmail(email) is False:
@@ -90,7 +90,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Login por correo electronico y contraseña
     @list_route(methods=['post'])
     def loginEmail(self, request):
-        form = EmailAuthenticationForm(request.POST or None)
+        form = EmailAuthenticationForm(request.data or None)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
@@ -110,25 +110,25 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def updateUser(self, request):
         user = request.user
         profile = getProfile(user)
-        username = request.POST.get('username', None)
-        first_name = request.POST.get('first_name', None)
-        last_name = request.POST.get('last_name', None)
-        email = request.POST.get('email', None)
-        password = request.POST.get('password', None)
-        avatar = request.POST.get('avatar', None)
-        icono = request.POST.get('icono', None)
-        birth_date = request.POST.get('birth_date', None)
-        gender = request.POST.get('gender', None)
-        phone = request.POST.get('phone', None)
-        biography = request.POST.get('biography', None)
-        location = request.POST.get('location', None)
-        company = request.POST.get('company', None)
-        profession = request.POST.get('profession', None)
-        address = request.POST.get('address', None)
-        avialability = request.POST.get('avialability', None)
-        i_search = request.POST.get('i_search', None)
-        i_have = request.POST.get('i_have', None)
-        tags = request.POST.get('tags', None)
+        username = request.data.get('username', None)
+        first_name = request.data.get('first_name', None)
+        last_name = request.data.get('last_name', None)
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        avatar = request.data.get('avatar', None)
+        icono = request.data.get('icono', None)
+        birth_date = request.data.get('birth_date', None)
+        gender = request.data.get('gender', None)
+        phone = request.data.get('phone', None)
+        biography = request.data.get('biography', None)
+        location = request.data.get('location', None)
+        company = request.data.get('company', None)
+        profession = request.data.get('profession', None)
+        address = request.data.get('address', None)
+        avialability = request.data.get('avialability', None)
+        i_search = request.data.get('i_search', None)
+        i_have = request.data.get('i_have', None)
+        tags = request.data.get('tags', None)
 
         try:
             if username:
