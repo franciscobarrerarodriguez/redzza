@@ -162,10 +162,10 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': True, 'msg': 'password-update'})
             elif avatar:
                 Profile.updateAvatar(profile, avatar)
-                return Response({'success': True, 'msg': 'avatar-update'})
+                return Response({'success': True, 'msg': 'avatar-update-pendiente'})
             elif icono:
                 Profile.updateAvatar(profile, icono)
-                return Response({'success': True, 'msg': 'icono-update'})
+                return Response({'success': True, 'msg': 'icono-update-pendiente'})
             elif birth_date:
                 Profile.updateBirthdate(profile, birth_date)
                 return Response({'success': True, 'msg': 'birth_date-update'})
