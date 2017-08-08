@@ -96,7 +96,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if token.expired():
                 token.delete()
                 token = ExpiringToken.objects.create(user=user)
-            print(token.key)
             if user.is_staff:
                 return Response({'success': True, 'msg': 'user-admin', 'token': token.key})
             else:
