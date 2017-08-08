@@ -13,7 +13,7 @@ import json
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from .forms import EmailAuthenticationForm
-from rest_framework_expiring_authtoken import views
+from rest_framework_expiring_authtoken.models import ExpiringToken
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -92,11 +92,15 @@ class ApiServicesViewSet(viewsets.ViewSet):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            token = 'configurando token'
+            token, _ = ExpiringToken.objects.get_or_create(user=user)
+            if token.expired():
+                token.delete()
+                token = ExpiringToken.objects.create(user=user)
+            print(token.key)
             if user.is_staff:
-                return Response({'success': True, 'msg': 'user-admin', 'token': token})
+                return Response({'success': True, 'msg': 'user-admin', 'token': token.key})
             else:
-                return Response({'success': True, 'msg': 'user-normal', 'token': token})
+                return Response({'success': True, 'msg': 'user-normal', 'token': token.key})
         else:
             return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
 
