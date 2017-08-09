@@ -43,94 +43,115 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Validacion del correo que se intenta registrar
     @list_route(methods=['post'])
     def validateEmail(self, request):
-        email = request.data.get('email', None)
-        if email:
-            return Response({'exists': Profile.searchEmail(email), 'data': email})
-        else:
-            return Response({'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            email = request.data.get('email', None)
+            if email:
+                return Response({'success': True, 'exists': Profile.searchEmail(email), 'data': email})
+            else:
+                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
     # Creacion de un usuario
     @list_route(methods=['post'])
     def createUser(self, request):
-        email = request.data.get('email', None)
-        username = generateRandomUsername(request.data.get('first_name', None))
-        first_name = request.data.get('first_name', None)
-        last_name = request.data.get('last_name', None)
-        password = request.data.get('password', None)
-        place = request.data.get('place', None)
-        i_search = request.data.get('i_search', None)
-        i_have = request.data.get('i_have', None)
-        suggesting = request.data.get('suggesting', None)
+        try:
+            email = request.data.get('email', None)
+            username = generateRandomUsername(request.data.get('first_name', None))
+            first_name = request.data.get('first_name', None)
+            last_name = request.data.get('last_name', None)
+            password = request.data.get('password', None)
+            place = request.data.get('place', None)
+            i_search = request.data.get('i_search', None)
+            i_have = request.data.get('i_have', None)
+            suggesting = request.data.get('suggesting', None)
 
-        if email and username and first_name and last_name and password and place and i_search and i_have:
-            if Profile.searchEmail(email) is False:
-                if validateStructureEmail(email):
-                    user, created = Profile.createUser(email, username, first_name, last_name, password)
-                    if created:
-                        profile = Profile.create(place, user)
-                        # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                        for element in json.loads(i_have):
-                            WantedCategory.create(element['pk'], profile, 1)
-                        for element in json.loads(i_search):
-                            WantedCategory.create(element['pk'], profile, 2)
-                        if suggesting:
-                            SuggestedCategory.create(suggesting, profile)
-                        login(request, user, 'profiles.backends.EmailBackend')
-                        token = Token.objects.create(user=user)
-                        return Response({'success': True, 'msg': 'user-created', 'token': token.key}, status=status.HTTP_201_CREATED)
+            if email and username and first_name and last_name and password and place and i_search and i_have:
+                if Profile.searchEmail(email) is False:
+                    if validateStructureEmail(email):
+                        user, created = Profile.createUser(email, username, first_name, last_name, password)
+                        if created:
+                            profile = Profile.create(place, user)
+                            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
+                            for element in json.loads(i_have):
+                                WantedCategory.create(element['pk'], profile, 1)
+                            for element in json.loads(i_search):
+                                WantedCategory.create(element['pk'], profile, 2)
+                            if suggesting:
+                                SuggestedCategory.create(suggesting, profile)
+                            login(request, user, 'profiles.backends.EmailBackend')
+                            token = Token.objects.create(user=user)
+                            return Response({'success': True, 'msg': 'user-created', 'token': token.key}, status=status.HTTP_201_CREATED)
+                        else:
+                            return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_400_BAD_REQUEST)
                     else:
-                        return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'success': False, 'err': 'Invalid Email'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response({'success': False, 'err': 'Invalid Email'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
     # Login por correo electronico y contraseña
     @list_route(methods=['post'])
     def loginEmail(self, request):
-        form = EmailAuthenticationForm(request.data or None)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            token, _ = ExpiringToken.objects.get_or_create(user=user)
-            if token.expired():
-                token.delete()
-                token = ExpiringToken.objects.create(user=user)
-            if user.is_staff:
-                return Response({'success': True, 'msg': 'user-admin', 'token': token.key})
+        try:
+            form = EmailAuthenticationForm(request.data or None)
+            if form.is_valid():
+                user = form.get_user()
+                login(request, user)
+                token, _ = ExpiringToken.objects.get_or_create(user=user)
+                if token.expired():
+                    token.delete()
+                    token = ExpiringToken.objects.create(user=user)
+                if user.is_staff:
+                    return Response({'success': True, 'msg': 'user-admin', 'token': token.key})
+                else:
+                    return Response({'success': True, 'msg': 'user-normal', 'token': token.key})
             else:
-                return Response({'success': True, 'msg': 'user-normal', 'token': token.key})
-        else:
-            return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
     # Edicion de informacion del usuario
     @list_route(methods=['post'])
     def updateUser(self, request):
-        user = request.user
-        profile = getProfile(user)
-        username = request.data.get('username', None)
-        first_name = request.data.get('first_name', None)
-        last_name = request.data.get('last_name', None)
-        email = request.data.get('email', None)
-        password = request.data.get('password', None)
-        avatar = request.data.get('avatar', None)
-        icono = request.data.get('icono', None)
-        birth_date = request.data.get('birth_date', None)
-        gender = request.data.get('gender', None)
-        phone = request.data.get('phone', None)
-        biography = request.data.get('biography', None)
-        location = request.data.get('location', None)
-        company = request.data.get('company', None)
-        profession = request.data.get('profession', None)
-        address = request.data.get('address', None)
-        avialability = request.data.get('avialability', None)
-        i_search = request.data.get('i_search', None)
-        i_have = request.data.get('i_have', None)
-        tags = request.data.get('tags', None)
-
         try:
+            user = request.user
+            profile = getProfile(user)
+            username = request.data.get('username', None)
+            first_name = request.data.get('first_name', None)
+            last_name = request.data.get('last_name', None)
+            email = request.data.get('email', None)
+            password = request.data.get('password', None)
+            avatar = request.data.get('avatar', None)
+            icono = request.data.get('icono', None)
+            birth_date = request.data.get('birth_date', None)
+            gender = request.data.get('gender', None)
+            phone = request.data.get('phone', None)
+            biography = request.data.get('biography', None)
+            location = request.data.get('location', None)
+            company = request.data.get('company', None)
+            profession = request.data.get('profession', None)
+            address = request.data.get('address', None)
+            avialability = request.data.get('avialability', None)
+            i_search = request.data.get('i_search', None)
+            i_have = request.data.get('i_have', None)
+            tags = request.data.get('tags', None)
+
             if username:
                 if Profile.searchUsername(username) is False:
                     user.username = username
