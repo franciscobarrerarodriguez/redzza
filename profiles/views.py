@@ -243,8 +243,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
     @list_route(methods=['get'])
     def getDataProfile(self, request):
         try:
-            username = request.GET.get('id', None)
-            user = getUser(username)
+            id = request.GET.get('id', None)
+            user = getUser(id)
             context = {}
             context['user'] = user
             context['profile'] = getProfile(user)
