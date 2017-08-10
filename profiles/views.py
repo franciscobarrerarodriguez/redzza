@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
 from tags.models import TagProfile
 from things.models import Notice
-from .models import Profile, Place, Follow
+from .models import Profile, Place, Follow, Icon
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
 from random import choice
@@ -244,10 +244,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
         try:
             id = request.GET.get('id', None)
             user = getUser(id)
+            profile = getProfile(user)
             context = {}
             context['user'] = user
-            context['profile'] = getProfile(user)
-            # context['icono'] = getIconoUser(user)
+            context['profile'] = profile
+            context['icono'] = getIconUser(user)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             context['haveCategories'] = getHaveCategoriesUser(user)
@@ -308,8 +309,8 @@ def getToken(user):
 
 
 # Metodo de obtencion de usuario
-def getUser(username):
-    return get_object_or_404(User, username=username)
+def getUser(id):
+    return Profile.getUser(id)
 
 
 # Metodo que retorna el tiempo inscrito en redzza del usuario ingresado por parametro
@@ -347,6 +348,11 @@ def getNoticesSearchUser(user):
 # Metodo que retorna los tags del usuario
 def getTagsUser(user):
     return TagProfile.searchTags(getProfile(user))
+
+
+# Metodo que retorna el icono del usuario
+def getIconUser(user):
+    return Icon.searchIcono(getProfile(user).icono)
 
 
 # Metodo de obtencion de tiempo restante del token de usuario

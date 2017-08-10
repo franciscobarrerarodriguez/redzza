@@ -64,6 +64,9 @@ class Profile(models.Model):
         profile.save()
         return profile
 
+    def getUser(id):
+        return User.objects.filter(id=id).values('id', 'url', 'username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')
+
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
 
