@@ -161,6 +161,11 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
+# Docs, pictures and more
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 # Backends --> verificar si se necesitan
 AUTHENTICATION_BACKENDS = (
     # Agregado de backend, para la autenticacion con correo y contrasena
