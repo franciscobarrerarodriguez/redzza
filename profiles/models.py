@@ -23,7 +23,7 @@ class Icon(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
-    icono = models.ForeignKey(Icon, blank=True)
+    icono = models.ForeignKey(Icon, blank=True, null=True)
     birth_date = models.DateField(default=datetime.now)
     GENDER = (
         ('F', 'Femenino'),
@@ -31,7 +31,8 @@ class Profile(models.Model):
     )
     gender = models.CharField(
         max_length=1, choices=GENDER, default='M')
-    phone = models.BigIntegerField(null=True, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+    # phone = models.BigIntegerField(default=0, blank=True)
     biography = models.TextField(blank=True)  # opcional
     location = models.ForeignKey(Place, default="")
     company = models.CharField(max_length=40, blank=True)
