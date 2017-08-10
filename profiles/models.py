@@ -15,10 +15,15 @@ class Place(models.Model):
         return get_object_or_404(Place, id=location)
 
 
+class Icon(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='iconos', default='iconos/icono.png')
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
-    icono = models.ImageField(upload_to='iconos', default='iconos/icono.png')
+    icono = models.ForeignKey(Icon, blank=True)
     birth_date = models.DateField(default=datetime.now)
     GENDER = (
         ('F', 'Femenino'),
@@ -26,7 +31,7 @@ class Profile(models.Model):
     )
     gender = models.CharField(
         max_length=1, choices=GENDER, default='M')
-    phone = models.IntegerField(null=True, blank=True)
+    phone = models.BigIntegerField(null=True, blank=True)
     biography = models.TextField(blank=True)  # opcional
     location = models.ForeignKey(Place, default="")
     company = models.CharField(max_length=40, blank=True)

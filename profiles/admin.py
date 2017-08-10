@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Follow, Profile, Place
+from .models import Follow, Profile, Place, Icon
 
 # admin.site.register(Album)
 
@@ -19,3 +19,8 @@ class AdminPlace(admin.ModelAdmin):
 @admin.register(Follow)
 class AdminFollow(admin.ModelAdmin):
     list_display = ('following', 'follower')
+
+
+@admin.register(Icon)
+class AdminIcon(admin.ModelAdmin):
+    list_display = ('name',)
