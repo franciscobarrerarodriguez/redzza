@@ -10,7 +10,6 @@ from .models import Profile, Place, Follow
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
 from random import choice
-import json
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from .forms import EmailAuthenticationForm
@@ -79,9 +78,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
                         if created:
                             profile = Profile.create(place, user)
                             # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                            for element in json.loads(i_have):
+                            for element in i_have:
                                 WantedCategory.create(element['pk'], profile, 1)
-                            for element in json.loads(i_search):
+                            for element in i_search:
                                 WantedCategory.create(element['pk'], profile, 2)
                             if suggesting:
                                 SuggestedCategory.create(suggesting, profile)
@@ -217,17 +216,17 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': True, 'msg': 'avialability-update'})
             elif i_search:
                 WantedCategory.deleteAllSearch(profile)
-                for element in json.loads(i_search):
+                for element in i_search:
                     WantedCategory.create(element['pk'], profile, 2)
                 return Response({'success': True, 'msg': 'i_search-update'})
             elif i_have:
                 WantedCategory.deleteAllHave(profile)
-                for element in json.loads(i_have):
+                for element in i_have:
                     WantedCategory.create(element['pk'], profile, 1)
                 return Response({'success': True, 'msg': 'i_have-update'})
             elif tags:
                 TagProfile.deleteAll(profile)
-                for element in json.loads(tags):
+                for element in tags:
                     TagProfile.create(element['pk'], profile)
                 return Response({'success': True, 'msg': 'tags-update'})
             else:
