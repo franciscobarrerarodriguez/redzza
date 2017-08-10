@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
 from tags.models import TagProfile
+from things.models import Notice
 from .models import Profile, Place, Follow
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
@@ -238,6 +239,33 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Obtencion de informacion de un usuario
+    @list_route(methods=['get'])
+    def getDataProfile(self, request):
+        try:
+            username = request.GET.get('username', None)
+            user = getUser(username)
+            context = {}
+            context['user'] = user
+            context['profile'] = getProfile(user)
+            # context['icono'] = getIconoUser(user)
+            context['duration'] = getDurationUser(user)
+            context['numberFollowers'] = getNumberFollowersUser(user)
+            context['haveCategories'] = getHaveCategoriesUser(user)
+            context['searchCategories'] = getSearchCategoriesUser(user)
+            context['noticesHave'] = getNoticesHaveUser(user)
+            context['noticesSearch'] = getNoticesSearchUser(user)
+            context['tags'] = getTagsUser(user)
+            if user:
+                return Response({'success': True, 'data': context})
+            else:
+                return Response({'success': False, 'err': 'Non-existent user'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
@@ -278,6 +306,48 @@ def getToken(user):
         token.delete()
         token = ExpiringToken.objects.create(user=user)
     return token
+
+
+# Metodo de obtencion de usuario
+def getUser(username):
+    return get_object_or_404(User, username=username)
+
+
+# Metodo que retorna el tiempo inscrito en redzza del usuario ingresado por parametro
+def getDurationUser(user):
+    return (timezone.now() - user.date_joined)
+
+
+# Metodo que retorna el numero de seguidores del usuario ingresado por parametro
+def getNumberFollowersUser(user):
+    return len(Follow.searchFollowers(getProfile(user)))
+
+
+# Metodo que retorna las categorias que ofrece el usuario ingresado por parametro
+# i_have(Ofrezco) --> 1
+def getHaveCategoriesUser(user):
+    return WantedCategory.searchHave(getProfile(user))
+
+
+# Metodo que retorna las categorias que busca el usuario ingresado por parametro
+# i_search(Busco) --> 2
+def getSearchCategoriesUser(user):
+    return WantedCategory.searchOffer(getProfile(user))
+
+
+# Metodo que retorna las publicaciones del usuario tiene
+def getNoticesHaveUser(user):
+    return Notice.getNotice(getProfile(user))
+
+
+# Metodo que retorna las publicaciones del usuario busca
+def getNoticesSearchUser(user):
+    return Notice.getNotice(getProfile(user))
+
+
+# Metodo que retorna los tags del usuario
+def getTagsUser(user):
+    return TagProfile.searchTags(getProfile(user))
 
 
 # Metodo de obtencion de tiempo restante del token de usuario

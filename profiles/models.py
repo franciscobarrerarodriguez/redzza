@@ -116,3 +116,6 @@ class Follow(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.following, self.follower)
+
+    def searchFollowers(profile):
+        return Follow.objects.filter(following=profile).values('follower')

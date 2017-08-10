@@ -32,6 +32,12 @@ class WantedCategory(models.Model):
     def deleteAllSearch(profile):
         WantedCategory.objects.filter(profile=profile, type_category=2).delete()
 
+    def searchOffer(profile):
+        return WantedCategory.objects.filter(profile=profile, type_category=2)
+
+    def searchHave(profile):
+        return WantedCategory.objects.filter(profile=profile, type_category=1)
+
 
 class SuggestedCategory(models.Model):
     category = models.CharField(max_length=100)

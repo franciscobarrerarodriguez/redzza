@@ -26,3 +26,6 @@ class TagProfile(models.Model):
 
     def deleteAll(profile):
         TagProfile.objects.filter(profile=profile).delete()
+
+    def searchTags(profile):
+        return TagProfile.objects.filter(profile=profile).values('tag')

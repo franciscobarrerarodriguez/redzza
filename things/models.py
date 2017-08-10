@@ -26,6 +26,12 @@ class Notice(models.Model):
     # urgente un tiempo 24 horas
     urgency = models.BooleanField(default=False)
 
+    def getNoticeHave(profile):
+        return Notice.objects.filter(profile=profile, kind=1)
+
+    def getNoticeSearch(profile):
+        return Notice.objects.filter(profile=profile, kind=2)
+
 
 class CityNotice(models.Model):
     # ciudades donde se vera el aviso
