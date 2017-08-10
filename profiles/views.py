@@ -56,7 +56,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e.message
             else:
                 err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Creacion de un usuario
     @list_route(methods=['post'])
@@ -71,6 +71,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
             i_search = request.data.get('i_search', None)
             i_have = request.data.get('i_have', None)
             suggesting = request.data.get('suggesting', None)
+
+            print(request.data)
 
             if email and username and first_name and last_name and password and place and i_search and i_have:
                 if Profile.searchEmail(email) is False:
@@ -89,11 +91,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
                             token = Token.objects.create(user=user)
                             return Response({'success': True, 'msg': 'user-created', 'token': token.key}, status=status.HTTP_201_CREATED)
                         else:
-                            return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_400_BAD_REQUEST)
+                            return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
                     else:
-                        return Response({'success': False, 'err': 'Invalid Email'}, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'success': False, 'err': 'Invalid Email'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
                 else:
-                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             else:
                 return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
@@ -101,7 +103,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e.message
             else:
                 err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Login por correo electronico y contraseña
     @list_route(methods=['post'])
@@ -124,7 +126,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e.message
             else:
                 err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Edicion de informacion del usuario
     @list_route(methods=['post'])
@@ -158,7 +160,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     user.save()
                     return Response({'success': True, 'msg': 'username-update'})
                 else:
-                    return Response({'success': False, 'err': 'username-exists'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'success': False, 'err': 'username-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif first_name:
                 user.first_name = first_name
                 user.save()
@@ -176,7 +178,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     else:
                         return Response({'success': False, 'err': 'email-invalid'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif password:
                 user.set_password(password)
                 user.save()
@@ -237,13 +239,13 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e.message
             else:
                 err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Obtencion de informacion de un usuario
     @list_route(methods=['get'])
     def getDataProfile(self, request):
         try:
-            username = request.GET.get('username', None)
+            username = request.GET.get('id', None)
             user = getUser(username)
             context = {}
             context['user'] = user
@@ -259,13 +261,13 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if user:
                 return Response({'success': True, 'data': context})
             else:
-                return Response({'success': False, 'err': 'Non-existent user'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'success': False, 'err': 'Non-existent user'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
             else:
                 err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
