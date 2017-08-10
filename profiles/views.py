@@ -16,6 +16,8 @@ from django.core.exceptions import ValidationError
 from .forms import EmailAuthenticationForm
 from rest_framework_expiring_authtoken.models import ExpiringToken
 from django.shortcuts import get_object_or_404
+from rest_framework_expiring_authtoken.settings import token_settings
+from django.utils import timezone
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -109,14 +111,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if form.is_valid():
                 user = form.get_user()
                 login(request, user)
-                token, _ = ExpiringToken.objects.get_or_create(user=user)
-                if token.expired():
-                    token.delete()
-                    token = ExpiringToken.objects.create(user=user)
+                token = getToken(user)
+                timeToken = getTimeToken(token)
                 if user.is_staff:
-                    return Response({'success': True, 'msg': 'user-admin', 'token': token.key})
+                    return Response({'success': True, 'msg': 'user-admin', 'token': token.key, 'timeToken': timeToken})
                 else:
-                    return Response({'success': True, 'msg': 'user-normal', 'token': token.key})
+                    return Response({'success': True, 'msg': 'user-normal', 'token': token.key, 'timeToken': timeToken})
             else:
                 return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
@@ -270,3 +270,17 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
 # Metodo de obtencion de perfil de usuario
 def getProfile(user):
     return get_object_or_404(Profile, user=user)
+
+
+# Metodo de obtencion de token de usuario
+def getToken(user):
+    token, _ = ExpiringToken.objects.get_or_create(user=user)
+    if token.expired():
+        token.delete()
+        token = ExpiringToken.objects.create(user=user)
+    return token
+
+
+# Metodo de obtencion de tiempo restante del token de usuario
+def getTimeToken(token):
+    return token_settings.EXPIRING_TOKEN_LIFESPAN - (timezone.now() - token.created)
