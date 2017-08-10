@@ -68,7 +68,8 @@ class Profile(models.Model):
         return User.objects.filter(username__iexact=username).exists()
 
     def updateAvatar(profile, avatar):
-        print('falta update avatar')
+        profile.avatar = avatar
+        return profile.save()
 
     def updateIcono(profile, icono):
         print('falta update icono')

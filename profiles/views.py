@@ -185,7 +185,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': True, 'msg': 'password-update'})
             elif avatar:
                 Profile.updateAvatar(profile, avatar)
-                return Response({'success': True, 'msg': 'avatar-update-pendiente'})
+                return Response({'success': True, 'msg': 'avatar-update'})
             elif icono:
                 Profile.updateAvatar(profile, icono)
                 return Response({'success': True, 'msg': 'icono-update-pendiente'})
