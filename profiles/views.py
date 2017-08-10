@@ -72,8 +72,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             i_have = request.data.get('i_have', None)
             suggesting = request.data.get('suggesting', None)
 
-            print(request.data)
-
             if email and username and first_name and last_name and password and place and i_search and i_have:
                 if Profile.searchEmail(email) is False:
                     if validateStructureEmail(email):
