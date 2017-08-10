@@ -11,13 +11,16 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
-    def searchCity(location):
-        return get_object_or_404(Place, id=location)
+    def searchCity(idLocation):
+        return get_object_or_404(Place, id=idLocation)
 
 
 class Icon(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='iconos', default='iconos/icono.png')
+
+    def searchIcono(idIcono):
+        return get_object_or_404(Icon, id=idIcono)
 
 
 class Profile(models.Model):
@@ -71,8 +74,10 @@ class Profile(models.Model):
         profile.avatar = avatar
         return profile.save()
 
-    def updateIcono(profile, icono):
-        print('falta update icono')
+    def updateIcono(profile, idIcono):
+        icono = Icon.searchIcono(idIcono)
+        profile.icono = icono
+        return profile.save()
 
     def updateBirthdate(profile, date):
         profile.birth_date = date
@@ -91,7 +96,8 @@ class Profile(models.Model):
         return profile.save()
 
     def updateLocation(profile, location):
-        profile.location = location
+        place = Place.searchCity(location)
+        profile.location = place
         return profile.save()
 
     def updateCompany(profile, company):

@@ -185,8 +185,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Profile.updateAvatar(profile, avatar)
                 return Response({'success': True, 'msg': 'avatar-update'})
             elif icono:
-                Profile.updateAvatar(profile, icono)
-                return Response({'success': True, 'msg': 'icono-update-pendiente'})
+                Profile.updateIcono(profile, icono)
+                return Response({'success': True, 'msg': 'icono-update'})
             elif birth_date:
                 Profile.updateBirthdate(profile, birth_date)
                 return Response({'success': True, 'msg': 'birth_date-update'})
@@ -200,8 +200,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Profile.updateBiography(profile, biography)
                 return Response({'success': True, 'msg': 'biography-update'})
             elif location:
-                place = Place.searchCity(location)
-                Profile.updateLocation(profile, place)
+                Profile.updateLocation(profile, location)
                 return Response({'success': True, 'msg': 'location-update'})
             elif company:
                 Profile.updateCompany(profile, company)
