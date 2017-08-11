@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, detail_route
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -18,6 +18,8 @@ from rest_framework_expiring_authtoken.models import ExpiringToken
 from django.shortcuts import get_object_or_404
 from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
+from django.core import serializers
+import json
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -28,6 +30,29 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().filter(is_staff=False)
     serializer_class = UserSerializer
+
+    # Obtencion de informacion de un usuario
+    @detail_route(methods=['get'])
+    def getData(self, request, pk=None):
+        try:
+            user = getUser(pk)
+            context = {}
+            context['user'] = json.loads(serializers.serialize("json", [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+            context['profile'] = json.loads(serializers.serialize("json", [getProfile(user)], fields=('user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')))
+            context['duration'] = getDurationUser(user)
+            context['numberFollowers'] = getNumberFollowersUser(user)
+            context['haveCategories'] = json.loads(serializers.serialize("json", getHaveCategoriesUser(user), fields=('category', 'profile', 'type_category')))
+            context['searchCategories'] = json.loads(serializers.serialize("json", getSearchCategoriesUser(user), fields=('category', 'profile', 'type_category')))
+            context['noticesHave'] = json.loads(serializers.serialize("json", getNoticesHaveUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
+            context['noticesSearch'] = json.loads(serializers.serialize("json", getNoticesSearchUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
+            context['tags'] = json.loads(serializers.serialize("json", getTagsUser(user), fields=('tag', 'profile')))
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class PlaceViewSet(viewsets.ModelViewSet):
@@ -238,34 +263,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    # Obtencion de informacion de un usuario
-    @list_route(methods=['get'])
-    def getDataProfile(self, request):
-        try:
-            id = request.GET.get('id', None)
-            user = getUser(id)
-            profile = getProfile(user)
-            context = {}
-            context['user'] = user
-            context['profile'] = profile
-            context['icono'] = getIconUser(user)
-            context['duration'] = getDurationUser(user)
-            context['numberFollowers'] = getNumberFollowersUser(user)
-            context['haveCategories'] = getHaveCategoriesUser(user)
-            context['searchCategories'] = getSearchCategoriesUser(user)
-            context['noticesHave'] = getNoticesHaveUser(user)
-            context['noticesSearch'] = getNoticesSearchUser(user)
-            context['tags'] = getTagsUser(user)
-            if user:
-                return Response({'success': True, 'data': context})
-            else:
-                return Response({'success': False, 'err': 'Non-existent user'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
@@ -337,12 +334,12 @@ def getSearchCategoriesUser(user):
 
 # Metodo que retorna las publicaciones del usuario tiene
 def getNoticesHaveUser(user):
-    return Notice.getNotice(getProfile(user))
+    return Notice.getNoticeHave(getProfile(user))
 
 
 # Metodo que retorna las publicaciones del usuario busca
 def getNoticesSearchUser(user):
-    return Notice.getNotice(getProfile(user))
+    return Notice.getNoticeSearch(getProfile(user))
 
 
 # Metodo que retorna los tags del usuario

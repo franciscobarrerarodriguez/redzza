@@ -17,4 +17,4 @@ class WantedCategorySerializer(serializers.HyperlinkedModelSerializer):
 class SuggestedCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SuggestedCategory
-        fields = ('id', 'url', 'category', 'profile', 'type_category')
+        fields = ('id', 'url', 'category', 'profile')
