@@ -138,10 +138,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 login(request, user)
                 token = getToken(user)
                 timeToken = getTimeToken(token)
+                userSerialized = json.loads(serializers.serialize("json", [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
                 if user.is_staff:
-                    return Response({'success': True, 'msg': 'user-admin', 'token': token.key, 'timeToken': timeToken})
+                    return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
                 else:
-                    return Response({'success': True, 'msg': 'user-normal', 'token': token.key, 'timeToken': timeToken})
+                    return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
             else:
                 return Response({'success': False, 'err': form.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
