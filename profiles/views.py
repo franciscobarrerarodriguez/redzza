@@ -36,21 +36,23 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             user = getUser(pk)
             context = {}
-            context['user'] = json.loads(serializers.serialize("json", [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
-            context['profile'] = json.loads(serializers.serialize("json", [getProfile(user)], fields=('user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')))
-            context['duration'] = getDurationUser(user)
-            context['numberFollowers'] = getNumberFollowersUser(user)
-            haveCategories = getHaveCategoriesUser(user)
-            context['haveCategories'] = json.loads(serializers.serialize("json", haveCategories, fields=('category', 'profile', 'type_category')))
-            for i, category in enumerate(context['haveCategories']):
-                context['haveCategories'][i]["fields"]["name"] = str(haveCategories[i])
-            searchCategories = getSearchCategoriesUser(user)
-            context['searchCategories'] = json.loads(serializers.serialize("json", searchCategories, fields=('category', 'profile', 'type_category')))
-            for i, category in enumerate(context['searchCategories']):
-                context['searchCategories'][i]["fields"]["name"] = str(searchCategories[i])
-            context['noticesHave'] = json.loads(serializers.serialize("json", getNoticesHaveUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
-            context['noticesSearch'] = json.loads(serializers.serialize("json", getNoticesSearchUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
-            context['tags'] = json.loads(serializers.serialize("json", getTagsUser(user), fields=('tag', 'profile')))
+            context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+            profile = getProfile(user)
+            context['profile'] = json.loads(serializers.serialize('json', [profile], fields=('user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')))
+            context['profile'][0]['fields']['location-name'] = str(profile.location)
+            # context['duration'] = getDurationUser(user)
+            # context['numberFollowers'] = getNumberFollowersUser(user)
+            # haveCategories = getHaveCategoriesUser(user)
+            # context['haveCategories'] = json.loads(serializers.serialize('json', haveCategories, fields=('category', 'profile', 'type_category')))
+            # for i, category in enumerate(context['haveCategories']):
+            #     context['haveCategories'][i]['fields']['name'] = str(haveCategories[i])
+            # searchCategories = getSearchCategoriesUser(user)
+            # context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories, fields=('category', 'profile', 'type_category')))
+            # for i, category in enumerate(context['searchCategories']):
+            #     context['searchCategories'][i]['fields']['name'] = str(searchCategories[i])
+            # context['noticesHave'] = json.loads(serializers.serialize('json', getNoticesHaveUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
+            # context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
+            # context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user), fields=('tag', 'profile')))
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -117,7 +119,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                                 SuggestedCategory.create(suggesting, profile)
                             login(request, user)
                             token = Token.objects.create(user=user)
-                            userSerialized = json.loads(serializers.serialize("json", [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+                            userSerialized = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
                             return Response({'success': True, 'msg': 'user-created', 'token': token.key, 'user': userSerialized}, status=status.HTTP_201_CREATED)
                         else:
                             return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -149,7 +151,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 login(request, userAuthenticate)
                 token = getToken(userAuthenticate)
                 timeToken = getTimeToken(token)
-                userSerialized = json.loads(serializers.serialize("json", [userAuthenticate], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+                userSerialized = json.loads(serializers.serialize('json', [userAuthenticate], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
                 if userAuthenticate.is_staff:
                     return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
                 else:
