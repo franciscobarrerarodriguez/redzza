@@ -11,7 +11,7 @@
 | /api/v1/ |  | GET | Lista de CRUDs | Modelos de la base de datos del negocio |
 | /api/v1/apiServices/validateEmail/ | email | POST | exists, data | Verificacion de existencia de correo en modelo user |
 | /api/v1/apiServices/createUser/ | email, first_name, last_name, password, place, i_search[] , i_have[] , suggesting | POST | token, success, msg, err | Creacion de un nuevo usuario |
-| /api/v1/apiServices/loginEmail/ | email, password | POST | token, success, msg, err | Login de usuario al aplicativo mediante email y contraseña |
+| /api/v1/apiServices/loginUser/ | email o username, password | POST | token, success, msg, err, user, timetoken | Login de usuario al aplicativo mediante email o username y contraseña |
 | /api/v1/apiServices/updateUser/ | username, first_name, last_name, email, password, avatar, icono, birth_date, gender, phone, biography, location, company, profession, address, avialability, i_search[] , i_have[] , tags[] | POST | success, msg, err | Edicion del perfil usuario *Un campo a la vez* |
 
 

@@ -109,9 +109,10 @@ class ApiServicesViewSet(viewsets.ViewSet):
                                 WantedCategory.create(element['pk'], profile, 2)
                             if suggesting:
                                 SuggestedCategory.create(suggesting, profile)
-                            login(request, user, 'profiles.backends.EmailBackend')
+                            login(request, user)
                             token = Token.objects.create(user=user)
-                            return Response({'success': True, 'msg': 'user-created', 'token': token.key}, status=status.HTTP_201_CREATED)
+                            userSerialized = json.loads(serializers.serialize("json", [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+                            return Response({'success': True, 'msg': 'user-created', 'token': token.key, 'user': userSerialized}, status=status.HTTP_201_CREATED)
                         else:
                             return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
                     else:
