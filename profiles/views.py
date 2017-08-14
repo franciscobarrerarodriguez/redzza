@@ -134,8 +134,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
             user = request.data.get('user', None)
             password = request.data.get('password', None)
             if validateStructureEmail(user):
-                user = getUserEmail(user).username
-                print(user)
+                userEmail = getUserEmail(user)
+                if userEmail is not None:
+                    user = userEmail.username
             userAuthenticate = authenticate(request, username=user, password=password)
             if userAuthenticate is not None:
                 login(request, userAuthenticate)
