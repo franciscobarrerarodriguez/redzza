@@ -67,6 +67,9 @@ class Profile(models.Model):
     def getUser(id):
         return get_object_or_404(User, id=id)
 
+    def getUserEmail(email):
+        return get_object_or_404(User, email=email)
+
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
 
