@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import list_route, detail_route
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import list_route, detail_route, permission_classes
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -137,7 +138,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Login por correo electronico o usuario y contraseña
-    @list_route(methods=['post'])
+    @list_route(methods=['post'], permission_classes=[AllowAny])
     def loginUser(self, request):
         try:
             user = request.data.get('user', None)
