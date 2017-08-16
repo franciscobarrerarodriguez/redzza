@@ -50,7 +50,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 OLD_PASSWORD_FIELD_ENABLED = True
 
@@ -58,10 +57,13 @@ LOGOUT_ON_PASSWORD_CHANGE = False
 
 # EMAIL Settings
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = "larryportocarrero@gmail.com"
 EMAIL_HOST_PASSWORD = "dqggjrqpjndawkhg"
 EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 REST_FRAMEWORK = {
