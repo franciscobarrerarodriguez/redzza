@@ -176,7 +176,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             first_name = request.data.get('first_name', None)
             last_name = request.data.get('last_name', None)
             email = request.data.get('email', None)
-            password = request.data.get('password', None)
             avatar = request.data.get('avatar', None)
             icono = request.data.get('icono', None)
             birth_date = request.data.get('birth_date', None)
@@ -217,10 +216,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
                         return Response({'success': False, 'err': 'email-invalid'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-            elif password:
-                user.set_password(password)
-                user.save()
-                return Response({'success': True, 'msg': 'password-update'})
             elif avatar:
                 Profile.updateAvatar(profile, avatar)
                 return Response({'success': True, 'msg': 'avatar-update'})

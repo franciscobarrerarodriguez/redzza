@@ -6,13 +6,16 @@
 | --- | --- | --- | --- | --- |
 | / |  |  |  | Admin Django - WEB |
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
-| /rest-auth/logout/ |  | POST |  | Logout api |
+| /rest-auth/logout/ |  | POST | detail | Logout *Debe enviarse la cabecera Authorization con el token del usuario, para eliminar token* |
 | /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
+| /rest-auth/password/change/ | new_password1, new_password2, old_password | POST | detail | Cambio de contraseña |
+| /rest-auth/password/reset/ | email | POST | detail | Olvide contraseña - *al correo llegara un link como el siguiente http://redzza.com/reset/MTg1/4on-ef2ef60380eb09fb2cb0/* /reset/uid/token/ |
+| /rest-auth/password/reset/confirm/ | uid, token, new_password1, new_password2 | POST | detail | Olvide contraseña confirmacion - uid y token son enviados en el correo despues de usar /rest-auth/password/reset/ |
 | /api/v1/ |  | GET | Lista de CRUDs | Modelos de la base de datos del negocio |
 | /api/v1/apiServices/validateEmail/ | email | POST | exists, data | Verificacion de existencia de correo en modelo user |
 | /api/v1/apiServices/createUser/ | email, first_name, last_name, password, place, i_search[] , i_have[] , suggesting | POST | token, success, msg, err, user | Creacion de un nuevo usuario |
 | /api/v1/apiServices/loginUser/ | email o username, password | POST | token, success, msg, err, user, timetoken | Login de usuario al aplicativo mediante email o username y contraseña |
-| /api/v1/apiServices/updateUser/ | username, first_name, last_name, email, password, avatar, icono, birth_date, gender, phone, biography, location, company, profession, address, avialability, i_search[] , i_have[] , tags[] | POST | success, msg, err | Edicion del perfil usuario *Un campo a la vez* |
+| /api/v1/apiServices/updateUser/ | username, first_name, last_name, email, avatar, icono, birth_date, gender, phone, biography, location, company, profession, address, avialability, i_search[] , i_have[] , tags[] | POST | success, msg, err | Edicion del perfil usuario *Un campo a la vez* |
 
 
 ## Paquetes pip

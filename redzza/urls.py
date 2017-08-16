@@ -18,6 +18,7 @@ router.registry.extend(tags_router.registry)
 
 urlpatterns = [
     url(r'^', admin.site.urls,),
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/login/', views.obtain_expiring_auth_token),
