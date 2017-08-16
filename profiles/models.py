@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.shortcuts import get_object_or_404
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 class Place(models.Model):
@@ -124,6 +126,12 @@ class Profile(models.Model):
     def updateAvialability(profile, avialability):
         profile.avialability = avialability
         return profile.save()
+
+# metodo para borrar archivos de los avatar cuando se borre el registro
+@receiver(pre_save, sender=Profile)
+def avatar_delete(sender, instance, **kwargs):
+    """ Borra los ficheros de los avatars que se actualizan. """
+    # instance.avatar.delete(False)
 
 
 class Follow(models.Model):
