@@ -8,6 +8,13 @@ from .models import Follow, Profile, Place, Icon
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
+
+    def imagen_admin(self, obj):
+        return '<img src="%s" />' % obj.avatar.url
+
+    imagen_admin.allow_tags = True
+    readonly_fields = ('imagen_admin',)
+    fields = ('user','location','imagen_admin','avatar')
     list_display = ('user', 'location')
 
 
