@@ -6,7 +6,7 @@
 | --- | --- | --- | --- | --- |
 | / |  |  |  | Admin Django - WEB |
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
-| /rest-auth/logout/ |  | POST |  | Logout *Debe enviarse la cabecera Authorization con el token del usuario, para eliminar token* |
+| /rest-auth/logout/ |  | POST | detail | Logout *Debe enviarse la cabecera Authorization con el token del usuario, para eliminar token* |
 | /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
 | /rest-auth/password/change/ | new_password1, new_password2, old_password | POST | detail | Cambio de contraseña |
 | /rest-auth/password/reset/ | email | POST | detail | Olvide contraseña - *al correo llegara un link como el siguiente http://redzza.com/reset/MTg1/4on-ef2ef60380eb09fb2cb0/* /reset/uid/token/ |
