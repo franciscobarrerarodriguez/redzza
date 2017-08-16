@@ -40,7 +40,7 @@ class UserViewSet(viewsets.ModelViewSet):
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile], fields=('user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')))
-            context['profile'][0]['fields']['location-name'] = str(profile.location)
+            context['profile'][0]['fields']['location_name'] = str(profile.location)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             haveCategories = getHaveCategoriesUser(user)
@@ -167,7 +167,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Edicion de informacion del usuario
-    @list_route(methods=['post'])
+    @list_route(methods=['put'])
     def updateUser(self, request):
         try:
             user = request.user
