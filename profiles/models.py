@@ -131,7 +131,7 @@ class Profile(models.Model):
 @receiver(pre_save, sender=Profile)
 def avatar_delete(sender, instance, **kwargs):
     """ Borra los ficheros de los avatars que se actualizan. """
-    instance.avatar.delete(False)
+    # instance.avatar.delete(False)
 
 
 class Follow(models.Model):
