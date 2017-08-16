@@ -4,6 +4,10 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+# usada para acceder a los archivos
+import os
+# usado para generar el nombre de una imagen
+import uuid
 
 
 class Place(models.Model):
@@ -82,6 +86,7 @@ class Profile(models.Model):
         return User.objects.filter(username__iexact=username).exists()
 
     def updateAvatar(profile, avatar):
+        profile.avatar.avatar_delete
         profile.avatar = avatar
         return profile.save()
 
@@ -130,8 +135,23 @@ class Profile(models.Model):
 # metodo para borrar archivos de los avatar cuando se borre el registro
 @receiver(pre_save, sender=Profile)
 def avatar_delete(sender, instance, **kwargs):
-    """ Borra los ficheros de los avatars que se actualizan. """
-    # instance.avatar.delete(False)
+    """
+    Deletes old file from filesystem
+    when corresponding `Profile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Profile.objects.get(pk=instance.pk).avatar
+    except Profile.DoesNotExist:
+        return False
+
+    new_file = instance.avatar
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
 
 
 class Follow(models.Model):
