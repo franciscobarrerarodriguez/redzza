@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/login/', views.obtain_expiring_auth_token),
-    url(r'^rest-auth/registration/account-confirm-email/(?P<key>\w+)/', confirm_email, name="account_confirm_email"),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
