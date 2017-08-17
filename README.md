@@ -6,6 +6,7 @@
 | --- | --- | --- | --- | --- |
 | / |  |  |  | Admin Django - WEB |
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
+| /rest-auth/registration/verify-email/ | key | POST | detail | Verificacion de correo - token es enviado al momento del registro |
 | /rest-auth/logout/ |  | POST | detail | Logout *Debe enviarse la cabecera Authorization con el token del usuario, para eliminar token* |
 | /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
 | /rest-auth/password/change/ | new_password1, new_password2, old_password | POST | detail | Cambio de contraseña |
