@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
 OLD_PASSWORD_FIELD_ENABLED = True
 
