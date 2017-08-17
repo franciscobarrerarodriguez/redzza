@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.authtoken.models import Token
 from allauth.account import app_settings as allauth_settings
+from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -124,6 +125,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                             token = Token.objects.create(user=user)
                             userSerialized = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
                             complete_signup(request._request, user, allauth_settings.EMAIL_VERIFICATION, None)
+                            userSerialized[0]['fields']['is_verified'] = EmailAddress.objects.get(user=user).verified
                             return Response({'success': True, 'msg': 'user-created', 'token': token.key, 'user': userSerialized}, status=status.HTTP_201_CREATED)
                         else:
                             return Response({'success': False, 'err': 'User not created'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -156,6 +158,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 token = getToken(userAuthenticate)
                 timeToken = getTimeToken(token)
                 userSerialized = json.loads(serializers.serialize('json', [userAuthenticate], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+                userSerialized[0]['fields']['is_verified'] = EmailAddress.objects.get(user=userAuthenticate).verified
                 if userAuthenticate.is_staff:
                     return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
                 else:
