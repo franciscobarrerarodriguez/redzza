@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 ]
 
-# SITE_ID = 1
+SITE_ID = 1
 
 
 OLD_PASSWORD_FIELD_ENABLED = True
