@@ -26,16 +26,36 @@ class Notice(models.Model):
     # urgente un tiempo 24 horas
     urgency = models.BooleanField(default=False)
     # lugar donde se encuentra el producto o se presta el servicio
-    location = models.ForeignKey(Place)
+    location = models.ForeignKey(Place, default="")
 
     def __str__(self):
         return self.title
+
+    def create(profile, category, title, description, kind, urgency):
+        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency)
+        notice.save()
+        return notice
 
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
     def getNoticeSearch(profile):
         return Notice.objects.filter(profile=profile, kind=2)
+
+    # para unir consultas se usa |
+
+    # buscar avisos por personas a alas que sigue
+    def searchFollowing(title, following):
+        return Notice.objects.filter(following=profile).order_by('notice__date')
+
+    # buscar avisos por título y por ciudad
+    def searchTitle(title, city):
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title).order_by('notice__date')
+
+    # faltan queries con array
+    # buscar avisos por categoría y por ciudad
+    def searchCategory(title, category, city):
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category).order_by('notice__date')
 
 
 class CityNotice(models.Model):
@@ -45,6 +65,12 @@ class CityNotice(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.city, self.notice)
+
+    def searchNotices(city):
+        return CityNotice.objects.filter(city=city)
+
+    def searchCities(notice):
+        return CityNotice.objects.filter(notice=notice)
 
 
 class Product(models.Model):
@@ -69,6 +95,9 @@ class Product(models.Model):
     def __str__(self):
         return self.notice
 
+    def searchProduct(notice):
+        return Product.objects.filter(notice=notice)
+
 
 class Color(models.Model):
     # hexadecimal -> #111111
@@ -77,6 +106,9 @@ class Color(models.Model):
 
     def __str__(self):
         return self.name
+
+    def searchProduct(product):
+        return Color.objects.filter(notice=product)
 
 
 class Service(models.Model):
@@ -87,11 +119,16 @@ class Service(models.Model):
     def __str__(self):
         return self.notice
 
+    def searchService(notice):
+        return Service.objects.filter(notice=notice)
+
 
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to=File.generatePath)
 
+    def search(notice):
+        return Image.objects.filter(notice=notice)
 
 # metodo para borrar archivos cuando se borre el registro
 @receiver(post_delete, sender=Image)
@@ -104,6 +141,9 @@ class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to=File.generatePath)
+
+    def search(notice):
+        return Video.objects.filter(notice=notice)
 
 
 # metodo para borrar archivos cuando se borre el registro
