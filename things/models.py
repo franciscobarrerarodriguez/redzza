@@ -26,6 +26,9 @@ class Notice(models.Model):
     # urgente un tiempo 24 horas
     urgency = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
+
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
