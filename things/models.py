@@ -25,6 +25,8 @@ class Notice(models.Model):
     visibility = models.BooleanField(default=True)
     # urgente un tiempo 24 horas
     urgency = models.BooleanField(default=False)
+    # lugar donde se encuentra el producto o se presta el servicio
+    location = models.ForeignKey(Place)
 
     def __str__(self):
         return self.title
