@@ -4,11 +4,30 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from datetime import date
 # usada para acceder a los archivos
 import os
 # usado para generar el nombre de una imagen
-import uuid
+from uuid import uuid4
 
+class File():
+    def generatePath(instance, filename):
+        # El primer paso es extraer la extension de la imagen del
+        # archivo original
+        extension = os.path.splitext(filename)[1][1:]
+
+        # Generamos la ruta relativa a MEDIA_ROOT donde almacenar
+        # el archivo, se usa el nombre de la clase y la fecha actual.
+        directorio_clase = instance.__class__.__name__
+        ruta = os.path.join(directorio_clase)
+
+        # Generamos el nombre del archivo con un identificador
+        # aleatorio, y la extension del archivo original.
+        nombre_archivo = '{}.{}'.format(
+            date.today().strftime("%Y-%m-%d") + "-" + uuid4().hex, extension)
+
+        # Devolvermos la ruta completa
+        return os.path.join(ruta, nombre_archivo)
 
 class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
@@ -23,7 +42,7 @@ class Place(models.Model):
 
 class Icon(models.Model):
     name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='iconos', default='iconos/icono.png')
+    image = models.ImageField(upload_to='iconos', default='Icon/icono.png')
 
     def searchIcono(idIcono):
         return get_object_or_404(Icon, id=idIcono)
@@ -31,7 +50,7 @@ class Icon(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatars', default='avatars/no-avatar.png')
+    avatar = models.ImageField(upload_to=File.generatePath, default='Profile/no-avatar.png')
     icono = models.ForeignKey(Icon, blank=True, null=True)
     birth_date = models.DateField(default=datetime.now)
     GENDER = (

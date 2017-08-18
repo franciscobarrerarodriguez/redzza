@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django.db import models
-from profiles.models import Profile, Place
+from profiles.models import File, Profile, Place
 from categories.models import Category
 from datetime import datetime
 from django.db.models.signals import post_delete
@@ -85,7 +85,7 @@ class Service(models.Model):
 
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
-    image = models.ImageField(upload_to='productos')
+    image = models.ImageField(upload_to=File.generatePath)
 
 
 # metodo para borrar archivos cuando se borre el registro
@@ -98,7 +98,7 @@ def photo_delete(sender, instance, **kwargs):
 class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
-    video = models.FileField(upload_to='videos')
+    video = models.FileField(upload_to=File.generatePath)
 
 
 # metodo para borrar archivos cuando se borre el registro
