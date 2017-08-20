@@ -16,6 +16,8 @@ class TagProfile(models.Model):
     profile = models.ForeignKey(Profile, default="", related_name='profile')
     tag = models.ForeignKey(Tag, default="", related_name='tag')
 
+    # faltan mostrar todas las etiquetas
+    
     def __str__(self):
         return '%s %s' % (self.tag, self.profile)
 
