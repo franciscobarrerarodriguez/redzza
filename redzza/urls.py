@@ -2,7 +2,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from django.views.static import serve
-from allauth.account.views import confirm_email
 from . import settings
 
 from profiles.urls import router as profiles_router
