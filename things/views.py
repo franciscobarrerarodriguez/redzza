@@ -71,7 +71,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
 
             notice = Notice.create(profile, category, title, description, kind, urgency, place)
             if offer:
-                Notice.updataOffer(notice, offer)
+                Notice.updateOffer(notice, offer)
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)

@@ -39,9 +39,6 @@ class Notice(models.Model):
         notice.save()
         return notice
 
-    def getNotice(id):
-        return
-
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
@@ -55,6 +52,7 @@ class Notice(models.Model):
 
     def updateOffer(notice, offer):
         noticeOffer = get_object_or_404(Notice, id=offer)
+        print(noticeOffer)
         notice.offer = noticeOffer
         return notice.save
     # para unir consultas se usa |
@@ -114,7 +112,7 @@ class Product(models.Model):
     delivery = models.CharField(max_length=1, choices=DELIVERY, default='C')
 
     def __str__(self):
-        return self.notice
+        return self.notice.title
 
     def create(notice, state):
         product = Product(notice=notice, state=state)
@@ -148,7 +146,7 @@ class Service(models.Model):
     time = models.PositiveIntegerField(blank=True)
 
     def __str__(self):
-        return self.notice
+        return self.notice.title
 
     def create(notice, time):
         service = Service(notice=notice, time=time)
