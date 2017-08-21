@@ -42,21 +42,21 @@ class UserViewSet(viewsets.ModelViewSet):
             context = {}
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
-            context['profile'] = json.loads(serializers.serialize('json', [profile], fields=('user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')))
+            context['profile'] = json.loads(serializers.serialize('json', [profile]))
             context['profile'][0]['fields']['location_name'] = str(profile.location)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             haveCategories = getHaveCategoriesUser(user)
-            context['haveCategories'] = json.loads(serializers.serialize('json', haveCategories, fields=('category', 'profile', 'type_category')))
+            context['haveCategories'] = json.loads(serializers.serialize('json', haveCategories))
             for i, category in enumerate(context['haveCategories']):
                 context['haveCategories'][i]['fields']['name'] = str(haveCategories[i])
             searchCategories = getSearchCategoriesUser(user)
-            context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories, fields=('category', 'profile', 'type_category')))
+            context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories))
             for i, category in enumerate(context['searchCategories']):
                 context['searchCategories'][i]['fields']['name'] = str(searchCategories[i])
-            context['noticesHave'] = json.loads(serializers.serialize('json', getNoticesHaveUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
-            context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user), fields=('date', 'profile', 'category', 'title', 'description', 'money', 'offer', 'kind', 'visibility', 'urgency')))
-            context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user), fields=('tag', 'profile')))
+            context['noticesHave'] = json.loads(serializers.serialize('json', getNoticesHaveUser(user)))
+            context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user)))
+            context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user)))
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
