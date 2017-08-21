@@ -105,7 +105,7 @@ class Profile(models.Model):
         return User.objects.filter(username__iexact=username).exists()
 
     def updateAvatar(profile, avatar):
-        profile.avatar.avatar_delete
+        # profile.avatar.avatar_delete
         profile.avatar = avatar
         return profile.save()
 
