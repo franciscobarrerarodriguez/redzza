@@ -66,9 +66,10 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
-class PlaceViewSet(viewsets.ModelViewSet):
+class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
+    permission_classes = [AllowAny]
 
 
 class FollowViewSet(viewsets.ModelViewSet):
@@ -79,7 +80,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 class ApiServicesViewSet(viewsets.ViewSet):
 
     # Validacion del correo que se intenta registrar
-    @list_route(methods=['post'])
+    @list_route(methods=['post'], permission_classes=[AllowAny])
     def validateEmail(self, request):
         try:
             email = request.data.get('email', None)
@@ -95,7 +96,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Creacion de un usuario
-    @list_route(methods=['post'])
+    @list_route(methods=['post'], permission_classes=[AllowAny])
     def createUser(self, request):
         try:
             email = request.data.get('email', None)
