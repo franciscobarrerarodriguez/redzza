@@ -32,7 +32,8 @@ class Notice(models.Model):
     def __str__(self):
         return self.title
 
-    def create(profile, category, title, description, kind, urgency):
+    def create(profile, idCategory, title, description, kind, urgency):
+        category = get_object_or_404(Category, id=idCategory)
         notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency)
         notice.save()
         return notice

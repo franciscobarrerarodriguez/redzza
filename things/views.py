@@ -64,26 +64,32 @@ class ApiServicesViewSet(viewsets.ViewSet):
             state = request.data.get('state', None)
             offer = request.data.get('offer', None)
             place = request.data.get('place', None)
-            color = request.data.get('color', None)
+            colors = request.data.get('colors', None)
             description = request.data.get('description', None)
             locations = request.data.get('locations', None)
-            images = request.data.get('images', None)
-            videos = request.data.get('videos', None)
+            # images = request.data.get('images', None)
+            # videos = request.data.get('videos', None)
             urgency = request.data.get('urgency', None)
 
             notice = Notice.create(profile, category, title, description, kind)
-            Notice.updataOffer(notice, offer)
+            if offer:
+                Notice.updataOffer(notice, offer)
             Notice.updateLocation(notice, place)
             Notice.updateUrgency(notice, urgency)
-            for file in images:
-                Image.create(notice, file)
-            for file in videos:
-                Video.create(notice, file)
-            for location in locations:
-                CityNotice.create(location, notice)
+            if images:
+                for file in images:
+                    Image.create(notice, file)
+            if videos:
+                for file in videos:
+                    Video.create(notice, file)
+            if locations:
+                for location in locations:
+                    CityNotice.create(location, notice)
             if thing == 'P':
                 product = Product.create(notice, state)
-                Color.create(color, product)
+                if colors:
+                    for color in colors:
+                        Color.create(color, product)
                 return Response({'success': True, 'msg': 'product-posted'})
             elif thing == 'S':
                 Service.create(notice, time)
