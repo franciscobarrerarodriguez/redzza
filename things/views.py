@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from profiles import views as viewsProfiles
 from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
+from django.core import serializers
+import json
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
@@ -75,15 +77,16 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)
+            noticeSerialized = json.loads(serializers.serialize('json', [notice]))
             if thing == 'P':
                 product = Product.create(notice, state)
                 if colors:
                     for color in colors:
                         Color.create(color, product)
-                return Response({'success': True, 'msg': 'product-posted'})
+                return Response({'success': True, 'msg': 'product-posted', 'notice': noticeSerialized})
             elif thing == 'S':
                 Service.create(notice, time)
-                return Response({'success': True, 'msg': 'service-posted'})
+                return Response({'success': True, 'msg': 'service-posted', 'notice': noticeSerialized})
             else:
                 return Response({'success': True, 'msg': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
