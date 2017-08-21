@@ -32,9 +32,10 @@ class Notice(models.Model):
     def __str__(self):
         return self.title
 
-    def create(profile, idCategory, title, description, kind, urgency):
+    def create(profile, idCategory, title, description, kind, urgency, place):
         category = get_object_or_404(Category, id=idCategory)
-        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency)
+        location = get_object_or_404(Place, id=place)
+        notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency, location=location)
         notice.save()
         return notice
 
@@ -55,10 +56,6 @@ class Notice(models.Model):
     def updateOffer(notice, offer):
         noticeOffer = get_object_or_404(Notice, id=offer)
         notice.offer = noticeOffer
-        return notice.save
-
-    def updateUrgency(notice, urgency):
-        notice.urgency = urgency
         return notice.save
     # para unir consultas se usa |
 

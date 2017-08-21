@@ -48,7 +48,7 @@ class CommentaryViewSet(viewsets.ModelViewSet):
 
 class ApiServicesViewSet(viewsets.ViewSet):
 
-    # Validacion del correo que se intenta registrar
+    # Nueva publicacion de producto o servicio
     @list_route(methods=['post'])
     def newNotice(self, request):
         try:
@@ -67,21 +67,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
             colors = request.data.get('colors', None)
             description = request.data.get('description', None)
             locations = request.data.get('locations', None)
-            # images = request.data.get('images', None)
-            # videos = request.data.get('videos', None)
             urgency = request.data.get('urgency', None)
 
-            notice = Notice.create(profile, category, title, description, kind)
+            notice = Notice.create(profile, category, title, description, kind, urgency, place)
             if offer:
                 Notice.updataOffer(notice, offer)
-            Notice.updateLocation(notice, place)
-            Notice.updateUrgency(notice, urgency)
-            if images:
-                for file in images:
-                    Image.create(notice, file)
-            if videos:
-                for file in videos:
-                    Video.create(notice, file)
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)
@@ -95,7 +85,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Service.create(notice, time)
                 return Response({'success': True, 'msg': 'service-posted'})
             else:
-                return Response({'success': True, 'msg': 'Thing not defined'})
+                return Response({'success': True, 'msg': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
