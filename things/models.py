@@ -39,6 +39,9 @@ class Notice(models.Model):
         notice.save()
         return notice
 
+    def getNotice(id):
+        return Notice.objects.get(id=id)
+
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
@@ -48,12 +51,34 @@ class Notice(models.Model):
     def updateLocation(notice, place):
         location = get_object_or_404(Place, id=place)
         notice.location = location
-        return notice.save
+        return notice.save()
 
     def updateOffer(notice, offer):
         noticeOffer = get_object_or_404(Notice, id=offer)
         notice.offer = noticeOffer
-        return notice.save
+        return notice.save()
+
+    def updateCategory(notice, idCategory):
+        category = get_object_or_404(Category, id=idCategory)
+        notice.category = category
+        return notice.save()
+
+    def updatePlace(notice, place):
+        location = get_object_or_404(Place, id=place)
+        notice.location = location
+        return notice.save()
+
+    def updateTitle(notice, title):
+        notice.title = title
+        return notice.save()
+
+    def updateUrgency(notice, urgency):
+        notice.urgency = urgency
+        return notice.save()
+
+    def updateDescription(notice, description):
+        notice.description = description
+        return notice.save()
     # para unir consultas se usa |
 
     # buscar avisos por personas a alas que sigue
@@ -83,6 +108,9 @@ class CityNotice(models.Model):
         cityNotice = CityNotice(city=city, notice=notice)
         cityNotice.save()
         return cityNotice
+
+    def deleteAll(notice):
+        CityNotice.objects.filter(notice=notice).delete()
 
     def searchNotices(city):
         return CityNotice.objects.filter(city=city)
@@ -118,8 +146,15 @@ class Product(models.Model):
         product.save()
         return product
 
+    def updateState(product, state):
+        product.state = state
+        return product.save()
+
     def searchProduct(notice):
-        return Product.objects.filter(notice=notice)
+        try:
+            return Product.objects.get(notice=notice)
+        except Exception as e:
+            return None
 
 
 class Color(models.Model):
@@ -134,6 +169,9 @@ class Color(models.Model):
         color = Color(hexa=hexa, product=product)
         color.save()
         return color
+
+    def deleteAll(product):
+        Color.objects.filter(product=product).delete()
 
     def searchProduct(product):
         return Color.objects.filter(notice=product)
@@ -152,8 +190,15 @@ class Service(models.Model):
         service.save()
         return service
 
+    def updateTime(service, time):
+        service.time = time
+        return service.save()
+
     def searchService(notice):
-        return Service.objects.filter(notice=notice)
+        try:
+            return Service.objects.get(notice=notice)
+        except Exception as e:
+            return None
 
 
 class Image(models.Model):
