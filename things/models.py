@@ -52,7 +52,6 @@ class Notice(models.Model):
 
     def updateOffer(notice, offer):
         noticeOffer = get_object_or_404(Notice, id=offer)
-        print(noticeOffer)
         notice.offer = noticeOffer
         return notice.save
     # para unir consultas se usa |
