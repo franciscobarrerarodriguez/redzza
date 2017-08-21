@@ -63,7 +63,7 @@ class Notice(models.Model):
 
     # buscar avisos por personas a alas que sigue
     def searchFollowing(title, following):
-        return Notice.objects.filter(following=profile).order_by('notice__date')
+        return Notice.objects.filter(following=following).order_by('notice__date')
 
     # buscar avisos por título y por ciudad
     def searchTitle(title, city):
