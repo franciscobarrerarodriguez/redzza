@@ -76,6 +76,10 @@ class Notice(models.Model):
         notice.urgency = urgency
         return notice.save()
 
+    def updateVisibility(notice, visibility):
+        notice.visibility = visibility
+        return notice.save()
+
     def updateDescription(notice, description):
         notice.description = description
         return notice.save()

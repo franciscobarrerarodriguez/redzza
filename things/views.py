@@ -116,6 +116,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             description = request.data.get('description', None)
             locations = request.data.get('locations', None)
             urgency = request.data.get('urgency', None)
+            visibility = request.data.get('visibility', None)
             # busco
             offer = request.data.get('offer', None)
             # Producto
@@ -135,6 +136,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
             elif description:
                 Notice.updateDescription(notice, description)
                 return Response({'success': True, 'msg': 'description-update'})
+            elif visibility:
+                Notice.updateVisibility(notice, visibility)
+                return Response({'success': True, 'msg': 'visibility-update'})
             elif locations:
                 CityNotice.deleteAll(notice)
                 for location in locations:

@@ -18,6 +18,7 @@
 | /api/v1/apiServices/loginUser/ | email o username, password | POST | token, success, msg, err, user, timetoken | Login de usuario al aplicativo mediante email o username y contraseña |
 | /api/v1/apiServices/updateUser/ | username, first_name, last_name, email, avatar, icono, birth_date, gender, phone, biography, location, company, profession, address, avialability, i_search[] , i_have[] , tags[] | PUT | success, msg, err | Edicion del perfil usuario *Un campo a la vez* |
 | /api/v1/apiServices/newNotice/ | kind(1,2), thing(P,S), title, category, time, state, offer, place, colors, description, locations, urgency | POST | success, msg, err, notice | Nueva publicacion de servicio o producto |
+| /api/v1/apiServices/updateNotice/ | notice, title, category, time, state, offer, place, colors, description, locations, urgency, visibility | update | success, msg, err | Edicion publicacion de servicio o producto |
 | /api/v1/images/ | notice, image | POST | image | Imagen para notice |
 | /api/v1/videos/ | notice, video | POST | video | Video para notice |
 
