@@ -3,6 +3,7 @@
 from django.db import models
 from profiles.models import File, Profile, Place
 from categories.models import Category
+from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -36,12 +37,28 @@ class Notice(models.Model):
         notice.save()
         return notice
 
+    def getNotice(id):
+        return
+
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
 
     def getNoticeSearch(profile):
         return Notice.objects.filter(profile=profile, kind=2)
 
+    def updateLocation(notice, place):
+        location = get_object_or_404(Place, id=place)
+        notice.location = location
+        return notice.save
+
+    def updateOffer(notice, offer):
+        noticeOffer = get_object_or_404(Notice, id=offer)
+        notice.offer = noticeOffer
+        return notice.save
+
+    def updateUrgency(notice, urgency):
+        notice.urgency = urgency
+        return notice.save
     # para unir consultas se usa |
 
     # buscar avisos por personas a alas que sigue
@@ -65,6 +82,12 @@ class CityNotice(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.city, self.notice)
+
+    def create(location, notice):
+        city = get_object_or_404(Place, id=location)
+        cityNotice = CityNotice(city=city, notice=notice)
+        cityNotice.save()
+        return cityNotice
 
     def searchNotices(city):
         return CityNotice.objects.filter(city=city)
@@ -95,6 +118,11 @@ class Product(models.Model):
     def __str__(self):
         return self.notice
 
+    def create(notice, state):
+        product = Product(notice=notice, state=state)
+        product.save()
+        return product
+
     def searchProduct(notice):
         return Product.objects.filter(notice=notice)
 
@@ -106,6 +134,11 @@ class Color(models.Model):
 
     def __str__(self):
         return self.name
+
+    def create(hexa, product):
+        color = Color(hexa=hexa, product=product)
+        color.save()
+        return color
 
     def searchProduct(product):
         return Color.objects.filter(notice=product)
@@ -119,6 +152,11 @@ class Service(models.Model):
     def __str__(self):
         return self.notice
 
+    def create(notice, time):
+        service = Service(notice=notice, time=time)
+        service.save()
+        return service
+
     def searchService(notice):
         return Service.objects.filter(notice=notice)
 
@@ -127,10 +165,17 @@ class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to=File.generatePath)
 
+    def create(notice, file):
+        image = Image(notice=notice, image=file)
+        image.save()
+        return image
+
     def search(notice):
         return Image.objects.filter(notice=notice)
 
 # metodo para borrar archivos cuando se borre el registro
+
+
 @receiver(post_delete, sender=Image)
 def photo_delete(sender, instance, **kwargs):
     """ Borra los ficheros de las fotos que se eliminan. """
@@ -141,6 +186,11 @@ class Video(models.Model):
     # archivo o url
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to=File.generatePath)
+
+    def create(notice, file):
+        video = Video(notice=notice, video=file)
+        video.save()
+        return video
 
     def search(notice):
         return Video.objects.filter(notice=notice)
