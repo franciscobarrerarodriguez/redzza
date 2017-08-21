@@ -167,7 +167,7 @@ class Color(models.Model):
     product = models.ForeignKey(Product, default="")
 
     def __str__(self):
-        return self.name
+        return self.hexa
 
     def create(hexa, product):
         color = Color(hexa=hexa, product=product)
