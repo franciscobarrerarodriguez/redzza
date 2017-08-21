@@ -32,13 +32,13 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'notice', 'time')
 
 
-class ImageSerializer(serializers.HyperlinkedModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('id', 'url', 'notice', 'image')
 
 
-class VideoSerializer(serializers.HyperlinkedModelSerializer):
+class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ('id', 'url', 'notice', 'video')
