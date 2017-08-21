@@ -72,12 +72,15 @@ class ApiServicesViewSet(viewsets.ViewSet):
             urgency = request.data.get('urgency', None)
 
             notice = Notice.create(profile, category, title, description, kind, urgency, place)
-            if offer:
-                Notice.updateOffer(notice, offer)
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)
             noticeSerialized = json.loads(serializers.serialize('json', [notice]))
+            if offer:
+                try:
+                    Notice.updateOffer(notice, offer)
+                except Exception:
+                    print("Non-existent offer")
             if thing == 'P':
                 product = Product.create(notice, state)
                 if colors:
