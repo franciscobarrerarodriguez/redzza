@@ -86,9 +86,11 @@ class Notice(models.Model):
     # para unir consultas se usa |
 
     # buscar avisos por personas a las que sigue
-    def searchFollowing(title, following):
-        for f in following:
-            notices = notices | Notice.objects.filter(following=f).order_by('notice__date')
+    def searchFollowing(following):
+        notices = Notice.objects.filter(profile=following[0])
+        for f in range(1, len(following)):
+            notices = notices | Notice.objects.filter(profile=following[f])
+        print(len(notices))
         result = notices.order_by('notice__date')
         return result
 
