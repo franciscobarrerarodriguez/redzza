@@ -182,3 +182,6 @@ class Follow(models.Model):
 
     def searchFollowers(profile):
         return Follow.objects.filter(following=profile).values('follower')
+
+    def searchFollowings(profile):
+        return Follow.objects.filter(follower=profile).values('follower')

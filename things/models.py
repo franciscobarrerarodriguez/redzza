@@ -85,15 +85,19 @@ class Notice(models.Model):
         return notice.save()
     # para unir consultas se usa |
 
-    # buscar avisos por personas a alas que sigue
+    # buscar avisos por personas a las que sigue
     def searchFollowing(title, following):
-        return Notice.objects.filter(following=following).order_by('notice__date')
+        for f in following:
+            notices = notices | Notice.objects.filter(following=f).order_by('notice__date')
+        result = notices.order_by('notice__date')
+        return result
 
     # buscar avisos por título y por ciudad
     def searchTitle(title, city):
         return CityNotice.searchNotices(city).filter(notice__title__icontains=title).order_by('notice__date')
 
     # faltan queries con array
+    # hacer una lista combinada de productos y servicios
     # buscar avisos por categoría y por ciudad
     def searchCategory(title, category, city):
         return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category).order_by('notice__date')
