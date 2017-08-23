@@ -113,7 +113,10 @@ class Notice(models.Model):
         result = []
         for n in notices:
             if Product.searchProduct(n) is None:
-                result.append(Service.searchService(n))
+                if Service.searchService(n) is None:
+                    result.append(n)
+                else:
+                    result.append(Service.searchService(n))
             else:
                 result.append(Product.searchProduct(n))
         return result
