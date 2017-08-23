@@ -102,7 +102,21 @@ class Notice(models.Model):
     # hacer una lista combinada de productos y servicios
     # buscar avisos por categoría y por ciudad
     def searchCategory(title, category, city):
-        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category).order_by('notice__date')
+        result = None
+        if category.pattern is not None:
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category)
+        else:
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category)
+        return result.order_by('notice__date')
+
+    def sortoutNotices(notices):
+        result = []
+        for n in notices:
+            if Product.searchProduct(n) is None:
+                result.append(Service.searchService(n))
+            else:
+                result.append(Product.searchProduct(n))
+        return result
 
 
 class CityNotice(models.Model):
