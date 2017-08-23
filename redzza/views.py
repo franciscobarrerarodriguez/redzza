@@ -11,7 +11,8 @@ from django.shortcuts import get_object_or_404
 
 def queries(request):
     # profile = get_object_or_404(Profile, gender='F')
-    # oldcategory = get_object_or_404(Category, name="Animales - Mascotas")
+    oldcategory = get_object_or_404(Category, name="Vehiculos - Motos")
+    # Vehiculos - Motos
     # category = get_object_or_404(Category, name="Seguridad")
     # query = Profile.updateBirthdate(get_object_or_404(Profile, gender='F'), "2015-11-06")
     # query = Profile.updateGender(get_object_or_404(Profile, gender='F'), 'M')
@@ -22,12 +23,13 @@ def queries(request):
     #    query = LabelProfile.delete(get_object_or_404(Label, id=1), get_object_or_404(Profile, gender='F'))
     # query = Notice.create(get_object_or_404(Profile, gender='F'), Category.objects.get(id=60), "carro renault 4", "mi carrito de siempre", 1)
     # query = Notice.searchTitle("arro", Place.searchCity(3))
-    query = Notice.sortoutNotices(Notice.objects.all())
+    # query = Notice.sortoutNotices(Notice.objects.all())
     # notice = get_object_or_404(Notice, title="carro renault 4")
     # query = Image.create(notice, "/home/diego/2.jpg")
     # query = Video.create(notice, "/home/diego/Documents/redzza/redzza/media/videos/Gorillaz.mp4")
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
+    query = Notice.searchCategory("o", oldcategory, Place.searchCity(3))
     return HttpResponse(query)
     # type -> tipo de campo
     # dir atributos de la clase

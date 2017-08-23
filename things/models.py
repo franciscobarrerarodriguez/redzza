@@ -114,6 +114,7 @@ class Notice(models.Model):
         for n in notices:
             if Product.searchProduct(n) is None:
                 if Service.searchService(n) is None:
+                    # si no tiene relación con ninguno es un servicio sin tiempo de horas semanales
                     result.append(n)
                 else:
                     result.append(Service.searchService(n))
@@ -139,6 +140,7 @@ class CityNotice(models.Model):
     def deleteAll(notice):
         CityNotice.objects.filter(notice=notice).delete()
 
+    # falta resolver los departamentos
     def searchNotices(city):
         return CityNotice.objects.filter(city=city)
 
