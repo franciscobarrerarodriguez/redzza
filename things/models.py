@@ -37,8 +37,6 @@ class Notice(models.Model):
         location = get_object_or_404(Place, id=place)
         notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency, location=location)
         notice.save()
-        cityNotice = CityNotice(city=notice.location, notice=notice)
-        cityNotice.save()
         return notice
 
     def getNotice(id):
