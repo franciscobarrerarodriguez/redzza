@@ -37,10 +37,15 @@ class Notice(models.Model):
         location = get_object_or_404(Place, id=place)
         notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency, location=location)
         notice.save()
+        cityNotice = CityNotice(city=notice.location, notice=notice)
+        cityNotice.save()
         return notice
 
     def getNotice(id):
         return Notice.objects.get(id=id)
+
+    def getNoticeProfile(profile):
+        return Notice.objects.filter(profile=profile)
 
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
@@ -95,18 +100,26 @@ class Notice(models.Model):
         return result
 
     # buscar avisos por título y por ciudad
-    def searchTitle(title, city):
-        return CityNotice.searchNotices(city).filter(notice__title__icontains=title).order_by('notice__date')
+    def searchTitle(title, city, kind):
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__kind=kind).order_by('notice__date')
 
     # faltan queries con array
     # hacer una lista combinada de productos y servicios
     # buscar avisos por categoría y por ciudad
-    def searchCategory(title, category, city):
+    def searchCategory(title, category, city, kind):
         result = None
         if category.pattern is not None:
-            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category)
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
         else:
-            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category)
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
+        return result.order_by('notice__date')
+
+    def searchCity(title, city, kind):
+        result = None
+        if category.pattern is not None:
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
+        else:
+            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
         return result.order_by('notice__date')
 
     def sortoutNotices(notices):
