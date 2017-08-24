@@ -19,8 +19,11 @@
 | /api/v1/apiServices/updateUser/ | username, first_name, last_name, email, avatar, icono, birth_date, gender, phone, biography, location, company, profession, address, avialability, i_search[] , i_have[] , tags[] | PUT | success, msg, err | Edicion del perfil usuario *Un campo a la vez* |
 | /api/v1/apiServices/newNotice/ | kind(1,2), thing(P,S), title, category, time, state, offer, place, colors, description, locations, urgency | POST | success, msg, err, notice | Nueva publicacion de servicio o producto |
 | /api/v1/apiServices/updateNotice/ | notice, title, category, time, state, offer, place, colors, description, locations, urgency, visibility | PUT | success, msg, err | Edicion publicacion de servicio o producto *Un campo a la vez* |
-| /api/v1/images/ | notice, image | CRUD | image | Imagen para notice |
-| /api/v1/videos/ | notice, video | CRUD | video | Video para notice |
+| /api/v1/images/ | notice, image | GET, POST, PUT, DELETE | image | Imagen para notice |
+| /api/v1/videos/ | notice, video | GET, POST, PUT, DELETE | video | Video para notice |
+| /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Obtencion de informacion de un usuario por su id |
+| /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Listado de publicaciones de usuario por su id |
+| /api/v1/notices/*ID*/ |  | GET | notice | Obtencion de informacion de un notice por su id |
 
 
 ## Paquetes pip

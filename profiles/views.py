@@ -22,7 +22,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
 from django.core import serializers
-from django.contrib.sites.models import Site
 from redzza.settings import MEDIA_ROOT
 import json
 
