@@ -112,13 +112,8 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
         return result.order_by('notice__date')
 
-    def searchCity(title, city, kind):
-        result = None
-        if category.pattern is not None:
-            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
-        else:
-            result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind)
-        return result.order_by('notice__date')
+    def searchCity(city, kind):
+        return CityNotice.searchNotices(city).filter(notice__kind=kind).order_by('notice__date')
 
     def sortoutNotices(notices):
         result = []
