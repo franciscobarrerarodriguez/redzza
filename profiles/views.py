@@ -71,20 +71,20 @@ class UserViewSet(viewsets.ModelViewSet):
     def getNotices(self, request, pk=None):
         try:
             user = getUser(pk)
-            current_site = 'http://%s/' % (Site.objects.get_current().domain)
+            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
             context = []
             for i, notice in enumerate(getNoticesHaveUser(user)):
                 image = getImageNotice(notice)
                 if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + '/' + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
                 else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + '/' + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             for i, notice in enumerate(getNoticesSearchUser(user)):
                 image = getImageNotice(notice)
                 if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + '/' + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
                 else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + '/' + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             # context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user)))
             return Response({'success': True, 'data': context})
         except Exception as e:
