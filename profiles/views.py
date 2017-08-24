@@ -10,7 +10,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
 from tags.models import TagProfile
-from things.models import Notice
+from things.models import Notice, Image
 from .models import Profile, Place, Follow, Icon
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
@@ -22,6 +22,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
 from django.core import serializers
+from django.contrib.sites.models import Site
+from redzza.settings import MEDIA_ROOT
 import json
 
 
@@ -54,9 +56,35 @@ class UserViewSet(viewsets.ModelViewSet):
             context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories))
             for i, category in enumerate(context['searchCategories']):
                 context['searchCategories'][i]['fields']['name'] = str(searchCategories[i])
-            context['noticesHave'] = json.loads(serializers.serialize('json', getNoticesHaveUser(user)))
-            context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user)))
             context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user)))
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Obtencion de publicacion de un usuario
+    # id - imagen - titulo - kind
+    @detail_route(methods=['get'])
+    def getNotices(self, request, pk=None):
+        try:
+            user = getUser(pk)
+            context = []
+            for i, notice in enumerate(getNoticesHaveUser(user)):
+                image = getImageNotice(notice)
+                if len(image) > 0:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': MEDIA_ROOT + '/' + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                else:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': MEDIA_ROOT + '/' + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            for i, notice in enumerate(getNoticesSearchUser(user)):
+                image = getImageNotice(notice)
+                if len(image) > 0:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': MEDIA_ROOT + '/' + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                else:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': MEDIA_ROOT + '/' + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            # context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user)))
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -372,6 +400,11 @@ def getTagsUser(user):
 # Metodo que retorna el icono del usuario
 def getIconUser(user):
     return Icon.searchIcono(getProfile(user).icono)
+
+
+# Metodo que retorna el icono del usuario
+def getImageNotice(notice):
+    return Image.search(notice)
 
 
 # Metodo de obtencion de tiempo restante del token de usuario
