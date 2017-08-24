@@ -115,17 +115,21 @@ class Notice(models.Model):
     def searchCity(city, kind):
         return CityNotice.searchNotices(city).filter(notice__kind=kind).order_by('notice__date')
 
-    def sortoutNotices(notices):
+    def sortoutNotices(notices, city):
         result = []
         for n in notices:
-            if Product.searchProduct(n) is None:
-                if Service.searchService(n) is None:
-                    # si no tiene relación con ninguno es un servicio sin tiempo de horas semanales
-                    result.append(n)
-                else:
-                    result.append(Service.searchService(n))
+            if city is True:
+                notice = n.notice
             else:
-                result.append(Product.searchProduct(n))
+                notice = n
+            if Product.searchProduct(notice) is None:
+                if Service.searchService(notice) is None:
+                    # si no tiene relación con ninguno es un servicio sin tiempo de horas semanales
+                    result.append(notice)
+                else:
+                    result.append(Service.searchService(notice))
+            else:
+                result.append(Product.searchProduct(notice))
         return result
 
 
@@ -240,13 +244,13 @@ class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to=File.generatePath)
 
-    def create(notice, file):
-        image = Image(notice=notice, image=file)
+    def create(notice, pathfile):
+        image = Image(notice=notice, image=pathfile)
         image.save()
         return image
 
     def search(notice):
-        return Image.objects.filter(notice=notice).values()
+        return Image.objects.filter(notice=notice)
 
 # metodo para borrar archivos cuando se borre el registro
 
@@ -262,8 +266,8 @@ class Video(models.Model):
     notice = models.ForeignKey(Notice)
     video = models.FileField(upload_to=File.generatePath)
 
-    def create(notice, file):
-        video = Video(notice=notice, video=file)
+    def create(notice, pathfile):
+        video = Video(notice=notice, video=pathfile)
         video.save()
         return video
 
@@ -282,3 +286,14 @@ class Commentary(models.Model):
     commentary = models.CharField(max_length=500)
     notice = models.ForeignKey(Notice)
     profile = models.ForeignKey(Profile)
+
+    def create(commentary, notice, profile):
+        commentary = Commentary(commentary=commentary, notice=notice, profile=profile)
+        commentary.save()
+        return commentary
+
+    def search(notice):
+        return Commentary.objects.filter(notice=notice)
+
+    def searchHistory(profile):
+        return Commentary.objects.filter(profile=profile)
