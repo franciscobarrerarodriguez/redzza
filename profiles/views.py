@@ -73,19 +73,12 @@ class UserViewSet(viewsets.ModelViewSet):
             user = getUser(pk)
             current_site = 'http://%s' % (Site.objects.get(id=1).domain)
             context = []
-            for i, notice in enumerate(getNoticesHaveUser(user)):
+            for i, notice in enumerate(getNoticesUser(user)):
                 image = getImageNotice(notice)
                 if len(image) > 0:
                     context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
                 else:
                     context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-            for i, notice in enumerate(getNoticesSearchUser(user)):
-                image = getImageNotice(notice)
-                if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-                else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-            # context['noticesSearch'] = json.loads(serializers.serialize('json', getNoticesSearchUser(user)))
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -381,6 +374,11 @@ def getHaveCategoriesUser(user):
 # i_search(Busco) --> 2
 def getSearchCategoriesUser(user):
     return WantedCategory.searchOffer(getProfile(user))
+
+
+# Metodo que retorna todas las notices de un usuarios
+def getNoticesUser(user):
+    Notice.getNoticeProfile(getProfile(user))
 
 
 # Metodo que retorna las publicaciones del usuario tiene

@@ -78,6 +78,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)
+            else:
+                CityNotice.create(place, notice)
             noticeSerialized = json.loads(serializers.serialize('json', [notice]))
             if offer and kind == 2:
                 try:
