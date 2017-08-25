@@ -29,7 +29,7 @@ def queries(request):
     # query = Video.create(notice, "/home/diego/Documents/redzza/redzza/media/videos/Gorillaz.mp4")
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
-    a = Notice.searchCategory("o", oldcategory, Place.searchCity(3), 1)
+    a = Notice.searchTitleCategoryCity("o", oldcategory.id, Place.searchCity(3).id, 1)
     query = Notice.sortoutNotices(a, True)
     return HttpResponse(query)
     # type -> tipo de campo
