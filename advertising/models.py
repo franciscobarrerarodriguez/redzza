@@ -9,4 +9,4 @@ class Advertising(models.Model):
     image = models.ImageField(upload_to=File.generatePath)
 
     def searchAdvertising(idAdv):
-        return get_object_or_404(Icon, id=idAdv)
+        return get_object_or_404(Advertising, id=idAdv)
