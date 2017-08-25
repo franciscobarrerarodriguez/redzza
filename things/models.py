@@ -121,7 +121,7 @@ class Notice(models.Model):
             result = Notice.objects.filter(title__icontains=title, category=category, kind=kind)
         else:
             result = Notice.objects.filter(title__icontains=title, category__pattern=category, kind=kind) | Notice.objects.filter(title__icontains=title, category=category, kind=kind)
-        return result.order_by('notice__date')
+        return result.order_by('date')
 
     def searchCategoryCity(category, city, kind):
         result = None
