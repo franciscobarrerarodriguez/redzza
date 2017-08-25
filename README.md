@@ -23,7 +23,7 @@
 | /api/v1/videos/ | notice, video | GET, POST, PUT, DELETE | video | Video para notice |
 | /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Obtencion de informacion de un usuario por su id |
 | /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Listado de publicaciones de usuario por su id |
-| /api/v1/notices/*ID*/ |  | GET | notice | Obtencion de informacion de un notice por su id |
+| /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
 
 
 ## Paquetes pip
