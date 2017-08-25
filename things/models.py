@@ -32,7 +32,7 @@ class Notice(models.Model):
     def __str__(self):
         return self.title
 
-    def create(profile, idCategory, title, description, kind, urgency, place):
+    def create(profile, idCategory, title, description, kind, urgency, idPlace):
         category = get_object_or_404(Category, id=idCategory)
         location = get_object_or_404(Place, id=idPlace)
         notice = Notice(profile=profile, category=category, title=title, description=description, kind=kind, urgency=urgency, location=location)
@@ -51,7 +51,7 @@ class Notice(models.Model):
     def getNoticeSearch(profile):
         return Notice.objects.filter(profile=profile, kind=2)
 
-    def updateLocation(notice, place):
+    def updateLocation(notice, idPlace):
         location = get_object_or_404(Place, id=idPlace)
         notice.location = location
         return notice.save()
@@ -66,7 +66,7 @@ class Notice(models.Model):
         notice.category = category
         return notice.save()
 
-    def updatePlace(notice, place):
+    def updatePlace(notice, idPlace):
         location = get_object_or_404(Place, id=idPlace)
         notice.location = location
         return notice.save()
@@ -248,7 +248,8 @@ class Color(models.Model):
         Color.objects.filter(product=product).delete()
 
     def searchProduct(product):
-        return Color.objects.filter(notice=product)
+        print(product)
+        return Color.objects.filter(product=product)
 
 
 class Service(models.Model):

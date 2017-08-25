@@ -1,16 +1,55 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from profiles import views as viewsProfiles
 from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 from django.core import serializers
+from redzza.settings import MEDIA_URL
+from django.contrib.sites.models import Site
 import json
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
+
+    # Obtencion de informacion de una notice
+    @detail_route(methods=['get'])
+    def getData(self, request, pk=None):
+        try:
+            notice = Notice.getNotice(pk)
+            context = {}
+            context['notice'] = json.loads(serializers.serialize('json', [notice]))
+            context['notice'][0]['fields']['location_name'] = str(notice.location)
+            context['notice'][0]['fields']['category_name'] = str(notice.category)
+            locations = CityNotice.searchCities(notice)
+            context['notice'][0]['locations'] = {}
+            for i, location in enumerate(locations):
+                context['notice'][0]['locations'][i] = {'location': str(location.city.id), 'location_name': str(location.city)}
+            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
+            images = Image.search(notice)
+            context['notice'][0]['images'] = {}
+            for i, image in enumerate(images):
+                context['notice'][0]['images'][i] = {'id': str(image.id), 'image': current_site + MEDIA_URL + str(image.image)}
+            videos = Video.search(notice)
+            context['notice'][0]['videos'] = {}
+            for i, video in enumerate(videos):
+                context['notice'][0]['videos'][i] = {'id': str(video.id), 'video': current_site + MEDIA_URL + str(video.video)}
+            thing = Notice.sortoutNotices([notice], False)[0]
+            context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
+            if thing.__class__ == Product:
+                colors = Color.searchProduct(thing)
+                context['notice'][0]['thing'][0]['fields']['colors'] = {}
+                for i, color in enumerate(colors):
+                    context['notice'][0]['thing'][0]['fields']['colors'][i] = {'color': str(color.hexa)}
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class CityNoticeViewSet(viewsets.ModelViewSet):
