@@ -103,12 +103,12 @@ class Notice(models.Model):
     def searchCity(city, kind):
         return CityNotice.searchNotices(city).filter(notice__kind=kind).order_by('notice__date')
 
-    def searchCategory(title, category, kind):
+    def searchCategory(category, kind):
         result = None
         if category.pattern is not None:
-            result = Notice.objects.filter(title__icontains=title, category=category, kind=kind)
+            result = Notice.objects.filter(category=category, kind=kind)
         else:
-            result = Notice.objects.filter(title__icontains=title, category__pattern=category, kind=kind) | Notice.objects.filter(title__icontains=title, category=category, kind=kind)
+            result = Notice.objects.filter(category__pattern=category, kind=kind) | Notice.objects.filter(category=category, kind=kind)
         return result.order_by('date')
 
     # buscar avisos por título y por ciudad
