@@ -183,3 +183,18 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+     # Busqueda de publicacion
+    @list_route(methods=['get'])
+    def searchNotice(self, request):
+        try:
+            title = request.data.get('notice', None)
+            category = request.data.get('notice', None)
+            locations = request.data.get('notice', None)
+            return Response({'success': True, 'data': 'context'})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
