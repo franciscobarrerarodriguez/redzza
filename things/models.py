@@ -187,7 +187,10 @@ class CityNotice(models.Model):
 
     # falta resolver los departamentos
     def searchNotices(city):
-        return CityNotice.objects.filter(city=city)
+        if city.pattern is not None:
+            return CityNotice.objects.filter(city=city)
+        else:
+            return CityNotice.objects.filter(city=city) | CityNotice.objects.filter(city__pattern=city)
 
     def searchCities(notice):
         return CityNotice.objects.filter(notice=notice)
