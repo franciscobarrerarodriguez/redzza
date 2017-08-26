@@ -23,7 +23,7 @@ from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
 from django.core import serializers
 from redzza.settings import MEDIA_URL
-from django.contrib.sites.models import Site
+from redzza.site import CURRENT_SITE
 import json
 
 
@@ -71,14 +71,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def getNotices(self, request, pk=None):
         try:
             user = getUser(pk)
-            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
             context = []
             for i, notice in enumerate(getNoticesUser(user)):
                 image = getImageNotice(notice)
                 if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
                 else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):

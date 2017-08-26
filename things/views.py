@@ -6,7 +6,7 @@ from .models import Notice, CityNotice, Product, Color, Service, Image, Video, C
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 from django.core import serializers
 from redzza.settings import MEDIA_URL
-from django.contrib.sites.models import Site
+from redzza.site import CURRENT_SITE
 import json
 
 
@@ -27,15 +27,14 @@ class NoticeViewSet(viewsets.ModelViewSet):
             context['notice'][0]['locations'] = {}
             for i, location in enumerate(locations):
                 context['notice'][0]['locations'][i] = {'location': str(location.city.id), 'location_name': str(location.city)}
-            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
             images = Image.search(notice)
             context['notice'][0]['images'] = {}
             for i, image in enumerate(images):
-                context['notice'][0]['images'][i] = {'id': str(image.id), 'image': current_site + MEDIA_URL + str(image.image)}
+                context['notice'][0]['images'][i] = {'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)}
             videos = Video.search(notice)
             context['notice'][0]['videos'] = {}
             for i, video in enumerate(videos):
-                context['notice'][0]['videos'][i] = {'id': str(video.id), 'video': current_site + MEDIA_URL + str(video.video)}
+                context['notice'][0]['videos'][i] = {'id': str(video.id), 'video': CURRENT_SITE + MEDIA_URL + str(video.video)}
             thing = Notice.sortoutNotices([notice], False)[0]
             context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
             if thing.__class__ == Product:
@@ -285,13 +284,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                         notices.append(element.notice)
             notices = list(set(notices))
             context = []
-            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
             for i, notice in enumerate(notices):
                 image = Image.search(notice)
                 if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
                 else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             if len(context) > 0:
                 return Response({'success': True, 'data': context})
             else:
