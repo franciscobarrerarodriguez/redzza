@@ -232,6 +232,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
             locations = request.data.get('locations', None)
             kind = request.data.get('kind', None)
             queries = []
+            if kind is None or kind > 2:
+                return Response({'success': False, 'err': 'kind-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+
             if title and categories and locations:
                 for category in categories:
                     for location in locations:
