@@ -28,6 +28,9 @@
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, profile, commentary | GET, POST, PUT, DELETE | comentary | Comentario para notice |
 
+## Kind
+- i_have(Ofrezco) --> 1 
+- i_search(Busco) --> 2
 
 ## Paquetes pip
 
