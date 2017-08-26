@@ -228,12 +228,15 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def searchNotice(self, request):
         try:
             title = request.data.get('title', None)
-            category = request.data.get('category', None)
+            categories = request.data.get('categories', None)
             locations = request.data.get('locations', None)
             kind = request.data.get('kind', None)
             context = []
-            for location in locations:
-                context.append(Notice.searchTitleCategoryCity(title, category, location, kind))
+            if title and categories and locations:
+                for category in categories:
+                    for location in locations:
+                        context.append(Notice.searchTitleCategoryCity(title, category, location, kind))
+            # ----------
             print(context)
             if len(context) > 0:
                 return Response({'success': True, 'data': context})

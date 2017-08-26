@@ -69,23 +69,23 @@ class UserViewSet(viewsets.ModelViewSet):
     # id - imagen - titulo - kind
     @detail_route(methods=['get'])
     def getNotices(self, request, pk=None):
-        try:
-            user = getUser(pk)
-            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
-            context = []
-            for i, notice in enumerate(getNoticesUser(user)):
-                image = getImageNotice(notice)
-                if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + image[0]['image'], 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-                else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-            return Response({'success': True, 'data': context})
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
+        # try:
+        user = getUser(pk)
+        current_site = 'http://%s' % (Site.objects.get(id=1).domain)
+        context = []
+        for i, notice in enumerate(getNoticesUser(user)):
+            image = getImageNotice(notice)
+            if len(image) > 0:
+                context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+        return Response({'success': True, 'data': context})
+        # except Exception as e:
+        #     if hasattr(e, 'message'):
+        #         err = e.message
+        #     else:
+        #         err = e
+        #     return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
@@ -378,7 +378,7 @@ def getSearchCategoriesUser(user):
 
 # Metodo que retorna todas las notices de un usuarios
 def getNoticesUser(user):
-    Notice.getNoticeProfile(getProfile(user))
+    return Notice.getNoticeProfile(getProfile(user))
 
 
 # Metodo que retorna las publicaciones del usuario tiene
