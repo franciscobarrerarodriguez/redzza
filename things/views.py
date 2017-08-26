@@ -231,32 +231,47 @@ class ApiServicesViewSet(viewsets.ViewSet):
             categories = request.data.get('categories', None)
             locations = request.data.get('locations', None)
             kind = request.data.get('kind', None)
-            context = []
+            queries = []
             if title and categories and locations:
                 for category in categories:
                     for location in locations:
-                        context.append(Notice.searchTitleCategoryCity(title, category, location, kind))
+                        queries.append(Notice.searchTitleCategoryCity(title, category, location, kind))
             elif categories and locations:
                 for category in categories:
                     for location in locations:
-                        context.append(Notice.searchCategoryCity(category, location, kind))
+                        queries.append(Notice.searchCategoryCity(category, location, kind))
             elif title and categories:
                 for category in categories:
-                    context.append(Notice.searchTitleCategory(title, category, kind))
+                    queries.append(Notice.searchTitleCategory(title, category, kind))
             elif title and locations:
                 for location in locations:
-                    context.append(Notice.searchTitleCity(title, location, kind))
+                    queries.append(Notice.searchTitleCity(title, location, kind))
             elif categories:
                 for category in categories:
-                    context.append(Notice.searchCategory(category, kind))
+                    queries.append(Notice.searchCategory(category, kind))
             elif locations:
                 for location in locations:
-                    context.append(Notice.searchCity(location, kind))
+                    queries.append(Notice.searchCity(location, kind))
             elif title:
-                context.append(Notice.searchTitle(title, kind))
+                queries.append(Notice.searchTitle(title, kind))
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
-            print(context)
+            notices = []
+            for query in queries:
+                for element in query:
+                    if element.__class__ is Notice:
+                        notices.append(element)
+                    else:
+                        notices.append(element.notice)
+            notices = list(set(notices))
+            context = []
+            current_site = 'http://%s' % (Site.objects.get(id=1).domain)
+            for i, notice in enumerate(notices):
+                image = Image.search(notice)
+                if len(image) > 0:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+                else:
+                    context.append({'id': notice.id, 'title': notice.title, 'image': current_site + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
             if len(context) > 0:
                 return Response({'success': True, 'data': context})
             else:
