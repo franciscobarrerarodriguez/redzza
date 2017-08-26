@@ -21,10 +21,11 @@
 | /api/v1/apiServices/updateNotice/ | notice, title, category, time, state, offer, place, colors, description, locations, urgency, visibility | PUT | success, msg, err | Edicion publicacion de servicio o producto *Un campo a la vez* |
 | /api/v1/images/ | notice, image | GET, POST, PUT, DELETE | image | Imagen para notice |
 | /api/v1/videos/ | notice, video | GET, POST, PUT, DELETE | video | Video para notice |
-| /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Obtencion de informacion de un usuario por su id |
-| /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Listado de publicaciones de usuario por su id |
+| /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Informacion de un usuario por su id |
+| /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Publicaciones de un usuario por su id |
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
-| /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations, | POST | success, data, err | Busqueda, kind obligatorio |
+| /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
+| /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 
 
 ## Paquetes pip
