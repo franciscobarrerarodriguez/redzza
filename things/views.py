@@ -51,6 +51,22 @@ class NoticeViewSet(viewsets.ModelViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # Obtencion de comentarios de una notice
+    @detail_route(methods=['get'])
+    def getComments(self, request, pk=None):
+        try:
+            notice = Notice.getNotice(pk)
+            context = {}
+            for i, commentary in enumerate(Commentary.search(notice)):
+                context[i] = {'id': commentary.id, 'commentary': commentary.commentary, 'notice_name': commentary.notice.title, 'notice': commentary.notice.id, 'user_name': commentary.profile.user.get_full_name(), 'user': commentary.profile.user.id}
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 class CityNoticeViewSet(viewsets.ModelViewSet):
     queryset = CityNotice.objects.all()
@@ -231,10 +247,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
             categories = request.data.get('categories', None)
             locations = request.data.get('locations', None)
             kind = request.data.get('kind', None)
-            queries = []
+
             if kind is None or kind > 2:
                 return Response({'success': False, 'err': 'kind-undefined'}, status=status.HTTP_400_BAD_REQUEST)
 
+            queries = []
             if title and categories and locations:
                 for category in categories:
                     for location in locations:
