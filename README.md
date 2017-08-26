@@ -24,6 +24,7 @@
 | /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Obtencion de informacion de un usuario por su id |
 | /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Listado de publicaciones de usuario por su id |
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
+| /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations, | POST | success, data, err | Busqueda, kind obligatorio |
 
 
 ## Paquetes pip
