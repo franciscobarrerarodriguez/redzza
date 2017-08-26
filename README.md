@@ -26,7 +26,7 @@
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
 | /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
-| /api/v1/comments/ | notice, commentary, profile | GET, POST, PUT, DELETE | image | Comentario para notice |
+| /api/v1/comments/ | notice, commentary, profile | GET, POST, PUT, DELETE | comentary | Comentario para notice |
 
 
 ## Paquetes pip
