@@ -236,7 +236,26 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 for category in categories:
                     for location in locations:
                         context.append(Notice.searchTitleCategoryCity(title, category, location, kind))
-            # ----------
+            elif categories and locations:
+                for category in categories:
+                    for location in locations:
+                        context.append(Notice.searchCategoryCity(category, location, kind))
+            elif title and categories:
+                for category in categories:
+                    context.append(Notice.searchTitleCategory(title, category, kind))
+            elif title and locations:
+                for location in locations:
+                    context.append(Notice.searchTitleCity(title, location, kind))
+            elif categories:
+                for category in categories:
+                    context.append(Notice.searchCategory(category, kind))
+            elif locations:
+                for location in locations:
+                    context.append(Notice.searchCity(location, kind))
+            elif title:
+                context.append(Notice.searchTitle(title, kind))
+            else:
+                return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             print(context)
             if len(context) > 0:
                 return Response({'success': True, 'data': context})
