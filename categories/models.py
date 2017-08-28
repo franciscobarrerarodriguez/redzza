@@ -11,6 +11,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def getSubCategories(category):
+        return Category.objects.filter(category=pattern)
+
 
 class WantedCategory(models.Model):
     category = models.ForeignKey(Category)
