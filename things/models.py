@@ -90,19 +90,19 @@ class Notice(models.Model):
 
     # buscar avisos por personas a las que sigue
     def searchFollowing(following):
-        notices = Notice.objects.filter(profile=following[0])
-        if len(notices) > 1:
+        if len(following) > 0:
+            notices = Notice.objects.filter(profile__id=following[0]['following'])
             for f in range(1, len(following)):
-                notices = notices | Notice.objects.filter(profile=following[f], visibility=True)
-        result = notices.order_by('date')
-        return result
+                notices = notices | Notice.objects.filter(profile__id=following[f]['following'], visibility=True)
+            result = notices.order_by('urgency', 'date')
+            return result
 
     def searchTitle(title, kind):
-        return Notice.objects.filter(title__icontains=title, kind=kind, visibility=True).order_by('date')
+        return Notice.objects.filter(title__icontains=title, kind=kind, visibility=True).order_by('urgency', 'date')
 
     def searchCity(idPlace, kind):
         city = get_object_or_404(Place, id=idPlace)
-        return CityNotice.searchNotices(city).filter(notice__kind=kind, notice__visibility=True).order_by('notice__date')
+        return CityNotice.searchNotices(city).filter(notice__kind=kind, notice__visibility=True).order_by('notice__urgency', 'notice__date')
 
     def searchCategory(idCategory, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -111,12 +111,12 @@ class Notice(models.Model):
             result = Notice.objects.filter(category=category, kind=kind, visibility=True)
         else:
             result = Notice.objects.filter(category__pattern=category, kind=kind, visibility=True) | Notice.objects.filter(category=category, kind=kind, visibility=True)
-        return result.order_by('date')
+        return result.order_by('urgency', 'date')
 
     # buscar avisos por título y por ciudad
     def searchTitleCity(title, idPlace, kind):
         city = get_object_or_404(Place, id=idPlace)
-        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__kind=kind, notice__visibility=True).order_by('notice__date')
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__kind=kind, notice__visibility=True).order_by('notice__urgency', 'notice__date')
 
     def searchTitleCategory(title, idCategory, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -125,7 +125,7 @@ class Notice(models.Model):
             result = Notice.objects.filter(title__icontains=title, category=category, kind=kind, visibility=True)
         else:
             result = Notice.objects.filter(title__icontains=title, category__pattern=category, kind=kind, visibility=True) | Notice.objects.filter(title__icontains=title, category=category, kind=kind, visibility=True)
-        return result.order_by('date')
+        return result.order_by('urgency', 'date')
 
     def searchCategoryCity(idCategory, idPlace, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -135,7 +135,7 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__date')        
+        return result.order_by('notice__urgency', 'notice__date').values('notice','notice__date', 'notice__profile','notice__category','notice__title','notice__description','notice__money','notice__offer','notice__kind','notice__visibility','notice__urgency','notice__location')        
 
     # faltan queries con array
     # hacer una lista combinada de productos y servicios
@@ -148,18 +148,26 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__date')
+        return result.order_by('notice__urgency', 'notice__date')
 
     def searchHome(idProfile):
         profile = get_object_or_404(Profile, id=idProfile)
-        result = Notice.searchFollowings(Follow.searchFollowings(profile))
+        # result = Notice.searchFollowing(Follow.searchFollowings(profile))
+        result = None
+        print(type(result))
         for category in WantedCategory.searchOffer(profile):
-            for cn in Notice.searchCategoryCity(category.category.id, profile.location.id, 1):
-                result = result | cn.notice
-        for category in WantedCategory.searchHave(profile):
-            for cn in Notice.searchCategoryCity(category.category.id, profile.location.id, 2):
-                result = result | cn.notice
-        return result.order_by('date')
+            if result is None:
+                result = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+            else:
+                print(type(Notice.searchCategoryCity(category.category.id, profile.location.id, 1)))
+                result = result | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+        for category in WantedCategory.searchHave(profile): 
+            if result is None:
+                result = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+            else:
+                result = result | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+        if result is not None:
+            return result
 
     def sortoutNotices(notices, city):
         result = []

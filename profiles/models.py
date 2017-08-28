@@ -36,7 +36,7 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
-    def searchCities(department):
+    def searchTowns(department):
         return Place.objects.filter(pattern=department)
 
     def searchCity(idLocation):
@@ -187,4 +187,4 @@ class Follow(models.Model):
         return Follow.objects.filter(following=profile).values('follower')
 
     def searchFollowings(profile):
-        return Follow.objects.filter(follower=profile).values('follower')
+        return Follow.objects.filter(follower=profile).values('following')
