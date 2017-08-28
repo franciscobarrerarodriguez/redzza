@@ -1,8 +1,8 @@
 # coding: utf-8
 
 from django.db import models
-from profiles.models import File, Profile, Place
-from categories.models import Category
+from profiles.models import File, Profile, Place, Follow
+from categories.models import Category, WantedCategory
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.db.models.signals import post_delete
@@ -135,7 +135,7 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__date')
+        return result.order_by('notice__date')        
 
     # faltan queries con array
     # hacer una lista combinada de productos y servicios
@@ -149,6 +149,17 @@ class Notice(models.Model):
         else:
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
         return result.order_by('notice__date')
+
+    def searchHome(idProfile):
+        profile = get_object_or_404(Profile, id=idProfile)
+        result = Notice.searchFollowings(Follow.searchFollowings(profile))
+        for category in WantedCategory.searchOffer(profile):
+            for cn in Notice.searchCategoryCity(category.category.id, profile.location.id, 1):
+                result = result | cn.notice
+        for category in WantedCategory.searchHave(profile):
+            for cn in Notice.searchCategoryCity(category.category.id, profile.location.id, 2):
+                result = result | cn.notice
+        return result.order_by('date')
 
     def sortoutNotices(notices, city):
         result = []
