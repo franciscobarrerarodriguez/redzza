@@ -2,6 +2,7 @@
 
 from django.db import models
 from profiles.models import File, Profile, Place, Follow
+from django.db.models import F
 from categories.models import Category, WantedCategory
 from django.shortcuts import get_object_or_404
 from datetime import datetime
@@ -39,8 +40,8 @@ class Notice(models.Model):
         notice.save()
         return notice
 
-    def getNotice(id):
-        return Notice.objects.get(id=id)
+    def getNotice(idN):
+        return Notice.objects.get(id=idN)
 
     def getNoticeProfile(profile):
         return Notice.objects.filter(profile=profile)
@@ -135,11 +136,11 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__urgency', 'notice__date').values('notice','notice__date', 'notice__profile','notice__category','notice__title','notice__description','notice__money','notice__offer','notice__kind','notice__visibility','notice__urgency','notice__location')        
-
+        return result.order_by('notice__urgency', 'notice__date')
     # faltan queries con array
     # hacer una lista combinada de productos y servicios
     # buscar avisos por categoría y por ciudad
+
     def searchTitleCategoryCity(title, idCategory, idPlace, kind):
         category = get_object_or_404(Category, id=idCategory)
         city = get_object_or_404(Place, id=idPlace)
@@ -152,22 +153,22 @@ class Notice(models.Model):
 
     def searchHome(idProfile):
         profile = get_object_or_404(Profile, id=idProfile)
-        # result = Notice.searchFollowing(Follow.searchFollowings(profile))
-        result = None
-        print(type(result))
+        fnotice = Notice.searchFollowing(Follow.searchFollowings(profile))
+        cnotice = None
         for category in WantedCategory.searchOffer(profile):
-            if result is None:
-                result = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+            if cnotice is None:
+                cnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
             else:
-                print(type(Notice.searchCategoryCity(category.category.id, profile.location.id, 1)))
-                result = result | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
-        for category in WantedCategory.searchHave(profile): 
-            if result is None:
-                result = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+                print(Notice.searchCategoryCity(category.category.id, profile.location.id, 1))
+                cnotice = cnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+        for category in WantedCategory.searchHave(profile):
+            if cnotice is None:
+                cnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
             else:
-                result = result | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
-        if result is not None:
-            return result
+                cnotice = cnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+        print(fnotice)
+        print(cnotice)
+        return fnotice, cnotice
 
     def sortoutNotices(notices, city):
         result = []
