@@ -36,6 +36,9 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+    def searchCities(department):
+        return Place.objects.filter(pattern=department)
+
     def searchCity(idLocation):
         return get_object_or_404(Place, id=idLocation)
 
