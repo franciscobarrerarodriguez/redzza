@@ -14,10 +14,10 @@ class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
 
-    def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
-        return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'success': True})
 
     # Obtencion de informacion de una notice
     @detail_route(methods=['get'])
@@ -298,7 +298,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if len(context) > 0:
                 return Response({'success': True, 'data': context})
             else:
-                return Response({'success': True, 'data': ''}, status=status.HTTP_204_NO_CONTENT)
+                return Response({'success': True, 'data': ''})
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
