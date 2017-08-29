@@ -153,22 +153,20 @@ class Notice(models.Model):
 
     def searchHome(idProfile):
         profile = get_object_or_404(Profile, id=idProfile)
-        fnotice = Notice.searchFollowing(Follow.searchFollowings(profile))
-        cnotice = None
+        follnotice = Notice.searchFollowing(Follow.searchFollowings(profile))
+        catnotice = None
         for category in WantedCategory.searchOffer(profile):
-            if cnotice is None:
-                cnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+            if catnotice is None:
+                catnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
             else:
-                print(Notice.searchCategoryCity(category.category.id, profile.location.id, 1))
-                cnotice = cnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
+                catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
         for category in WantedCategory.searchHave(profile):
-            if cnotice is None:
-                cnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+            if catnotice is None:
+                catnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
             else:
-                cnotice = cnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
-        print(fnotice)
-        print(cnotice)
-        return fnotice, cnotice
+                catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+        citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
+        return follnotice, catnotice, citynotice.order_by('notice__id').distinct('notice__id')
 
     def sortoutNotices(notices, city):
         result = []
