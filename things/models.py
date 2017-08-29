@@ -80,6 +80,10 @@ class Notice(models.Model):
         notice.title = title
         return notice.save()
 
+    def updateMoney(notice, money):
+        notice.money = money
+        return notice.save()
+
     def updateUrgency(notice, urgency):
         notice.urgency = urgency
         return notice.save()
