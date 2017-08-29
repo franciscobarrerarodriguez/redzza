@@ -2,18 +2,21 @@
 
 from django.db import models
 from profiles.models import File, Profile, Place, Follow
-from django.db.models import F
 from categories.models import Category, WantedCategory
 from django.shortcuts import get_object_or_404
-from datetime import datetime
-from django.db.models.signals import post_delete
+from django.utils import timezone
+import datetime
+from django.db.models.signals import post_delete, post_init
 from django.dispatch import receiver
 # Create your models here.
+# subactegorias y ciudades
+# timefield en el servidor
+# many to many para offer
 
 
 class Notice(models.Model):
     # Aviso de publicacion de un nuevo producto o servicio
-    date = models.DateField(default=datetime.now)
+    date = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(Profile, default="")
     category = models.ForeignKey(Category, default="")
     title = models.CharField(max_length=50)
@@ -21,6 +24,7 @@ class Notice(models.Model):
     # si recibe u ofrece dinero a cambio
     money = models.BooleanField(default=True)
     # oferta preferente para el intercambio
+    # cambiar por un campo muchos a muchos
     offer = models.ForeignKey("self", blank=True, null=True)
     # KIND: 1 --> propio | 2 --> deseado
     kind = models.IntegerField(default=1)
@@ -95,15 +99,15 @@ class Notice(models.Model):
             notices = Notice.objects.filter(profile__id=following[0]['following'])
             for f in range(1, len(following)):
                 notices = notices | Notice.objects.filter(profile__id=following[f]['following'], visibility=True)
-            result = notices.order_by('urgency', 'date')
+            result = notices.order_by('date', 'urgency')
             return result
 
     def searchTitle(title, kind):
-        return Notice.objects.filter(title__icontains=title, kind=kind, visibility=True).order_by('urgency', 'date')
+        return Notice.objects.filter(title__icontains=title, kind=kind, visibility=True).order_by('date', 'urgency')
 
     def searchCity(idPlace, kind):
         city = get_object_or_404(Place, id=idPlace)
-        return CityNotice.searchNotices(city).filter(notice__kind=kind, notice__visibility=True).order_by('notice__urgency', 'notice__date')
+        return CityNotice.searchNotices(city).filter(notice__kind=kind, notice__visibility=True).order_by('notice__date', 'notice__urgency')
 
     def searchCategory(idCategory, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -112,12 +116,12 @@ class Notice(models.Model):
             result = Notice.objects.filter(category=category, kind=kind, visibility=True)
         else:
             result = Notice.objects.filter(category__pattern=category, kind=kind, visibility=True) | Notice.objects.filter(category=category, kind=kind, visibility=True)
-        return result.order_by('urgency', 'date')
+        return result.order_by('date', 'urgency')
 
     # buscar avisos por título y por ciudad
     def searchTitleCity(title, idPlace, kind):
         city = get_object_or_404(Place, id=idPlace)
-        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__kind=kind, notice__visibility=True).order_by('notice__urgency', 'notice__date')
+        return CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__kind=kind, notice__visibility=True).order_by('notice__date', 'notice__urgency')
 
     def searchTitleCategory(title, idCategory, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -126,7 +130,7 @@ class Notice(models.Model):
             result = Notice.objects.filter(title__icontains=title, category=category, kind=kind, visibility=True)
         else:
             result = Notice.objects.filter(title__icontains=title, category__pattern=category, kind=kind, visibility=True) | Notice.objects.filter(title__icontains=title, category=category, kind=kind, visibility=True)
-        return result.order_by('urgency', 'date')
+        return result.order_by('date', 'urgency')
 
     def searchCategoryCity(idCategory, idPlace, kind):
         category = get_object_or_404(Category, id=idCategory)
@@ -136,7 +140,7 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__urgency', 'notice__date')
+        return result.order_by('notice__date', 'notice__urgency')
     # faltan queries con array
     # hacer una lista combinada de productos y servicios
     # buscar avisos por categoría y por ciudad
@@ -149,7 +153,7 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
         else:
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
-        return result.order_by('notice__urgency', 'notice__date')
+        return result.order_by('notice__date', 'notice__urgency')
 
     def searchHome(idProfile):
         profile = get_object_or_404(Profile, id=idProfile)
@@ -184,6 +188,14 @@ class Notice(models.Model):
             else:
                 result.append(Product.searchProduct(notice))
         return result
+
+
+@receiver(post_init, sender=Notice)
+def check_urgency(sender, instance, **kwargs):
+    """ Revisa el estado de urgencia de una publicación """
+    if instance.urgency is True:
+        if (instance.date + datetime.timedelta(hours=48)) < timezone.now():
+            instance.urgency = False
 
 
 class CityNotice(models.Model):
