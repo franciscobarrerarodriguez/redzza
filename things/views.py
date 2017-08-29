@@ -14,6 +14,11 @@ class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
 
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+
     # Obtencion de informacion de una notice
     @detail_route(methods=['get'])
     def getData(self, request, pk=None):
