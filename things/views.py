@@ -37,14 +37,14 @@ class NoticeViewSet(viewsets.ModelViewSet):
             for i, image in enumerate(images):
                 context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
             videos = Video.search(notice)
-            context['notice'][0]['videos'] = {}
+            context['notice'][0]['videos'] = []
             for i, video in enumerate(videos):
                 context['notice'][0]['videos'].append({'id': str(video.id), 'video': CURRENT_SITE + MEDIA_URL + str(video.video)})
             thing = Notice.sortoutNotices([notice], False)[0]
             context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
             if thing.__class__ == Product:
                 colors = Color.searchProduct(thing)
-                context['notice'][0]['thing'][0]['fields']['colors'] = {}
+                context['notice'][0]['thing'][0]['fields']['colors'] = []
                 for i, color in enumerate(colors):
                     context['notice'][0]['thing'][0]['fields']['colors'].append({'color': str(color.hexa)})
             return Response({'success': True, 'data': context})
@@ -155,7 +155,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Service.create(notice, time)
                 return Response({'success': True, 'msg': 'service-posted', 'notice': noticeSerialized})
             else:
-                return Response({'success': True, 'msg': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({'success': False, 'err': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
