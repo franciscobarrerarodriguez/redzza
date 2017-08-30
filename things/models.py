@@ -197,7 +197,7 @@ class Notice(models.Model):
 @receiver(post_init, sender=Notice)
 def check_urgency(sender, instance, **kwargs):
     """ Revisa el estado de urgencia de una publicación """
-    if instance.urgency is True:
+    if instance.urgency is True and instance.date:
         if (instance.date + datetime.timedelta(hours=48)) < timezone.now():
             instance.urgency = False
 
@@ -285,7 +285,6 @@ class Color(models.Model):
         Color.objects.filter(product=product).delete()
 
     def searchProduct(product):
-        print(product)
         return Color.objects.filter(product=product)
 
 

@@ -159,7 +159,7 @@ class Profile(models.Model):
 def avatar_delete(sender, instance, **kwargs):
     """
     Deletes old file from filesystem
-    when corresponding `Profile` object is updated
+    when corresponding 'Profile' object is updated
     with new file.
     """
     if not instance.pk:
