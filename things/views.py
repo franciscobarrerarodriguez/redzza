@@ -155,7 +155,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Service.create(notice, time)
                 return Response({'success': True, 'msg': 'service-posted', 'notice': noticeSerialized})
             else:
-                return Response({'success': True, 'msg': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({'success': False, 'err': 'Thing not defined'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
