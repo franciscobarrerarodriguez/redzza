@@ -194,12 +194,12 @@ class Notice(models.Model):
         return result
 
 
-@receiver(post_init, sender=Notice)
-def check_urgency(sender, instance, **kwargs):
-    """ Revisa el estado de urgencia de una publicación """
-    if instance.urgency is True:
-        if (instance.date + datetime.timedelta(hours=48)) < timezone.now():
-            instance.urgency = False
+# @receiver(post_init, sender=Notice)
+# def check_urgency(sender, instance, **kwargs):
+#     """ Revisa el estado de urgencia de una publicación """
+#     if instance.urgency is True:
+#         if (instance.date + datetime.timedelta(hours=48)) < timezone.now():
+#             instance.urgency = False
 
 
 class CityNotice(models.Model):
