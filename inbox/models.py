@@ -6,6 +6,9 @@ class Conversation(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile)
 
+    def __str__(self):
+        return str(self.modified)
+
     def create(profiles):
         conversation = Conversation()
         conversation.save()
