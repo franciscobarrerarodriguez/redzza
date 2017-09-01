@@ -71,13 +71,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def getNotices(self, request, pk=None):
         try:
             user = getUser(pk)
-            context = []
-            for i, notice in enumerate(getNoticesUser(user)):
-                image = getImageNotice(notice)
-                if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-                else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            notices = getNoticesUser(user)
+            context = noticeSimple(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -325,6 +320,18 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
         return Profile.generateRandomUsername(name=name, length=length, chars=chars, split=split, delimiter=delimiter)
     except User.DoesNotExist:
         return username
+
+
+# id - imagen - titulo - kind de listado de notices
+def noticeSimple(notices):
+    context = []
+    for notice in notices:
+        image = Image.search(notice)
+        if len(image) > 0:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+        else:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+    return context
 
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------

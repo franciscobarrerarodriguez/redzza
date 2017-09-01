@@ -34,6 +34,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
                 context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
             images = Image.search(notice)
             context['notice'][0]['images'] = []
+            # validacion si no tiene imagen, imagen por defecto
             for i, image in enumerate(images):
                 context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
             videos = Video.search(notice)
@@ -288,17 +289,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     else:
                         notices.append(element.notice)
             notices = list(set(notices))
-            context = []
-            for i, notice in enumerate(notices):
-                image = Image.search(notice)
-                if len(image) > 0:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-                else:
-                    context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
-            if len(context) > 0:
-                return Response({'success': True, 'data': context})
-            else:
-                return Response({'success': True, 'data': ''})
+            context = viewsProfiles.noticeSimple(notices)
+            return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
