@@ -12,7 +12,7 @@ class Category(models.Model):
         return self.name
 
     def getSubCategories(category):
-        return Category.objects.filter(category=pattern)
+        return Category.objects.filter(pattern=category)
 
 
 class WantedCategory(models.Model):
