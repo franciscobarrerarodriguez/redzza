@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'things.apps.ThingsConfig',
     'tags.apps.TagsConfig',
     'inbox.apps.InboxConfig',
+    'advertising.apps.AdvertisingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

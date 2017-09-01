@@ -4,10 +4,10 @@ from .models import Conversation, Message
 
 # Register your models here.
 @admin.register(Conversation)
-class AdminProfile(admin.ModelAdmin):
+class AdminConversation(admin.ModelAdmin):
     list_display = ('modified',)
 
 
 @admin.register(Message)
-class AdminPlace(admin.ModelAdmin):
+class AdminMessage(admin.ModelAdmin):
     list_display = ('user', 'text')
