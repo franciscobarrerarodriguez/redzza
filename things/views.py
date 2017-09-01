@@ -34,9 +34,11 @@ class NoticeViewSet(viewsets.ModelViewSet):
                 context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
             images = Image.search(notice)
             context['notice'][0]['images'] = []
-            # validacion si no tiene imagen, imagen por defecto
-            for i, image in enumerate(images):
-                context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+            if len(images) > 0:
+                for i, image in enumerate(images):
+                    context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+            else:
+                context['notice'][0]['images'].append({'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png'})
             videos = Video.search(notice)
             context['notice'][0]['videos'] = []
             for i, video in enumerate(videos):

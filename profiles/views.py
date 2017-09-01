@@ -46,6 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
             context['profile'][0]['fields']['location_name'] = str(profile.location)
+            context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             haveCategories = getHaveCategoriesUser(user)
@@ -343,11 +344,11 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
 def noticeSimple(notices):
     context = []
     for notice in notices:
-        image = Image.search(notice)
-        if len(image) > 0:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+        images = Image.search(notice)
+        if len(images) > 0:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
         else:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
     return context
 
 
