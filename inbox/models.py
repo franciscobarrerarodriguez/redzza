@@ -25,6 +25,9 @@ class Message(models.Model):
     sender = models.ForeignKey(Profile)
     conversation = models.ForeignKey(Conversation)
 
+    def __str__(self):
+        return self.text
+
     def create(text, image, profile, conversation):
         message = Message(text=text, image=image, sender=profile, conversation=conversation)
         message.save()
