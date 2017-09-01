@@ -281,14 +281,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 queries.append(Notice.searchTitle(title, kind))
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
-            notices = []
-            for query in queries:
-                for element in query:
-                    if element.__class__ is Notice:
-                        notices.append(element)
-                    else:
-                        notices.append(element.notice)
-            notices = list(set(notices))
+            notices = viewsProfiles.noticesQuery(queries)
             context = viewsProfiles.noticeSimple(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:

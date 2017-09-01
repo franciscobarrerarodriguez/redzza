@@ -81,6 +81,23 @@ class UserViewSet(viewsets.ModelViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # Obtencion de home de un usuario
+    @detail_route(methods=['get'])
+    def getHome(self, request, pk=None):
+        try:
+            user = getUser(pk)
+            profile = getProfile(user)
+            queries = Notice.searchHome(profile.id)
+            notices = noticesQuery(queries)
+            context = noticeSimple(notices)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Place.objects.all()
@@ -334,9 +351,23 @@ def noticeSimple(notices):
     return context
 
 
+# obtencion de notices de una lista tipo query
+def noticesQuery(queries):
+    notices = []
+    for query in queries:
+        for element in query:
+            if element.__class__ is Notice:
+                notices.append(element)
+            else:
+                notices.append(element.notice)
+    notices = list(set(notices))
+    return notices
+
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
 
 # Metodo de obtencion de perfil de usuario
+
+
 def getProfile(user):
     return get_object_or_404(Profile, user=user)
 
