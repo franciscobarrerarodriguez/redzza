@@ -34,9 +34,11 @@ class NoticeViewSet(viewsets.ModelViewSet):
                 context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
             images = Image.search(notice)
             context['notice'][0]['images'] = []
-            # validacion si no tiene imagen, imagen por defecto
-            for i, image in enumerate(images):
-                context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+            if len(images) > 0:
+                for i, image in enumerate(images):
+                    context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+            else:
+                context['notice'][0]['images'].append({'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png'})
             videos = Video.search(notice)
             context['notice'][0]['videos'] = []
             for i, video in enumerate(videos):
@@ -97,10 +99,20 @@ class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'success': True})
+
 
 class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'success': True})
 
 
 class CommentaryViewSet(viewsets.ModelViewSet):
@@ -281,14 +293,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 queries.append(Notice.searchTitle(title, kind))
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
-            notices = []
-            for query in queries:
-                for element in query:
-                    if element.__class__ is Notice:
-                        notices.append(element)
-                    else:
-                        notices.append(element.notice)
-            notices = list(set(notices))
+            notices = viewsProfiles.noticesQuery(queries)
             context = viewsProfiles.noticeSimple(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:

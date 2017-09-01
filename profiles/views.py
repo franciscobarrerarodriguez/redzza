@@ -46,6 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
             context['profile'][0]['fields']['location_name'] = str(profile.location)
+            context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             haveCategories = getHaveCategoriesUser(user)
@@ -72,6 +73,23 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             user = getUser(pk)
             notices = getNoticesUser(user)
+            context = noticeSimple(notices)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Obtencion de home de un usuario
+    @detail_route(methods=['get'])
+    def getHome(self, request, pk=None):
+        try:
+            user = getUser(pk)
+            profile = getProfile(user)
+            queries = Notice.searchHome(profile.id)
+            notices = noticesQuery(queries)
             context = noticeSimple(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
@@ -326,17 +344,31 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
 def noticeSimple(notices):
     context = []
     for notice in notices:
-        image = Image.search(notice)
-        if len(image) > 0:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(image[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+        images = Image.search(notice)
+        if len(images) > 0:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
         else:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'no_image.jpg', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
     return context
 
+
+# obtencion de notices de una lista tipo query
+def noticesQuery(queries):
+    notices = []
+    for query in queries:
+        for element in query:
+            if element.__class__ is Notice:
+                notices.append(element)
+            else:
+                notices.append(element.notice)
+    notices = list(set(notices))
+    return notices
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
 
 # Metodo de obtencion de perfil de usuario
+
+
 def getProfile(user):
     return get_object_or_404(Profile, user=user)
 
