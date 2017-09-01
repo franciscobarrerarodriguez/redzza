@@ -10,4 +10,4 @@ class AdminConversation(admin.ModelAdmin):
 
 @admin.register(Message)
 class AdminMessage(admin.ModelAdmin):
-    list_display = ('user', 'text')
+    list_display = ('contestant', 'text')
