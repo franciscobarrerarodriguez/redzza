@@ -356,11 +356,12 @@ def noticeSimple(notices):
 def noticesQuery(queries):
     notices = []
     for query in queries:
-        for element in query:
-            if element.__class__ is Notice:
-                notices.append(element)
-            else:
-                notices.append(element.notice)
+        if query is not None:
+            for element in query:
+                if element.__class__ is Notice:
+                    notices.append(element)
+                else:
+                    notices.append(element.notice)
     notices = list(set(notices))
     return notices
 
