@@ -1,9 +1,12 @@
 from django.db import models
 from profiles.models import Profile, File
 from things.models import Notice
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Conversation(models.Model):
+    # hora del ultimo mensaje enviado
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile)
     notice = models.ManyToManyField(Notice)
@@ -41,3 +44,10 @@ class Message(models.Model):
 
     def search(conversation):
         return Message.objects.filter(conversation=conversation).order_by('timestamp')
+
+
+@receiver(post_save, sender=Message)
+def update_modified(sender, instance, **kwargs):
+    """ Actualiza el tiempo del modified en una conversación """
+    instance.conversation.modified = instance.timestamp
+    instance.conversation.save()
