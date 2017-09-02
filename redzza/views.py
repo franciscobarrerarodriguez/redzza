@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from categories.models import WantedCategory, Category
 from profiles.models import Profile, Place, Follow
 from things.models import Notice, Image, Video
+from inbox.models import Conversation, Message
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
@@ -30,7 +31,11 @@ def queries(request):
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
     # query = Notice.searchTitleCategoryCity("o", oldcategory.id, Place.searchCity(3).id, 1)
-    query = Notice.searchHome(get_object_or_404(Profile, user=Profile.getUserEmail("diegomaradoniano@gmail.com")).id)
+    # prueba = Conversation.create(Profile.objects.all(), Notice.getNotice(51))
+    # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
+    # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
+    query = Message.search(get_object_or_404(Conversation, id=16))
+    # 16
     return HttpResponse(query)
     # type -> tipo de campo
     # dir atributos de la clase
