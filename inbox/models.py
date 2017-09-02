@@ -38,3 +38,6 @@ class Message(models.Model):
         message = Message(text=text, image=image, sender=profile, conversation=conversation)
         message.save()
         return message
+
+    def search(conversation):
+        return Message.objects.filter(conversation=conversation).order_by('timestamp')
