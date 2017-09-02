@@ -19,11 +19,14 @@ class Conversation(models.Model):
         conversation.notice.add(notice)
         return conversation
 
+    def search(profile):
+        return Conversation.objects.filter(contestant=profile).order_by('modified')
+
 
 class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    text = models.TextField(null=True)
-    image = models.ImageField(upload_to=File.generatePath, null=True)
+    text = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to=File.generatePath, blank=True, null=True)
     review = models.BooleanField(default=False)
     sender = models.ForeignKey(Profile)
     conversation = models.ForeignKey(Conversation)
