@@ -1,19 +1,22 @@
 from django.db import models
 from profiles.models import Profile, File
+from things.models import Notice
 
 
 class Conversation(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile)
+    notice = models.ManyToManyField(Notice)
 
     def __str__(self):
         return str(self.modified)
 
-    def create(profiles):
+    def create(profiles, notice):
         conversation = Conversation()
         conversation.save()
         for p in profiles:
             conversation.contestant.add(p)
+        conversation.notice.add(notice)
         return conversation
 
 
