@@ -45,7 +45,6 @@ class UserViewSet(viewsets.ModelViewSet):
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
-            context['profile'][0]['fields']['location_name'] = str(profile.location)
             context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
@@ -342,6 +341,18 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
 
 # id - imagen - titulo - kind de listado de notices
 def noticeSimple(notices):
+    context = []
+    for notice in notices:
+        images = Image.search(notice)
+        if len(images) > 0:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+        else:
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+    return context
+
+
+# id - imagen - titulo - kind de listado de notices
+def noticeComplete(notices):
     context = []
     for notice in notices:
         images = Image.search(notice)

@@ -28,6 +28,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
             context['notice'] = json.loads(serializers.serialize('json', [notice]))
             context['notice'][0]['fields']['location_name'] = str(notice.location)
             context['notice'][0]['fields']['category_name'] = str(notice.category)
+            context['notice'][0]['fields']['profile_name'] = str(notice.profile.user.get_full_name())
             locations = CityNotice.searchCities(notice)
             context['notice'][0]['locations'] = []
             for i, location in enumerate(locations):
