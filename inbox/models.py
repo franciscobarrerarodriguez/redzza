@@ -8,8 +8,9 @@ from django.dispatch import receiver
 class Conversation(models.Model):
     # hora del ultimo mensaje enviado
     modified = models.DateTimeField(auto_now_add=True)
-    contestant = models.ManyToManyField(Profile)
+    contestant = models.ManyToManyField(Profile, related_name='contestant')
     notice = models.ManyToManyField(Notice)
+    review = models.ManyToManyField(Profile, related_name='review')
 
     def __str__(self):
         return str(self.modified)
@@ -41,7 +42,6 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to=File.generatePath, blank=True, null=True)
-    review = models.BooleanField(default=False)
     sender = models.ForeignKey(Profile)
     conversation = models.ForeignKey(Conversation)
 
