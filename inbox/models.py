@@ -2,6 +2,7 @@ from django.db import models
 from profiles.models import Profile, File
 from things.models import Notice
 from django.db.models.signals import post_save
+from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
 
 
@@ -35,6 +36,10 @@ class Conversation(models.Model):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
 
     # notificaciones
+
+    def addReview(idProfile, idConversation):
+        profile = get_object_or_404(Profile, id=idProfile)
+        return Conversation.getConversation(idConversation).review.add(profile)
 
     def checkExistence(profiles):
         return Conversation.objects.filter(contestant__in=profiles).exists()
