@@ -14,6 +14,9 @@ class Conversation(models.Model):
     def __str__(self):
         return str(self.modified)
 
+    def getConversation(idConversation):
+        return Conversation.objects.get(id=idConversation)
+
     def create(profiles, notice):
         if Conversation.checkExistence(profiles) is False:
             conversation = Conversation()
