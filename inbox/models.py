@@ -23,9 +23,9 @@ class Conversation(models.Model):
             conversation.notice.add(notice)
             return conversation
         else:
-            conversation = Conversation.objects.filter(contestant__in=profiles)
-            conversation.notice.add(notice)
-            return "update"
+            conversation = Conversation.objects.filter(contestant__in=profiles).distinct()
+            conversation[0].notice.add(notice)
+            return conversation, "update"
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('modified')

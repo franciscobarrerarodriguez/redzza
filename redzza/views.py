@@ -31,11 +31,11 @@ def queries(request):
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
     # query = Notice.searchTitleCategoryCity("o", oldcategory.id, Place.searchCity(3).id, 1)
-    # prueba = Conversation.create(Profile.objects.all(), Notice.getNotice(51))
+    query = Conversation.create(Profile.objects.all(), Notice.getNotice(51))
     # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
     # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
     # query = Message.search(get_object_or_404(Conversation, id=16))
-    query = Conversation.checkExistence(Profile.objects.all())
+    # query = Conversation.checkExistence(Profile.objects.all())
     # 16
     return HttpResponse(query)
     # type -> tipo de campo
