@@ -34,7 +34,8 @@ def queries(request):
     # prueba = Conversation.create(Profile.objects.all(), Notice.getNotice(51))
     # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
     # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
-    query = Message.search(get_object_or_404(Conversation, id=16))
+    # query = Message.search(get_object_or_404(Conversation, id=16))
+    query = Conversation.checkExistence(Profile.objects.all())
     # 16
     return HttpResponse(query)
     # type -> tipo de campo

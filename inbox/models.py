@@ -15,15 +15,23 @@ class Conversation(models.Model):
         return str(self.modified)
 
     def create(profiles, notice):
-        conversation = Conversation()
-        conversation.save()
-        for p in profiles:
-            conversation.contestant.add(p)
-        conversation.notice.add(notice)
-        return conversation
+        if Conversation.checkExistence(profiles) is False:
+            conversation = Conversation()
+            conversation.save()
+            for p in profiles:
+                conversation.contestant.add(p)
+            conversation.notice.add(notice)
+            return conversation
+        else:
+            conversation = Conversation.objects.filter(contestant__in=profiles)
+            conversation.notice.add(notice)
+            return "update"
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
+
+    def checkExistence(profiles):
+        return Conversation.objects.filter(contestant__in=profiles).exists()
 
 
 class Message(models.Model):
