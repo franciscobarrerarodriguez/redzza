@@ -36,6 +36,8 @@ class Conversation(models.Model):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
 
     # notificaciones
+    def countNotifications(profile):
+        return Conversation.objects.filter(contestant=profile).exclude(review=profile).count()
 
     def addReview(idProfile, idConversation):
         profile = get_object_or_404(Profile, id=idProfile)

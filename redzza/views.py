@@ -31,7 +31,7 @@ def queries(request):
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
     # query = Notice.searchTitleCategoryCity("o", oldcategory.id, Place.searchCity(3).id, 1)
-    query = Conversation.create(Profile.objects.all(), Notice.getNotice(51))
+    query = Conversation.countNotifications(get_object_or_404(Profile, user__username="d"))
     # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
     # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
     # query = Message.search(get_object_or_404(Conversation, id=16))
