@@ -34,6 +34,8 @@ class Conversation(models.Model):
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
 
+    # notificaciones
+
     def checkExistence(profiles):
         return Conversation.objects.filter(contestant__in=profiles).exists()
 
@@ -58,7 +60,9 @@ class Message(models.Model):
 
 
 @receiver(post_save, sender=Message)
-def update_modified(sender, instance, **kwargs):
-    """ Actualiza el tiempo del modified en una conversación """
+def update_conversation(sender, instance, **kwargs):
+    """ Actualiza el tiempo del modified y el review(sender) en una conversación """
     instance.conversation.modified = instance.timestamp
+    instance.conversation.review.clear()
+    instance.conversation.review.add(instance.sender)
     instance.conversation.save()
