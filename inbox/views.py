@@ -93,7 +93,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 listReviews = viewsProfiles.getProfileSimple(conversation.review.all())
                 listNotices = viewsProfiles.getDataNotice(conversation.notice.all(), fullData=False)
                 listMessages = viewsProfiles.getDataMessages(Message.search(conversation))
-                context.append({'id': conversation.id, 'modified': conversation.modified, 'receivers': listContestants, 'notices': listNotices, 'reviews': listReviews, 'messages': listMessages})
+                context.append({'id': conversation.id, 'modified': conversation.modified, 'contestants': listContestants, 'notices': listNotices, 'reviews': listReviews, 'messages': listMessages})
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
