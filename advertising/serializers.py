@@ -5,4 +5,4 @@ from .models import Advertising
 class AdvertisingSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Advertising
-        fields = ('id', 'url', 'name')
+        fields = ('id', 'url', 'title', 'image')
