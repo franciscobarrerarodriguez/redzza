@@ -339,6 +339,25 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
         return username
 
 
+# obtener informacion de message
+def getDataMessages(messages):
+    context = []
+    for message in messages:
+        image = str(message.image)
+        if image is not '':
+            image = CURRENT_SITE + MEDIA_URL + str(message.image)
+        context.append({'id': message.id, 'timestamp': message.timestamp, 'text': message.text, 'image': image, 'sender': getProfileSimple([message.sender]), 'conversation': message.conversation.id})
+    return context
+
+
+# informacin basica de profile
+def getProfileSimple(profiles):
+    context = []
+    for profile in profiles:
+        context.append({'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': CURRENT_SITE + MEDIA_URL + str(profile.avatar)})
+    return context
+
+
 # id - imagen - titulo - kind de listado de notices
 def getDataNotice(notices, fullData=True):
     context = []

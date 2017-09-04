@@ -26,7 +26,7 @@ class Conversation(models.Model):
             for p in profiles:
                 conversation.contestant.add(p)
             conversation.notice.add(notice)
-            return conversation
+            return [conversation], ""
         else:
             conversation = Conversation.objects.filter(contestant__in=profiles).distinct()
             conversation[0].notice.add(notice)
@@ -64,6 +64,9 @@ class Message(models.Model):
 
     def search(conversation):
         return Message.objects.filter(conversation=conversation).order_by('timestamp')
+
+    def searchConversationsSend(profile):
+        return Message.objects.filter(sender=profile).order_by('timestamp')
 
 
 @receiver(post_save, sender=Message)
