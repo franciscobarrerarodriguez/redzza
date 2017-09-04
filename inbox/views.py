@@ -35,6 +35,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             profileReceiver = notice.profile
             profiles = []
             profiles.append(profileReceiver)
+            profiles.append(profileSender)
             text = request.data.get('text', None)
             image = request.data.get('image', None)
             if (text or image) and notice and len(profiles) > 0:
@@ -80,14 +81,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             user = request.user
             profile = viewsProfiles.getProfile(user)
             context = []
-            conversations = []
-            messagesSend = Message.searchConversationsSend(profile)
-            for i, message in enumerate(messagesSend):
-                conversations.append(messagesSend[i].conversation)
-            conversationsReceived = Conversation.search(profile)
-            for conversation in conversationsReceived:
-                conversations.append(conversation)
-            conversations = list(set(conversations))
+            conversations = Conversation.search(profile)
             for conversation in conversations:
                 listContestants = viewsProfiles.getProfileSimple(conversation.contestant.all())
                 listReviews = viewsProfiles.getProfileSimple(conversation.review.all())

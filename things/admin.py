@@ -3,6 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from .models import Commentary, Video, Image, CityNotice, Notice, Color, Product, Service
+from sorl.thumbnail import get_thumbnail
 
 
 @admin.register(Notice)
@@ -32,7 +33,11 @@ class AdminCityNotice(admin.ModelAdmin):
 
 @admin.register(Image)
 class AdminImage(admin.ModelAdmin):
-    list_display = ('notice',)
+
+    def image_album(self, obj):
+        return '<img src ="%s">' % get_thumbnail(obj.image, '50x50').url
+    image_album.allow_tags = True
+    list_display = ('notice', 'image_album')
 
 
 @admin.register(Video)
