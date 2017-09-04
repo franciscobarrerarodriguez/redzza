@@ -267,7 +267,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             notices = viewsProfiles.noticesQuery(queries)
-            context = viewsProfiles.noticeSimple(notices)
+            context = viewsProfiles.getDataNotice(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
