@@ -34,6 +34,7 @@
 | /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
 | /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
 | /api/v1/apiServices/getCountNotifications/ |  | GET | success, count, err | Obtencion de numero de notificaciones |
+| /api/v1/apiServices/reviewConversation/ | conversation | POST | success, msg, err | Lectura de una conversacion |
 
 
 

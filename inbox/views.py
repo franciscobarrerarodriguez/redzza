@@ -116,3 +116,19 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Leido de conversacion
+    @list_route(methods=['post'])
+    def reviewConversation(self, request):
+        try:
+            user = request.user
+            idProfile = viewsProfiles.getProfile(user).id
+            idConversation = request.data.get('conversation', None)
+            Conversation.addReview(idProfile, idConversation)
+            return Response({'success': True, 'msg': 'conversation-review'})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
