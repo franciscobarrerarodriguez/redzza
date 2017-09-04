@@ -171,6 +171,10 @@ class ApiServicesViewSet(viewsets.ViewSet):
             state = request.data.get('state', None)
             # Servicio
             time = request.data.get('time', None)
+
+            if request.user is not notice.user:
+                return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
             if title:
                 Notice.updateTitle(notice, title)
                 return Response({'success': True, 'msg': 'title-update'})
