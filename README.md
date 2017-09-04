@@ -33,6 +33,7 @@
 | /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
 | /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
 | /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
+| /api/v1/apiServices/getCountNotifications/ |  | GET | success, count, err | Obtencion de numero de notificaciones |
 
 
 
