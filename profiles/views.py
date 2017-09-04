@@ -354,7 +354,7 @@ def getDataMessages(messages):
 def getProfileSimple(profiles):
     context = []
     for profile in profiles:
-        context.append({'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': CURRENT_SITE + MEDIA_URL + str(profile.avatar)})
+        context.append({'user': profile.user.id, 'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': CURRENT_SITE + MEDIA_URL + str(profile.avatar)})
     return context
 
 
