@@ -10,6 +10,7 @@ class Conversation(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile)
     notice = models.ManyToManyField(Notice)
+    # se podria dejar el review en conversation
 
     def __str__(self):
         return str(self.modified)
@@ -30,6 +31,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to=File.generatePath, blank=True, null=True)
+    # despues puede quedar como un manytomanyfield
     review = models.BooleanField(default=False)
     sender = models.ForeignKey(Profile)
     conversation = models.ForeignKey(Conversation)
