@@ -28,7 +28,7 @@
 | /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, profile, commentary | GET, POST, PUT, DELETE | comentary | Comentario para notice |
-| /api/v1/users/*ID*/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
+| /api/v1/apiServices/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
 | /api/v1/apiServices/startConversation/ | notice, text, image | POST | success, msg, err | Iniciar una conversacion |
 | /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
 | /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
