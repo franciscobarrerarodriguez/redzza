@@ -174,7 +174,14 @@ class Notice(models.Model):
             else:
                 catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
-        return follnotice.exclude(profile=profile), catnotice.exclude(notice__profile=profile), citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile)
+        context = []
+        if follnotice is not None:
+            context.append(follnotice.exclude(profile=profile))
+        if catnotice is not None:
+            context.append(catnotice.exclude(notice__profile=profile))
+        if citynotice.order_by('notice__id').distinct('notice__id') is not None:
+            context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
+        return context
 
     def sortoutNotices(notices, city):
         result = []

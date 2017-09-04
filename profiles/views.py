@@ -81,23 +81,6 @@ class UserViewSet(viewsets.ModelViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    # Obtencion de home de un usuario
-    @detail_route(methods=['get'])
-    def getHome(self, request, pk=None):
-        try:
-            user = getUser(pk)
-            profile = getProfile(user)
-            queries = Notice.searchHome(profile.id)
-            notices = noticesQuery(queries)
-            context = getDataNotice(notices)
-            return Response({'success': True, 'data': context})
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Place.objects.all()
@@ -306,6 +289,23 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': True, 'msg': 'tags-update'})
             else:
                 return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Obtencion de home de un usuario
+    @list_route(methods=['get'])
+    def getHome(self, request):
+        try:
+            user = request.user
+            profile = getProfile(user)
+            queries = Notice.searchHome(profile.id)
+            notices = noticesQuery(queries)
+            context = getDataNotice(notices)
+            return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
