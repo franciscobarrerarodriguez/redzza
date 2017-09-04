@@ -101,3 +101,18 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Obtiene numero de notificaciones de un usuario
+    @list_route(methods=['get'])
+    def getCountNotifications(self, request):
+        try:
+            user = request.user
+            profile = viewsProfiles.getProfile(user)
+            count = Conversation.countNotifications(profile)
+            return Response({'success': True, 'count': count})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
