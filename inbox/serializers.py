@@ -5,10 +5,10 @@ from .models import Conversation, Message
 class ConversationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Conversation
-        fields = ('id', 'url', 'modified', 'contestant', 'notice')
+        fields = ('id', 'url', 'modified', 'contestant', 'notice', 'review')
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'url', 'timestamp', 'text', 'image', 'review', 'sender', 'conversation')
+        fields = ('id', 'url', 'timestamp', 'text', 'image', 'sender', 'conversation')
