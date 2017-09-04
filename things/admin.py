@@ -34,10 +34,11 @@ class AdminCityNotice(admin.ModelAdmin):
 @admin.register(Image)
 class AdminImage(admin.ModelAdmin):
 
-    def image_album(self, obj):
-        return '<img src ="%s">' % get_thumbnail(obj.image, '50x50').url
-    image_album.allow_tags = True
-    list_display = ('notice', 'image_album')
+    def image_notice(self, obj):
+        print(obj.image.url)
+        return '<img src ="%s">' % get_thumbnail(obj.image, '100x100').url
+    image_notice.allow_tags = True
+    list_display = ('notice', 'image_notice')
 
 
 @admin.register(Video)
