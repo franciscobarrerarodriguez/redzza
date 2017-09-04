@@ -22,13 +22,13 @@
 | /api/v1/images/ | notice, image | GET, POST, PUT, DELETE | image | Imagen para notice |
 | /api/v1/videos/ | notice, video | GET, POST, PUT, DELETE | video | Video para notice |
 | /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Informacion de un usuario por su id |
-| /api/v1/users/*ID*/getNotices/ |  | GET | success, data(id,title,image,kind,data), err | Publicaciones de un usuario por su id |
+| /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Publicaciones de un usuario por su id |
 | /api/v1/notices/*ID*/ |  | DELETE | | Eliminacion de una notice por su id |
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
-| /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data(id,title,image,kind,data), err | Busqueda, kind obligatorio |
-| /api/v1/notices/*ID*/getComments/ |  | GET | success, data(id,commentary,notice_name,notice,user_name,user), err | Comentarios de una notice por su id |
+| /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
+| /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, profile, commentary | GET, POST, PUT, DELETE | comentary | Comentario para notice |
-| /api/v1/users/*ID*/getHome/ |  | GET | success, data(id,title,image,kind,data), err | Publicaciones del home de un usuario por su id |
+| /api/v1/users/*ID*/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
 | /api/v1/apiServices/startConversation/ | notice, text, image | POST | success, msg, err | Iniciar una conversacion |
 | /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
 | /api/v1/conversations/*ID*/ |  | DELETE | | Eliminacion de una conversacion por su id |
