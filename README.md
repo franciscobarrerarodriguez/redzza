@@ -29,6 +29,13 @@
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data(id,commentary,notice_name,notice,user_name,user), err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, profile, commentary | GET, POST, PUT, DELETE | comentary | Comentario para notice |
 | /api/v1/users/*ID*/getHome/ |  | GET | success, data(id,title,image,kind,data), err | Publicaciones del home de un usuario por su id |
+| /api/v1/apiServices/startConversation/ | notice, text, image | POST | success, msg, err | Iniciar una conversacion |
+| /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
+| /api/v1/conversations/*ID*/ |  | DELETE | | Eliminacion de una conversacion por su id |
+| /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
+
+
+
 
 ## Kind
 - i_have(Ofrezco) --> 1 
