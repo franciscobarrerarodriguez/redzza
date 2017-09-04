@@ -10,7 +10,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
 from tags.models import TagProfile
-from things.models import Notice, Image
+from things.models import Notice, Image, CityNotice, Video, Product, Color
 from .models import Profile, Place, Follow, Icon
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
 from string import ascii_lowercase, digits
@@ -45,7 +45,6 @@ class UserViewSet(viewsets.ModelViewSet):
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
-            context['profile'][0]['fields']['location_name'] = str(profile.location)
             context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
@@ -73,24 +72,7 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             user = getUser(pk)
             notices = getNoticesUser(user)
-            context = noticeSimple(notices)
-            return Response({'success': True, 'data': context})
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
-    # Obtencion de home de un usuario
-    @detail_route(methods=['get'])
-    def getHome(self, request, pk=None):
-        try:
-            user = getUser(pk)
-            profile = getProfile(user)
-            queries = Notice.searchHome(profile.id)
-            notices = noticesQuery(queries)
-            context = noticeSimple(notices)
+            context = getDataNotice(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -314,6 +296,23 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # Obtencion de home de un usuario
+    @list_route(methods=['get'])
+    def getHome(self, request):
+        try:
+            user = request.user
+            profile = getProfile(user)
+            queries = Notice.searchHome(profile.id)
+            notices = noticesQuery(queries)
+            context = getDataNotice(notices)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
@@ -340,15 +339,69 @@ def generateRandomUsername(name, length=8, chars=ascii_lowercase + digits, split
         return username
 
 
-# id - imagen - titulo - kind de listado de notices
-def noticeSimple(notices):
+# obtener informacion de message
+def getDataMessages(messages):
     context = []
+    for message in messages:
+        image = str(message.image)
+        if image is not '':
+            image = CURRENT_SITE + MEDIA_URL + str(message.image)
+        context.append({'id': message.id, 'timestamp': message.timestamp, 'text': message.text, 'image': image, 'sender': getProfileSimple([message.sender]), 'conversation': message.conversation.id})
+    return context
+
+
+# informacin basica de profile
+def getProfileSimple(profiles):
+    context = []
+    for profile in profiles:
+        context.append({'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': CURRENT_SITE + MEDIA_URL + str(profile.avatar)})
+    return context
+
+
+# id - imagen - titulo - kind de listado de notices
+def getDataNotice(notices, fullData=True):
+    context = []
+    data = {}
     for notice in notices:
         images = Image.search(notice)
+        if fullData:
+            data = noticeComplete(notice)
         if len(images) > 0:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
         else:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search")})
+            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
+    return context
+
+
+# id - imagen - titulo - kind de listado de notices
+def noticeComplete(notice):
+    context = {}
+    context['notice'] = json.loads(serializers.serialize('json', [notice]))
+    context['notice'][0]['fields']['location_name'] = str(notice.location)
+    context['notice'][0]['fields']['category_name'] = str(notice.category)
+    context['notice'][0]['fields']['profile'] = getProfileSimple([notice.profile])
+    locations = CityNotice.searchCities(notice)
+    context['notice'][0]['locations'] = []
+    for i, location in enumerate(locations):
+        context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
+    images = Image.search(notice)
+    context['notice'][0]['images'] = []
+    if len(images) > 0:
+        for i, image in enumerate(images):
+            context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+    else:
+        context['notice'][0]['images'].append({'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png'})
+    videos = Video.search(notice)
+    context['notice'][0]['videos'] = []
+    for i, video in enumerate(videos):
+        context['notice'][0]['videos'].append({'id': str(video.id), 'video': CURRENT_SITE + MEDIA_URL + str(video.video)})
+    thing = Notice.sortoutNotices([notice], False)[0]
+    context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
+    if thing.__class__ == Product:
+        colors = Color.searchProduct(thing)
+        context['notice'][0]['thing'][0]['fields']['colors'] = []
+        for i, color in enumerate(colors):
+            context['notice'][0]['thing'][0]['fields']['colors'].append({'color': str(color.hexa)})
     return context
 
 
@@ -356,11 +409,12 @@ def noticeSimple(notices):
 def noticesQuery(queries):
     notices = []
     for query in queries:
-        for element in query:
-            if element.__class__ is Notice:
-                notices.append(element)
-            else:
-                notices.append(element.notice)
+        if query is not None:
+            for element in query:
+                if element.__class__ is Notice:
+                    notices.append(element)
+                else:
+                    notices.append(element.notice)
     notices = list(set(notices))
     return notices
 

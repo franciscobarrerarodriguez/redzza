@@ -9,6 +9,8 @@ from profiles.urls import router as profiles_router
 from categories.urls import router as categories_router
 from things.urls import router as things_router
 from tags.urls import router as tags_router
+from advertising.urls import router as advertising_router
+from inbox.urls import router as inbox_router
 from rest_framework_expiring_authtoken import views
 
 router = routers.DefaultRouter()
@@ -16,7 +18,8 @@ router.registry.extend(profiles_router.registry)
 router.registry.extend(categories_router.registry)
 router.registry.extend(things_router.registry)
 router.registry.extend(tags_router.registry)
-
+router.registry.extend(advertising_router.registry)
+router.registry.extend(inbox_router.registry)
 
 urlpatterns = [
     url(r'^', admin.site.urls,),

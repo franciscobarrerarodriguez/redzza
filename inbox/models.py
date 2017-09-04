@@ -2,37 +2,55 @@ from django.db import models
 from profiles.models import Profile, File
 from things.models import Notice
 from django.db.models.signals import post_save
+from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
 
 
 class Conversation(models.Model):
     # hora del ultimo mensaje enviado
     modified = models.DateTimeField(auto_now_add=True)
-    contestant = models.ManyToManyField(Profile)
+    contestant = models.ManyToManyField(Profile, related_name='contestant')
     notice = models.ManyToManyField(Notice)
-    # se podria dejar el review en conversation
+    review = models.ManyToManyField(Profile, related_name='review')
 
     def __str__(self):
         return str(self.modified)
 
+    def getConversation(idConversation):
+        return Conversation.objects.get(id=idConversation)
+
     def create(profiles, notice):
-        conversation = Conversation()
-        conversation.save()
-        for p in profiles:
-            conversation.contestant.add(p)
-        conversation.notice.add(notice)
-        return conversation
+        if Conversation.checkExistence(profiles) is False:
+            conversation = Conversation()
+            conversation.save()
+            for p in profiles:
+                conversation.contestant.add(p)
+            conversation.notice.add(notice)
+            return [conversation], ""
+        else:
+            conversation = Conversation.objects.filter(contestant__in=profiles).distinct()
+            conversation[0].notice.add(notice)
+            return conversation, "update"
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
+
+    # notificaciones
+    def countNotifications(profile):
+        return Conversation.objects.filter(contestant=profile).exclude(review=profile).count()
+
+    def addReview(idProfile, idConversation):
+        profile = get_object_or_404(Profile, id=idProfile)
+        return Conversation.getConversation(idConversation).review.add(profile)
+
+    def checkExistence(profiles):
+        return Conversation.objects.filter(contestant__in=profiles).exists()
 
 
 class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to=File.generatePath, blank=True, null=True)
-    # despues puede quedar como un manytomanyfield
-    review = models.BooleanField(default=False)
     sender = models.ForeignKey(Profile)
     conversation = models.ForeignKey(Conversation)
 
@@ -47,9 +65,14 @@ class Message(models.Model):
     def search(conversation):
         return Message.objects.filter(conversation=conversation).order_by('timestamp')
 
+    def searchConversationsSend(profile):
+        return Message.objects.filter(sender=profile).order_by('timestamp')
+
 
 @receiver(post_save, sender=Message)
-def update_modified(sender, instance, **kwargs):
-    """ Actualiza el tiempo del modified en una conversación """
+def update_conversation(sender, instance, **kwargs):
+    """ Actualiza el tiempo del modified y el review(sender) en una conversación """
     instance.conversation.modified = instance.timestamp
+    instance.conversation.review.clear()
+    instance.conversation.review.add(instance.sender)
     instance.conversation.save()

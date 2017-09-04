@@ -23,12 +23,21 @@
 | /api/v1/videos/ | notice, video | GET, POST, PUT, DELETE | video | Video para notice |
 | /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Informacion de un usuario por su id |
 | /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Publicaciones de un usuario por su id |
-| /api/v1/notices/*ID*/ |  | DELETE | | Eliminacion de una notice por su id |
+| /api/v1/notices/*ID*/ |  | DELETE | success | Eliminacion de una notice por su id |
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
 | /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, profile, commentary | GET, POST, PUT, DELETE | comentary | Comentario para notice |
-| /api/v1/users/*ID*/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
+| /api/v1/apiServices/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
+| /api/v1/apiServices/startConversation/ | notice, text, image | POST | success, msg, err | Iniciar una conversacion |
+| /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
+| /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
+| /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
+| /api/v1/apiServices/getCountNotifications/ |  | GET | success, count, err | Obtencion de numero de notificaciones |
+| /api/v1/apiServices/reviewConversation/ | conversation | POST | success, msg, err | Lectura de una conversacion |
+
+
+
 
 ## Kind
 - i_have(Ofrezco) --> 1 

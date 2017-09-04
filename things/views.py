@@ -5,8 +5,6 @@ from profiles import views as viewsProfiles
 from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 from django.core import serializers
-from redzza.settings import MEDIA_URL
-from redzza.site import CURRENT_SITE
 import json
 
 
@@ -24,32 +22,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
     def getData(self, request, pk=None):
         try:
             notice = Notice.getNotice(pk)
-            context = {}
-            context['notice'] = json.loads(serializers.serialize('json', [notice]))
-            context['notice'][0]['fields']['location_name'] = str(notice.location)
-            context['notice'][0]['fields']['category_name'] = str(notice.category)
-            locations = CityNotice.searchCities(notice)
-            context['notice'][0]['locations'] = []
-            for i, location in enumerate(locations):
-                context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
-            images = Image.search(notice)
-            context['notice'][0]['images'] = []
-            if len(images) > 0:
-                for i, image in enumerate(images):
-                    context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
-            else:
-                context['notice'][0]['images'].append({'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png'})
-            videos = Video.search(notice)
-            context['notice'][0]['videos'] = []
-            for i, video in enumerate(videos):
-                context['notice'][0]['videos'].append({'id': str(video.id), 'video': CURRENT_SITE + MEDIA_URL + str(video.video)})
-            thing = Notice.sortoutNotices([notice], False)[0]
-            context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
-            if thing.__class__ == Product:
-                colors = Color.searchProduct(thing)
-                context['notice'][0]['thing'][0]['fields']['colors'] = []
-                for i, color in enumerate(colors):
-                    context['notice'][0]['thing'][0]['fields']['colors'].append({'color': str(color.hexa)})
+            context = viewsProfiles.noticeComplete(notice)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -294,7 +267,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             notices = viewsProfiles.noticesQuery(queries)
-            context = viewsProfiles.noticeSimple(notices)
+            context = viewsProfiles.getDataNotice(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
