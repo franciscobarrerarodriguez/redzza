@@ -169,11 +169,12 @@ def avatar_delete(sender, instance, **kwargs):
         old_file = Profile.objects.get(pk=instance.pk).avatar
     except Profile.DoesNotExist:
         return False
-
-    new_file = instance.avatar
-    if not old_file == new_file:
-        if os.path.isfile(old_file.path):
-            os.remove(old_file.path)
+    print(old_file)
+    if not old_file == "Profile/no-avatar.png":
+        new_file = instance.avatar
+        if not old_file == new_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
 
 
 class Follow(models.Model):
