@@ -69,7 +69,6 @@
 | certifi==2017.7.27.1 | Dependencia django-allauth |
 | idna==2.5 | Dependencia django-allauth |
 | djangorestframework-expiring-authtoken==0.1.4 | Token con expiracion de tiempo |
-| sorl-thumbnail==12.3 | Miniaturas |
 
 
 
