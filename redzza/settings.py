@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_auth.registration',
-    'sorl.thumbnail',
 ]
 
 SITE_ID = 2

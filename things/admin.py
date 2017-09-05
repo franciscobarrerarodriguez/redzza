@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from .models import Commentary, Video, Image, CityNotice, Notice, Color, Product, Service
-from sorl.thumbnail import get_thumbnail
+# from sorl.thumbnail import get_thumbnail
 
 
 @admin.register(Notice)
