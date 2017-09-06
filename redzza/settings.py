@@ -119,7 +119,7 @@ WSGI_APPLICATION = 'redzza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'reddzza',
+        'NAME': 'redzza',
         'USER': 'redzza',
         'PASSWORD': 'redzza852',
         'HOST': 'redzza.ctbplp1yxtbq.us-east-2.rds.amazonaws.com',
