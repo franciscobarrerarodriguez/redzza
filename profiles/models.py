@@ -32,7 +32,7 @@ class File():
 
 class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=40)
 
     def __str__(self):
         return self.name

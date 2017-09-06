@@ -21,7 +21,6 @@ def fillPlaces():
         for city in dpto.get('ciudades'):
             town = Place(name=city, pattern=pattern)
             town.save()
-            print(city)
     return prueba
 
 
