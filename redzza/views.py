@@ -8,11 +8,26 @@ from things.models import Notice, Image, Video
 from inbox.models import Conversation, Message
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+import requests
+import json
+
+
+def fillPlaces():
+    prueba = []
+    places = requests.get("https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.json")
+    for dpto in places.json():
+        pattern = Place(name=dpto.get('departamento'))
+        pattern.save()
+        for city in dpto.get('ciudades'):
+            town = Place(name=city, pattern=pattern)
+            town.save()
+            print(city)
+    return prueba
 
 
 def queries(request):
     # profile = get_object_or_404(Profile, gender='F')
-    oldcategory = get_object_or_404(Category, name="Vehiculos - Motos")
+    # oldcategory = get_object_or_404(Category, name="Vehiculos - Motos")
     # Vehiculos - Motos
     # category = get_object_or_404(Category, name="Seguridad")
     # query = Profile.updateBirthdate(get_object_or_404(Profile, gender='F'), "2015-11-06")
@@ -31,12 +46,12 @@ def queries(request):
     # para acceder a la url de la imagen se accede a Image.image.name
     # query = WantedCategory.updateHave(profile, oldcategory, category)
     # query = Notice.searchTitleCategoryCity("o", oldcategory.id, Place.searchCity(3).id, 1)
-    query = Conversation.countNotifications(get_object_or_404(Profile, user__username="d"))
+    # query = Conversation.countNotifications(get_object_or_404(Profile, user__username="d"))
     # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
     # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
     # query = Message.search(get_object_or_404(Conversation, id=16))
     # query = Conversation.checkExistence(Profile.objects.all())
     # 16
-    return HttpResponse(query)
+    return HttpResponse(fillPlaces())
     # type -> tipo de campo
     # dir atributos de la clase

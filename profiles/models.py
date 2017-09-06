@@ -29,9 +29,10 @@ class File():
         # Devolvermos la ruta completa
         return os.path.join(ruta, nombre_archivo)
 
+
 class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
