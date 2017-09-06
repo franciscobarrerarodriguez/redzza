@@ -90,3 +90,7 @@ ENV/
 
 # la base de datos
 db.sqlite3
+
+
+deploy/
+redzza/staticfiles/
