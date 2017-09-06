@@ -51,6 +51,7 @@ def queries(request):
     # query = Message.search(get_object_or_404(Conversation, id=16))
     # query = Conversation.checkExistence(Profile.objects.all())
     # 16
-    return HttpResponse(fillPlaces())
+    query = Place.getDepartments()
+    return HttpResponse(query)
     # type -> tipo de campo
     # dir atributos de la clase
