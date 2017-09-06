@@ -22,7 +22,7 @@ router.registry.extend(advertising_router.registry)
 router.registry.extend(inbox_router.registry)
 
 urlpatterns = [
-    url(r'^', admin.site.urls,),
+    url(r'^admin/', admin.site.urls,),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
