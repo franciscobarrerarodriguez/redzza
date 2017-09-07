@@ -24,10 +24,6 @@ def fillPlaces():
     return prueba
 
 
-def index(request):
-    return render(request, 'index.html')
-
-
 def queries(request):
     # profile = get_object_or_404(Profile, gender='F')
     # oldcategory = get_object_or_404(Category, name="Vehiculos - Motos")
