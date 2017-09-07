@@ -173,7 +173,21 @@ class Notice(models.Model):
                 catnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
             else:
                 catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+        if profile.location.pattern is not None:
+            for category in WantedCategory.searchOffer(profile):
+                if catnotice is None:
+                    catnotice = Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 1)
+                else:
+                    catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 1)
+            for category in WantedCategory.searchHave(profile):
+                if catnotice is None:
+                    catnotice = Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 2)
+                else:
+                    catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 2)
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
+        if profile.location.pattern is not None:
+            citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
+        allnotice = Notice.objects.exclude(profile=profile).order_by('date')
         context = []
         if follnotice is not None:
             context.append(follnotice.exclude(profile=profile))
@@ -181,6 +195,8 @@ class Notice(models.Model):
             context.append(catnotice.exclude(notice__profile=profile))
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
             context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
+        if allnotice is not None:
+            context.append(allnotice)
         return context
 
     def sortoutNotices(notices, city):
