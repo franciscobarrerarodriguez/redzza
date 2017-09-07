@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 ]
 
-SITE_ID = 2
+SITE_ID = 5
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
@@ -99,7 +99,9 @@ ROOT_URLCONF = 'redzza.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR + '/redzza/frontend',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
