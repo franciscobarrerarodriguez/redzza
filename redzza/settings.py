@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 ]
 
-SITE_ID = 5
+SITE_ID = 6
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
