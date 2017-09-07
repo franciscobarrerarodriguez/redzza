@@ -1,0 +1,25 @@
+#!/bin/bash
+NAME="redzza"
+VIRTUALENV="/home/redzza/redzza/"
+DJANGODIR="/home/redzza/redzza/redzza/"
+USER=redzza
+GROUP=sudo
+NUM_WORKERS=3
+DJANGO_WSGI_MODULE=redzza.wsgi
+echo "Starting $NAME as `whoami`"
+cd $VIRTUALENV
+source bin/activate
+cd $DJANGODIR
+export REDZZA_SECRET_KEY="random_key:aasdafasf"
+export REDZZA_DB_NAME="redzza"
+export REDZZA_DB_USER="redzza"
+export REDZZA_DB_PASSWORD="redzza852"
+export REDZZA_DB_PORT="5432"
+export REDZZA_DB_HOST=""
+export DJANGO_SETTINGS_MODULE="redzza.settings"
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+exec gunicorn ${DJANGO_WSGI_MODULE} \
+--workers $NUM_WORKERS \
+--user=$USER --group=$GROUP \
+--log-level=debug \
+--bind=127.0.0.1:8000
