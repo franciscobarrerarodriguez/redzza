@@ -1,0 +1,4 @@
+
+.dropzone .dz-preview.dz-complete .dz-progress{opacity:0;-webkit-transition:opacity 0.4s ease-in;-moz-transition:opacity 0.4s ease-in;-ms-transition:opacity 0.4s ease-in;-o-transition:opacity 0.4s ease-in;transition:opacity 0.4s ease-in}
+.dropzone .dz-preview .dz-progress{opacity:1;z-index:1000;pointer-events:none;position:absolute;height:16px;left:0px;top:50%;margin-top:-8px;width:80%;margin-left:0px;background:rgba(255,255,255,0.9);-webkit-transform:scale(1);overflow:hidden}
+.dropzone .dz-preview .dz-progress .dz-upload{background:#333;background:linear-gradient(to bottom, #EA325A, #EA325A);position:absolute;top:0;left:0;bottom:0;width:0;-webkit-transition:width 300ms ease-in-out;-moz-transition:width 300ms ease-in-out;-ms-transition:width 300ms ease-in-out;-o-transition:width 300ms ease-in-out;transition:width 300ms ease-in-out}

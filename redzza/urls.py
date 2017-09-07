@@ -3,7 +3,7 @@ from django.contrib import admin
 from rest_framework import routers
 from django.views.static import serve
 from . import settings
-from . import views as vprueba
+from . import views as main_view
 
 from profiles.urls import router as profiles_router
 from categories.urls import router as categories_router
@@ -22,6 +22,7 @@ router.registry.extend(advertising_router.registry)
 router.registry.extend(inbox_router.registry)
 
 urlpatterns = [
+    url(r'^', main_view.index, name='index'),
     url(r'^admin/', admin.site.urls,),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^api/v1/', include(router.urls)),
@@ -31,5 +32,5 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    url(r'^queries/', vprueba.queries, name='query'),
+    url(r'^queries/', main_view.queries, name='query'),
 ]

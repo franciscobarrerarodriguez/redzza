@@ -10,6 +10,10 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
 
+def index(request):
+    return render(request, 'index.html')
+
+
 def queries(request):
     # profile = get_object_or_404(Profile, gender='F')
     oldcategory = get_object_or_404(Category, name="Vehiculos - Motos")
