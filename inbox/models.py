@@ -11,7 +11,7 @@ class Conversation(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile, related_name='contestant')
     notice = models.ManyToManyField(Notice)
-    review = models.ManyToManyField(Profile, related_name='review')
+    review = models.ManyToManyField(Profile, related_name='review', blank=True)
 
     def __str__(self):
         return str(self.modified)
@@ -20,7 +20,8 @@ class Conversation(models.Model):
         return Conversation.objects.get(id=idConversation)
 
     def create(profiles, notice):
-        if Conversation.checkExistence(profiles) is False:
+        existence = Conversation.checkExistence(profiles, notice)
+        if existence.exists() is False:
             conversation = Conversation()
             conversation.save()
             for p in profiles:
@@ -28,9 +29,7 @@ class Conversation(models.Model):
             conversation.notice.add(notice)
             return [conversation], ""
         else:
-            conversation = Conversation.objects.filter(contestant__in=profiles).distinct()
-            conversation[0].notice.add(notice)
-            return conversation, "update"
+            return existence, "update"
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('modified')
@@ -43,9 +42,11 @@ class Conversation(models.Model):
         profile = get_object_or_404(Profile, id=idProfile)
         return Conversation.getConversation(idConversation).review.add(profile)
 
-    def checkExistence(profiles):
-        return Conversation.objects.filter(contestant__in=profiles).exists()
-
+    def checkExistence(profiles, notice):
+        result = Conversation.objects.filter(contestant=profiles[0], notice=notice)
+        for p in range(1, len(profiles)):
+            result = result.filter(contestant=profiles[p])
+        return result
 
 class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
