@@ -196,7 +196,7 @@ class Notice(models.Model):
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
             context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
         if allnotice is not None:
-            context.append(allnotice)
+            context.append(allnotice).exclude(profile=profile)
         return context
 
     def sortoutNotices(notices, city):
@@ -271,6 +271,8 @@ class Product(models.Model):
         ('R', 'Redzza service'),
     )
     delivery = models.CharField(max_length=1, choices=DELIVERY, default='C')
+    # cantidades del artículo
+    quantity = models.IntegerField()
 
     def __str__(self):
         return self.notice.title
