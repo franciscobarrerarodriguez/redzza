@@ -48,7 +48,7 @@ class Notice(models.Model):
         return Notice.objects.get(id=idN)
 
     def getNoticeProfile(profile):
-        return Notice.objects.filter(profile=profile)
+        return Notice.objects.filter(profile=profile, visibility=True)
 
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
@@ -187,7 +187,11 @@ class Notice(models.Model):
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
         if profile.location.pattern is not None:
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
+<<<<<<< HEAD
         allnotice = Notice.objects.exclude(profile=profile).order_by('-date')
+=======
+        allnotice = Notice.objects.filter(visibility=True).exclude(profile=profile).order_by('date')
+>>>>>>> 24fe92f3d47aec240f3605b60675463e36e6e563
         context = []
         if follnotice is not None:
             context.append(follnotice.exclude(profile=profile))

@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '54o(ku$!g0k=6ppsa-h%+znjzn1=*bmjq*bcv4&r5_&)awu_9i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Permitir todos los nombres de dominio
 ALLOWED_HOSTS = ['*']
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 ]
 
-SITE_ID = 2
+SITE_ID = 7
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
@@ -62,8 +62,8 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "redzzaservice@gmail.com"
-EMAIL_HOST_PASSWORD = "redzza852"
+EMAIL_HOST_USER = "contacto@redzza.com"
+EMAIL_HOST_PASSWORD = "avaadore110684"
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -99,7 +99,9 @@ ROOT_URLCONF = 'redzza.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR + '/redzza/frontend',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,10 +121,10 @@ WSGI_APPLICATION = 'redzza.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dn5515dttcdms',
-        'USER': 'mhytxmydrlzlbr',
-        'PASSWORD': '2d42ad1b648ec8cad34e23efe30412af165c8728c217cb247e1dc467f8a40c4b',
-        'HOST': 'ec2-54-163-254-143.compute-1.amazonaws.com',
+        'NAME': 'redzza',
+        'USER': 'redzza',
+        'PASSWORD': 'redzza852',
+        'HOST': 'redzza.ctbplp1yxtbq.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
