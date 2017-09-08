@@ -48,7 +48,7 @@ class Notice(models.Model):
         return Notice.objects.get(id=idN)
 
     def getNoticeProfile(profile):
-        return Notice.objects.filter(profile=profile)
+        return Notice.objects.filter(profile=profile, visibility=True)
 
     def getNoticeHave(profile):
         return Notice.objects.filter(profile=profile, kind=1)
