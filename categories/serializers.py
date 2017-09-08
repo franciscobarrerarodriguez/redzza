@@ -2,10 +2,10 @@ from rest_framework import serializers
 from .models import Category, WantedCategory, SuggestedCategory
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'url', 'pattern', 'name', 'description')
+        fields = ('id', 'pattern', 'name', 'description')
 
 
 class WantedCategorySerializer(serializers.HyperlinkedModelSerializer):
