@@ -88,6 +88,20 @@ class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PlaceSerializer
     permission_classes = [AllowAny]
 
+    # Obtencion de ciudades de un departamento
+    @detail_route(methods=['get'])
+    def getCities(self, request, pk=None):
+        try:
+            cities = Place.searchTowns(pk)
+            context = getDataCities(cities)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
@@ -348,6 +362,14 @@ def getDataMessages(messages):
         if image is not '':
             image = CURRENT_SITE + MEDIA_URL + str(message.image)
         context.append({'id': message.id, 'timestamp': message.timestamp, 'text': message.text, 'image': image, 'sender': getProfileSimple([message.sender]), 'conversation': message.conversation.id})
+    return context
+
+
+# obtener data de una lista de cidaddes
+def getDataCities(cities):
+    context = []
+    for city in cities:
+        context.append({'id': city.id, 'pattern': city.pattern.id, 'name': city.name})
     return context
 
 
