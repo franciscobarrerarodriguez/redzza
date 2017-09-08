@@ -14,7 +14,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
+        instance.visibility = False
+        instance.save()
         return Response({'success': True})
 
     # Obtencion de informacion de una notice
