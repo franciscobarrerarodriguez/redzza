@@ -32,7 +32,7 @@ class Conversation(models.Model):
             return existence, "update"
 
     def search(profile):
-        return Conversation.objects.filter(contestant=profile).order_by('modified')
+        return Conversation.objects.filter(contestant=profile).order_by('-modified')
 
     # notificaciones
     def countNotifications(profile):
@@ -47,6 +47,7 @@ class Conversation(models.Model):
         for p in range(1, len(profiles)):
             result = result.filter(contestant=profiles[p])
         return result
+
 
 class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
