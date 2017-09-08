@@ -282,6 +282,10 @@ class Product(models.Model):
         product.save()
         return product
 
+    def updateQuantity(product, quantity):
+        product.quantity = quantity
+        return product.save()
+
     def updateState(product, state):
         product.state = state
         return product.save()
