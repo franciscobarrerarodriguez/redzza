@@ -14,6 +14,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user is not instance.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         instance.visibility = False
         instance.save()
         return Response({'success': True})
@@ -75,6 +77,8 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user is not instance.notice.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
@@ -85,6 +89,8 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user is not instance.notice.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
@@ -95,6 +101,8 @@ class CommentaryViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user is not instance.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
@@ -182,7 +190,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             # Servicio
             time = request.data.get('time', None)
 
-            if request.user is not notice.user:
+            if request.user is not notice.profile.user:
                 return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
             if title:
