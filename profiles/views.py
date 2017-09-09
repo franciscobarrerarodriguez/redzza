@@ -229,7 +229,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
             i_have = request.data.get('i_have', None)
             tags = request.data.get('tags', None)
 
-            if username:
+            if first_name and last_name:
+                user.first_name = first_name
+                user.last_name = last_name
+                user.save()
+                return Response({'success': True, 'msg': 'full_name-update'})
+            elif username:
                 if Profile.searchUsername(username) is False:
                     user.username = username
                     user.save()
