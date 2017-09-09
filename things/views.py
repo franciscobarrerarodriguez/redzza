@@ -93,6 +93,11 @@ class CommentaryViewSet(viewsets.ModelViewSet):
     queryset = Commentary.objects.all()
     serializer_class = CommentarySerializer
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'success': True})
+
 
 class ApiServicesViewSet(viewsets.ViewSet):
 
