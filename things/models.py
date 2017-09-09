@@ -352,7 +352,7 @@ class Image(models.Model):
         return image
 
     def updateMain(notice, image):
-        for i in Image.objects.filter(notice=notice):
+        for i in Image.search(notice):
             if i == image:
                 i.main = True
             else:
