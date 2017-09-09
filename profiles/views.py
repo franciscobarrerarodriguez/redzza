@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ModelViewSet):
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
-            context['profile'][0]['fields']['location_name'] = str(profile.location.name)
+            context['profile'][0]['fields']['location'] = getDataCities([profile.location])
             context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
