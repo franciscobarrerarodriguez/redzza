@@ -187,7 +187,7 @@ class Notice(models.Model):
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
         if profile.location.pattern is not None:
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
-        allnotice = Notice.objects.filter(visibility=True).exclude(profile=profile).order_by('-date')
+        allnotice = Notice.objects.filter(visibility=True).order_by('-date')
         context = []
         if follnotice is not None:
             context.append(follnotice.exclude(profile=profile))
@@ -196,7 +196,7 @@ class Notice(models.Model):
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
             context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
         if allnotice is not None:
-            context.append(allnotice).exclude(profile=profile)
+            context.append(allnotice.exclude(profile=profile))
         return context
 
     def sortoutNotices(notices, city):
@@ -344,11 +344,19 @@ class Service(models.Model):
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to=File.generatePath)
+    main = models.BooleanField(default=False)
 
     def create(notice, pathfile):
         image = Image(notice=notice, image=pathfile)
         image.save()
         return image
+
+    def updateMain(notice, image):
+        for i in Image.search(notice):
+            if i == image:
+                i.main = True
+            else:
+                i.main = False
 
     def search(notice):
         return Image.objects.filter(notice=notice)
