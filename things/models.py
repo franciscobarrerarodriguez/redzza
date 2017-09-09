@@ -272,7 +272,7 @@ class Product(models.Model):
     )
     delivery = models.CharField(max_length=1, choices=DELIVERY, default='C')
     # cantidades del artículo
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.notice.title
@@ -284,7 +284,7 @@ class Product(models.Model):
 
     def updateQuantity(product, quantity):
         product.quantity = quantity
-        return product.save()   
+        return product.save()
 
     def updateState(product, state):
         product.state = state
