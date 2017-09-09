@@ -344,11 +344,19 @@ class Service(models.Model):
 class Image(models.Model):
     notice = models.ForeignKey(Notice)
     image = models.ImageField(upload_to=File.generatePath)
+    main = models.BooleanField(default=False)
 
     def create(notice, pathfile):
         image = Image(notice=notice, image=pathfile)
         image.save()
         return image
+
+    def updateMain(notice, image):
+        for i in Image.objects.filter(notice=notice):
+            if i == image:
+                i.main = True
+            else:
+                i.main = False
 
     def search(notice):
         return Image.objects.filter(notice=notice)
