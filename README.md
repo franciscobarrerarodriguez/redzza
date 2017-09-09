@@ -36,6 +36,7 @@
 | /api/v1/apiServices/getCountNotifications/ |  | GET | success, count, err | Obtencion de numero de notificaciones |
 | /api/v1/apiServices/reviewConversation/ | conversation | POST | success, msg, err | Lectura de una conversacion |
 | /api/v1/places/*ID*/getCities/ |  | GET | data, success | Obtencion de ciudades de un departamento |
+| /api/v1/categories/*ID*/getSubCategories/ |  | GET | data, success | Obtencion de subcategorias de una macrocategoria |
 
 
 ## Kind
