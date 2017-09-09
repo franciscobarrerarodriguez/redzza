@@ -9,6 +9,7 @@ from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
+from categories import views as viewsCategories
 from tags.models import TagProfile
 from things.models import Notice, Image, CityNotice, Video, Product, Color
 from .models import Profile, Place, Follow, Icon
@@ -418,8 +419,8 @@ def noticeComplete(notice):
     context = {}
     context['notice'] = json.loads(serializers.serialize('json', [notice]))
     context['notice'][0]['fields']['location_name'] = str(notice.location)
-    context['notice'][0]['fields']['category_name'] = str(notice.category)
     context['notice'][0]['fields']['profile'] = getProfileSimple([notice.profile])
+    context['notice'][0]['fields']['category'] = viewsCategories.getDataCategories([notice.category])
     locations = CityNotice.searchCities(notice)
     context['notice'][0]['locations'] = []
     for i, location in enumerate(locations):
