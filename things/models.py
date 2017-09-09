@@ -187,7 +187,7 @@ class Notice(models.Model):
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
         if profile.location.pattern is not None:
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
-        allnotice = Notice.objects.filter(visibility=True).exclude(profile=profile).order_by('-date')
+        allnotice = Notice.objects.filter(visibility=True).order_by('-date')
         context = []
         if follnotice is not None:
             context.append(follnotice.exclude(profile=profile))
@@ -196,7 +196,7 @@ class Notice(models.Model):
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
             context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
         if allnotice is not None:
-            context.append(allnotice).exclude(profile=profile)
+            context.append(allnotice.exclude(profile=profile))
         return context
 
     def sortoutNotices(notices, city):

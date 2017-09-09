@@ -49,9 +49,9 @@ def queries(request):
     # query = Message.create("hola", None, get_object_or_404(Profile, user__username="d"), prueba)
     # query = Conversation.search(get_object_or_404(Profile, user__username="d"))
     # query = Message.search(get_object_or_404(Conversation, id=16))
-    query = Conversation.create(Profile.objects.all(), Notice.objects.all()[0])
+    # query = Conversation.create(Profile.objects.all(), Notice.objects.all()[0])
     # 16
     # query = Place.getDepartments()
-    return HttpResponse()
+    return HttpResponse(Notice.searchHome(20))
     # type -> tipo de campo
     # dir atributos de la clase
