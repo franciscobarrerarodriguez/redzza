@@ -9,7 +9,7 @@ import datetime
 from django.db.models.signals import post_delete, post_init
 from django.dispatch import receiver
 # Create your models here.
-# subactegorias y ciudades
+# subcategorias y ciudades
 # timefield en el servidor
 # many to many para offer
 
@@ -48,13 +48,13 @@ class Notice(models.Model):
         return Notice.objects.get(id=idN)
 
     def getNoticeProfile(profile):
-        return Notice.objects.filter(profile=profile, visibility=True)
+        return Notice.objects.filter(profile=profile, visibility=True).order_by('-date')
 
     def getNoticeHave(profile):
-        return Notice.objects.filter(profile=profile, kind=1)
+        return Notice.objects.filter(profile=profile, visibility=True, kind=1).order_by('-date')
 
     def getNoticeSearch(profile):
-        return Notice.objects.filter(profile=profile, kind=2)
+        return Notice.objects.filter(profile=profile, visibility=True, kind=2).order_by('-date')
 
     def updateLocation(notice, idPlace):
         location = get_object_or_404(Place, id=idPlace)
@@ -284,7 +284,7 @@ class Product(models.Model):
 
     def updateQuantity(product, quantity):
         product.quantity = quantity
-        return product.save()
+        return product.save()   
 
     def updateState(product, state):
         product.state = state
