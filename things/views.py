@@ -140,7 +140,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     print("Non-existent offer")
             if thing == 'P':
                 product = Product.create(notice, state)
-                Product.updateQuantity(product, quantity)
+                if quantity:
+                    Product.updateQuantity(product, quantity)
                 if colors:
                     for color in colors:
                         Color.create(color, product)
