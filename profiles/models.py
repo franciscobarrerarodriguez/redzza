@@ -10,6 +10,7 @@ import os
 # usado para generar el nombre de una imagen
 from uuid import uuid4
 
+
 class File():
     def generatePath(instance, filename):
         # El primer paso es extraer la extension de la imagen del
@@ -159,6 +160,8 @@ class Profile(models.Model):
         return profile.save()
 
 # metodo para borrar archivos de los avatar cuando se borre el registro
+
+
 @receiver(pre_save, sender=Profile)
 def avatar_delete(sender, instance, **kwargs):
     """
@@ -173,7 +176,6 @@ def avatar_delete(sender, instance, **kwargs):
         old_file = Profile.objects.get(pk=instance.pk).avatar
     except Profile.DoesNotExist:
         return False
-    print(old_file)
     if not old_file == "Profile/no-avatar.png":
         new_file = instance.avatar
         if not old_file == new_file:

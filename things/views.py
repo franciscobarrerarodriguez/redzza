@@ -145,7 +145,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 try:
                     Notice.updateOffer(notice, offer)
                 except Exception:
-                    print("Non-existent offer")
+                    # "Non-existent offer"
+                    pass
             if thing == 'P':
                 product = Product.create(notice, state)
                 if quantity:
@@ -191,8 +192,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             time = request.data.get('time', None)
 
             if request.user != notice.profile.user:
-                print(request.user)
-                print(notice.profile.user)
                 return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
             if title:
