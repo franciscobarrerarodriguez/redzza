@@ -40,5 +40,8 @@ class SuggestedCategoryViewSet(viewsets.ModelViewSet):
 def getDataCategories(categories):
     context = []
     for category in categories:
-        context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name})
+        if category.pattern is None:
+            context.append({'id': category.id, 'pattern': None, 'name': category.name})
+        else:
+            context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name})
     return context

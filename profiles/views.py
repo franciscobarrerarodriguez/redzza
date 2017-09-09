@@ -326,6 +326,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             queries = Notice.searchHome(profile.id)
             notices = noticesQuery(queries)
             context = getDataNotice(notices)
+            print(context)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -387,7 +388,10 @@ def getDataMessages(messages):
 def getDataCities(cities):
     context = []
     for city in cities:
-        context.append({'id': city.id, 'pattern': city.pattern.id, 'name': city.name})
+        if city.pattern is None:
+            context.append({'id': city.id, 'pattern': None, 'name': city.name})
+        else:
+            context.append({'id': city.id, 'pattern': city.pattern.id, 'name': city.name})
     return context
 
 
