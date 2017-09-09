@@ -121,6 +121,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             offer = request.data.get('offer', None)
             # producto
             state = request.data.get('state', None)
+            quantity = request.data.get('quantity', None)
             colors = request.data.get('colors', None)
             # servicio
             time = request.data.get('time', None)
@@ -139,6 +140,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     print("Non-existent offer")
             if thing == 'P':
                 product = Product.create(notice, state)
+                if quantity:
+                    Product.updateQuantity(product, quantity)
                 if colors:
                     for color in colors:
                         Color.create(color, product)
@@ -175,6 +178,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             # Producto
             colors = request.data.get('colors', None)
             state = request.data.get('state', None)
+            quantity = request.data.get('quantity', None)
             # Servicio
             time = request.data.get('time', None)
 
@@ -222,6 +226,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 if product:
                     Product.updateState(product, state)
                     return Response({'success': True, 'msg': 'state-update'})
+                else:
+                    return Response({'success': False, 'err': 'this notice not is a product'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            elif quantity:
+                if product:
+                    Product.updateQuantity(product, quantity)
+                    return Response({'success': True, 'msg': 'quantity-update'})
                 else:
                     return Response({'success': False, 'err': 'this notice not is a product'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif time:

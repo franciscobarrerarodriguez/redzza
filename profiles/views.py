@@ -333,6 +333,18 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # CheckTokent
+    @list_route(methods=['get'])
+    def checkToken(self, request):
+        try:
+            return Response({'detail': 'Token has valid'})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
