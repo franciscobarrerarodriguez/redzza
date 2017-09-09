@@ -40,32 +40,32 @@ class UserViewSet(viewsets.ModelViewSet):
     # Obtencion de informacion de un usuario
     @detail_route(methods=['get'])
     def getData(self, request, pk=None):
-        try:
-            user = getUser(pk)
-            context = {}
-            context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
-            profile = getProfile(user)
-            context['profile'] = json.loads(serializers.serialize('json', [profile]))
-            context['profile'][0]['fields']['location'] = getDataCities([profile.location])
-            context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
-            context['duration'] = getDurationUser(user)
-            context['numberFollowers'] = getNumberFollowersUser(user)
-            haveCategories = getHaveCategoriesUser(user)
-            context['haveCategories'] = json.loads(serializers.serialize('json', haveCategories))
-            for i, category in enumerate(context['haveCategories']):
-                context['haveCategories'][i]['fields']['name'] = str(haveCategories[i])
-            searchCategories = getSearchCategoriesUser(user)
-            context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories))
-            for i, category in enumerate(context['searchCategories']):
-                context['searchCategories'][i]['fields']['name'] = str(searchCategories[i])
-            context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user)))
-            return Response({'success': True, 'data': context})
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        # try:
+        user = getUser(pk)
+        context = {}
+        context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+        profile = getProfile(user)
+        context['profile'] = json.loads(serializers.serialize('json', [profile]))
+        context['profile'][0]['fields']['location'] = getDataCities([profile.location])
+        context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
+        context['duration'] = getDurationUser(user)
+        context['numberFollowers'] = getNumberFollowersUser(user)
+        haveCategories = getHaveCategoriesUser(user)
+        context['haveCategories'] = json.loads(serializers.serialize('json', haveCategories))
+        for i, category in enumerate(context['haveCategories']):
+            context['haveCategories'][i]['fields']['name'] = str(haveCategories[i])
+        searchCategories = getSearchCategoriesUser(user)
+        context['searchCategories'] = json.loads(serializers.serialize('json', searchCategories))
+        for i, category in enumerate(context['searchCategories']):
+            context['searchCategories'][i]['fields']['name'] = str(searchCategories[i])
+        context['tags'] = json.loads(serializers.serialize('json', getTagsUser(user)))
+        return Response({'success': True, 'data': context})
+        # except Exception as e:
+        #     if hasattr(e, 'message'):
+        #         err = e.message
+        #     else:
+        #         err = e
+        #     return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Obtencion de publicacion de un usuario
     # id - imagen - titulo - kind
