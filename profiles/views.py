@@ -85,7 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Place.objects.filter(pattern=None)
+    queryset = Place.objects.filter(pattern=None).order_by('name')
     serializer_class = PlaceSerializer
     permission_classes = [AllowAny]
 

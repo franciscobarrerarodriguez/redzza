@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Category.objects.filter(pattern=None)
+    queryset = Category.objects.filter(pattern=None).order_by('name')
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
