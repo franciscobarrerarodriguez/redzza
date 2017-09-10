@@ -394,6 +394,14 @@ def getDataCities(cities):
     return context
 
 
+# obtener data de una lista de cidaddes
+def getPlaces(cityNotices):
+    context = []
+    for cityNotice in cityNotices:
+        context.append(cityNotice.city)
+    return context
+
+
 # informacin basica de profile
 def getProfileSimple(profiles):
     context = []
@@ -421,13 +429,12 @@ def getDataNotice(notices, fullData=True):
 def noticeComplete(notice):
     context = {}
     context['notice'] = json.loads(serializers.serialize('json', [notice]))
-    context['notice'][0]['fields']['location_name'] = str(notice.location)
+    context['notice'][0]['fields']['location'] = getDataCities([notice.location])
     context['notice'][0]['fields']['profile'] = getProfileSimple([notice.profile])
     context['notice'][0]['fields']['category'] = viewsCategories.getDataCategories([notice.category])
-    locations = CityNotice.searchCities(notice)
-    context['notice'][0]['locations'] = []
-    for i, location in enumerate(locations):
-        context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
+    cityNotices = CityNotice.searchCities(notice)
+    locations = getPlaces(cityNotices)
+    context['notice'][0]['locations'] = getDataCities(locations)
     images = Image.search(notice)
     context['notice'][0]['images'] = []
     if len(images) > 0:
