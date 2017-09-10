@@ -42,7 +42,7 @@ class Place(models.Model):
         return Place.objects.filter(pattern=None)
 
     def searchTowns(department):
-        return Place.objects.filter(pattern=department)
+        return Place.objects.filter(pattern=department).order_by('name')
 
     def searchPlace(idLocation):
         return get_object_or_404(Place, id=idLocation)
