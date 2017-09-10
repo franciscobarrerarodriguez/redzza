@@ -139,7 +139,7 @@ class Profile(models.Model):
         return profile.save()
 
     def updateLocation(profile, location):
-        place = Place.searchCity(location)
+        place = Place.searchPlace(location)
         profile.location = place
         return profile.save()
 
