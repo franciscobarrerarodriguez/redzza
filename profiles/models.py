@@ -10,6 +10,7 @@ import os
 # usado para generar el nombre de una imagen
 from uuid import uuid4
 
+
 class File():
     def generatePath(instance, filename):
         # El primer paso es extraer la extension de la imagen del
@@ -29,17 +30,21 @@ class File():
         # Devolvermos la ruta completa
         return os.path.join(ruta, nombre_archivo)
 
+
 class Place(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=40)
 
     def __str__(self):
         return self.name
 
-    def searchTowns(department):
-        return Place.objects.filter(pattern=department)
+    def getDepartments():
+        return Place.objects.filter(pattern=None)
 
-    def searchCity(idLocation):
+    def searchTowns(department):
+        return Place.objects.filter(pattern=department).order_by('name')
+
+    def searchPlace(idLocation):
         return get_object_or_404(Place, id=idLocation)
 
 
@@ -134,7 +139,7 @@ class Profile(models.Model):
         return profile.save()
 
     def updateLocation(profile, location):
-        place = Place.searchCity(location)
+        place = Place.searchPlace(location)
         profile.location = place
         return profile.save()
 
@@ -155,6 +160,8 @@ class Profile(models.Model):
         return profile.save()
 
 # metodo para borrar archivos de los avatar cuando se borre el registro
+
+
 @receiver(pre_save, sender=Profile)
 def avatar_delete(sender, instance, **kwargs):
     """
@@ -169,7 +176,6 @@ def avatar_delete(sender, instance, **kwargs):
         old_file = Profile.objects.get(pk=instance.pk).avatar
     except Profile.DoesNotExist:
         return False
-    print(old_file)
     if not old_file == "Profile/no-avatar.png":
         new_file = instance.avatar
         if not old_file == new_file:

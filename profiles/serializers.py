@@ -15,10 +15,10 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'user', 'avatar', 'icono', 'birth_date', 'gender', 'phone', 'biography', 'location', 'company', 'profession', 'address', 'avialability')
 
 
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = ('id', 'url', 'name', 'pattern')
+        fields = ('id', 'name', 'pattern')
 
 
 class FollowSerializer(serializers.HyperlinkedModelSerializer):

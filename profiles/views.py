@@ -9,6 +9,7 @@ from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from categories.models import WantedCategory, SuggestedCategory
+from categories import views as viewsCategories
 from tags.models import TagProfile
 from things.models import Notice, Image, CityNotice, Video, Product, Color
 from .models import Profile, Place, Follow, Icon
@@ -33,7 +34,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().filter(is_staff=False)
+    queryset = User.objects.filter(is_staff=False).order_by('date_joined').reverse()
     serializer_class = UserSerializer
 
     # Obtencion de informacion de un usuario
@@ -45,6 +46,7 @@ class UserViewSet(viewsets.ModelViewSet):
             context['user'] = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
+            context['profile'][0]['fields']['location'] = getDataCities([profile.location])
             context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
@@ -83,9 +85,23 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Place.objects.all()
+    queryset = Place.objects.filter(pattern=None).order_by('name')
     serializer_class = PlaceSerializer
     permission_classes = [AllowAny]
+
+    # Obtencion de ciudades de un departamento
+    @detail_route(methods=['get'])
+    def getCities(self, request, pk=None):
+        try:
+            cities = Place.searchTowns(pk)
+            context = getDataCities(cities)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class FollowViewSet(viewsets.ModelViewSet):
@@ -214,7 +230,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
             i_have = request.data.get('i_have', None)
             tags = request.data.get('tags', None)
 
-            if username:
+            if first_name and last_name:
+                user.first_name = first_name
+                user.last_name = last_name
+                user.save()
+                return Response({'success': True, 'msg': 'full_name-update'})
+            elif username:
                 if Profile.searchUsername(username) is False:
                     user.username = username
                     user.save()
@@ -313,6 +334,18 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+    # CheckTokent
+    @list_route(methods=['get'])
+    def checkToken(self, request):
+        try:
+            return Response({'detail': 'Token has valid'})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
 
@@ -350,6 +383,25 @@ def getDataMessages(messages):
     return context
 
 
+# obtener data de una lista de cidaddes
+def getDataCities(cities):
+    context = []
+    for city in cities:
+        if city.pattern is None:
+            context.append({'id': city.id, 'pattern': None, 'name': city.name})
+        else:
+            context.append({'id': city.id, 'pattern': city.pattern.id, 'name': city.name})
+    return context
+
+
+# obtener data de una lista de cidaddes
+def getPlaces(cityNotices):
+    context = []
+    for cityNotice in cityNotices:
+        context.append(cityNotice.city)
+    return context
+
+
 # informacin basica de profile
 def getProfileSimple(profiles):
     context = []
@@ -377,13 +429,12 @@ def getDataNotice(notices, fullData=True):
 def noticeComplete(notice):
     context = {}
     context['notice'] = json.loads(serializers.serialize('json', [notice]))
-    context['notice'][0]['fields']['location_name'] = str(notice.location)
-    context['notice'][0]['fields']['category_name'] = str(notice.category)
+    context['notice'][0]['fields']['location'] = getDataCities([notice.location])
     context['notice'][0]['fields']['profile'] = getProfileSimple([notice.profile])
-    locations = CityNotice.searchCities(notice)
-    context['notice'][0]['locations'] = []
-    for i, location in enumerate(locations):
-        context['notice'][0]['locations'].append({'location': str(location.city.id), 'location_name': str(location.city)})
+    context['notice'][0]['fields']['category'] = viewsCategories.getDataCategories([notice.category])
+    cityNotices = CityNotice.searchCities(notice)
+    locations = getPlaces(cityNotices)
+    context['notice'][0]['locations'] = getDataCities(locations)
     images = Image.search(notice)
     context['notice'][0]['images'] = []
     if len(images) > 0:

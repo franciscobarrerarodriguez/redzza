@@ -14,7 +14,10 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
+        if request.user != instance.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        instance.visibility = False
+        instance.save()
         return Response({'success': True})
 
     # Obtencion de informacion de una notice
@@ -74,6 +77,8 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user != instance.notice.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
@@ -84,6 +89,8 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user != instance.notice.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
@@ -91,6 +98,13 @@ class VideoViewSet(viewsets.ModelViewSet):
 class CommentaryViewSet(viewsets.ModelViewSet):
     queryset = Commentary.objects.all()
     serializer_class = CommentarySerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.user != instance.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        self.perform_destroy(instance)
+        return Response({'success': True})
 
 
 class ApiServicesViewSet(viewsets.ViewSet):
@@ -115,6 +129,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             offer = request.data.get('offer', None)
             # producto
             state = request.data.get('state', None)
+            quantity = request.data.get('quantity', None)
             colors = request.data.get('colors', None)
             # servicio
             time = request.data.get('time', None)
@@ -130,9 +145,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 try:
                     Notice.updateOffer(notice, offer)
                 except Exception:
-                    print("Non-existent offer")
+                    # "Non-existent offer"
+                    pass
             if thing == 'P':
                 product = Product.create(notice, state)
+                if quantity:
+                    Product.updateQuantity(product, quantity)
                 if colors:
                     for color in colors:
                         Color.create(color, product)
@@ -169,10 +187,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
             # Producto
             colors = request.data.get('colors', None)
             state = request.data.get('state', None)
+            quantity = request.data.get('quantity', None)
             # Servicio
             time = request.data.get('time', None)
 
-            if request.user is not notice.user:
+            if request.user != notice.profile.user:
                 return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
             if title:
@@ -216,6 +235,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 if product:
                     Product.updateState(product, state)
                     return Response({'success': True, 'msg': 'state-update'})
+                else:
+                    return Response({'success': False, 'err': 'this notice not is a product'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            elif quantity:
+                if product:
+                    Product.updateQuantity(product, quantity)
+                    return Response({'success': True, 'msg': 'quantity-update'})
                 else:
                     return Response({'success': False, 'err': 'this notice not is a product'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif time:

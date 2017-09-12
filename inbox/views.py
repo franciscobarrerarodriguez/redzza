@@ -13,6 +13,8 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if request.user != instance.notice.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
 
