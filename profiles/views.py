@@ -34,7 +34,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().filter(is_staff=False)
+    queryset = User.objects.filter(is_staff=False).order_by('date_joined').reverse()
     serializer_class = UserSerializer
 
     # Obtencion de informacion de un usuario
