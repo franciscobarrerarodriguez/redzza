@@ -46,8 +46,9 @@ jobs:
       #       . venv/bin/activate
       #       python manage.py test
 
+      - checkout
+      
       - deploy:
-          - checkout
           command: |
             git checkout heroku
             git merge master -m 'Integracion desde CircleCI'
