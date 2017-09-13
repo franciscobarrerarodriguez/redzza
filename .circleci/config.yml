@@ -45,13 +45,14 @@ jobs:
       #     command: |
       #       . venv/bin/activate
       #       python manage.py test
-
-      - checkout
       
+      - checkout
+
       - deploy:
           command: |
             git checkout heroku
             git merge master -m 'Integracion desde CircleCI'
+            git remote set-url origin https://$USER_GITHUB:$PASS_GITHUB@github.com/larry852/redzza
             git push origin heroku
         
       - store_artifacts:
