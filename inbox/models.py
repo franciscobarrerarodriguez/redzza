@@ -74,7 +74,10 @@ class Message(models.Model):
 @receiver(post_save, sender=Message)
 def update_conversation(sender, instance, **kwargs):
     """ Actualiza el tiempo del modified y el review(sender) en una conversación """
-    instance.conversation.modified = instance.timestamp
-    instance.conversation.review.clear()
-    instance.conversation.review.add(instance.sender)
-    instance.conversation.save()
+    try:
+        instance.conversation.modified = instance.timestamp
+        instance.conversation.review.clear()
+        instance.conversation.review.add(instance.sender)
+        instance.conversation.save()
+    except Exception as e:
+        pass
