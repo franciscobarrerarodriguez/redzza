@@ -24,6 +24,9 @@ try:
 except Exception as e:
     DEBUG = True
 
+
+# DEBUG = False
+
 # Permitir todos los nombres de dominio
 ALLOWED_HOSTS = ['*']
 
