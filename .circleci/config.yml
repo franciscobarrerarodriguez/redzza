@@ -47,14 +47,10 @@ jobs:
       #       python manage.py test
 
       - deploy:
+          - checkout
           command: |
-            git clone https://github.com/larry852/redzza
-            cd redzza
-            git config --global user.email $EMAIL_GITHUB
-            git config --global user.name $USER_GITHUB
             git checkout heroku
             git merge master -m 'Integracion desde CircleCI'
-            git remote set-url origin https://$USER_GITHUB:$PASS_GITHUB@github.com/larry852/redzza
             git push origin heroku
         
       - store_artifacts:
