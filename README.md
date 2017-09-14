@@ -1,5 +1,7 @@
 # Redzza
 
+## Modelo E-R
+![MER](modeloE-R.png?raw=true "modelo E-R")
 
 ## Api endpoints
 | Endpoint | Parametros | Metodos | Retorno | Descripción |
@@ -8,7 +10,6 @@
 | /rest-auth/login/ | username, email, password | POST | token | Login api |
 | /rest-auth/registration/verify-email/ | key | POST | detail | Verificacion de correo |
 | /rest-auth/logout/ |  | POST | detail | Logout *Identificacion de user mediante token* |
-| /rest-auth/registration/ | username, password1, password2, email | POST | token | Registro api |
 | /rest-auth/password/change/ | new_password1, new_password2, old_password | POST | detail | Cambio de contraseña |
 | /rest-auth/password/reset/ | email | POST | detail | Olvide contraseña - /reset/uid/token/ |
 | /rest-auth/password/reset/confirm/ | uid, token, new_password1, new_password2 | POST | detail | Olvide contraseña confirmacion - uid y token son enviados en el correo despues de usar /rest-auth/password/reset/ |
