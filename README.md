@@ -1,7 +1,7 @@
 # Redzza
 
 ## Modelo E-R
-![MER](modeloE-R.png?raw=true "modelo E-R")
+![MER](modeloE-R.png?raw=true "Modelo E-R")
 
 ## Api endpoints
 | Endpoint | Parametros | Metodos | Retorno | Descripción |
