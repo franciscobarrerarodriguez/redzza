@@ -339,6 +339,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def checkToken(self, request):
         try:
             key = request.data.get('token', None)
+            if key is None:
+                return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             try:
                 token = ExpiringToken.objects.get(key=key)
             except ExpiringToken.DoesNotExist:
