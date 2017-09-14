@@ -52,8 +52,11 @@ jobs:
           command: |
             git checkout heroku
             git merge master -m 'Integracion desde CircleCI'
+            git checkout aws
+            git merge master -m 'Integracion desde CircleCI'
             git remote set-url origin https://$USER_GITHUB:$PASS_GITHUB@github.com/larry852/redzza
             git push origin heroku
+            git push origin aws
         
       - store_artifacts:
           path: test-reports
