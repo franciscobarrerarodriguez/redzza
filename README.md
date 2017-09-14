@@ -44,7 +44,7 @@
 | /api/v1/places/*ID*/getCities/ |  | GET | data, success | Obtencion de ciudades de un departamento |
 | /api/v1/categories/ |  | GET | data, success | Obtencion de macrocategorias |
 | /api/v1/categories/*ID*/getSubCategories/ |  | GET | data, success | Obtencion de subcategorias de una macrocategoria |
-| /api/v1/apiServices/checkToken/ |  | GET | detail: Invalid token, Token has expired, Token has valid | Verificacion de estado de token |
+| /api/v1/apiServices/checkToken/ |  | GET | detail: Invalid token, Token has expired, Token has valid, User inactive or deleted | Verificacion de estado de token |
 
 
 ## Kind
