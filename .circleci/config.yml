@@ -51,9 +51,9 @@ jobs:
       - deploy:
           command: |
             git remote set-url origin https://$USER_GITHUB:$PASS_GITHUB@github.com/larry852/redzza
-            git checkout heroku
-            git merge master -m 'Integracion desde CircleCI'
-            git push origin heroku
+            # git checkout heroku
+            # git merge master -m 'Integracion desde CircleCI'
+            # git push origin heroku
             git checkout aws
             git merge master -m 'Integracion desde CircleCI'
             git push origin aws
