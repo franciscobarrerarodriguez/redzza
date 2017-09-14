@@ -335,10 +335,23 @@ class ApiServicesViewSet(viewsets.ViewSet):
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # CheckTokent
-    @list_route(methods=['get'])
+    @list_route(methods=['post'], permission_classes=[AllowAny])
     def checkToken(self, request):
         try:
+            key = request.data.get('token', None)
+            try:
+                token = ExpiringToken.objects.get(key=key)
+            except ExpiringToken.DoesNotExist:
+                return Response({'detail': 'Invalid token'})
+
+            if not token.user.is_active:
+                return Response({'detail': 'User inactive or deleted'})
+
+            if token.expired():
+                return Response({'detail': 'Token has expired'})
+
             return Response({'detail': 'Token has valid'})
+
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
