@@ -360,6 +360,9 @@ class Image(models.Model):
 
     def search(notice):
         return Image.objects.filter(notice=notice)
+
+    def searchMain(notice):
+        return Image.objects.filter(notice=notice, main=True)
 # metodo para borrar archivos cuando se borre el registro
 
 
