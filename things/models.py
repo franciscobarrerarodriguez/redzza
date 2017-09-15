@@ -359,7 +359,7 @@ class Image(models.Model):
                 i.main = False
 
     def search(notice):
-        return Image.objects.filter(notice=notice)
+        return Image.objects.filter(notice=notice, main=True)
 # metodo para borrar archivos cuando se borre el registro
 
 
