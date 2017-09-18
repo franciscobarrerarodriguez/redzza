@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_auth.registration',
+    'storages',
 ]
 
 SITE_ID = 7
@@ -201,3 +202,21 @@ STATICFILES_DIRS = (
 # Docs, pictures and more
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+AWS_ACCESS_KEY_ID = 'AKIAJENGY6F5XCOKKCPA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'redzza'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'redzza/static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+DEFAULT_FILE_STORAGE = 'redzza.storage_backends.MediaStorage'
