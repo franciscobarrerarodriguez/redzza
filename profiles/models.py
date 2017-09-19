@@ -14,10 +14,10 @@ from django.core.cache import cache
 from django.contrib.sessions.models import Session
 
 
-@receiver(post_save)
-def clear_cache(sender, **kwargs):
-    if sender != Session:
-        cache.clear()
+# @receiver(post_save)
+# def clear_cache(sender, **kwargs):
+#     if sender != Session:
+#         cache.clear()
 
 
 class File():
