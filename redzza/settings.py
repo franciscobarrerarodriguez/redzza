@@ -102,8 +102,6 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
-
 CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'redzza.urls'
