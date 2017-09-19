@@ -151,18 +151,18 @@ else:
         }
     }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'redzza.g5yfs8.0001.use2.cache.amazonaws.com:6379',
-        'OPTIONS': {
-            'DB': 1,
-            'PARSER_CLASS': 'redis.connection.HiredisParser'
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': 'redzza.g5yfs8.0001.use2.cache.amazonaws.com:6379',
+            'OPTIONS': {
+                'DB': 1,
+                'PARSER_CLASS': 'redis.connection.HiredisParser'
+            }
         }
     }
-}
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 # Base de datos - Heroku
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
