@@ -151,6 +151,19 @@ else:
         }
     }
 
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': 'redzza.mahwsm.0001.use1.cache.amazonaws.com:6379',
+            'OPTIONS': {
+                'DB': 1,
+                'PARSER_CLASS': 'redis.connection.HiredisParser'
+            }
+        }
+    }
+
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 # Base de datos - Heroku
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -222,16 +235,3 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 DEFAULT_FILE_STORAGE = 'redzza.storage_backends.MediaStorage'
-
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'redzza.mahwsm.0001.use1.cache.amazonaws.com:6379',
-        'OPTIONS': {
-            'DB': 1,
-            'PARSER_CLASS': 'redis.connection.HiredisParser'
-        }
-    }
-}
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
