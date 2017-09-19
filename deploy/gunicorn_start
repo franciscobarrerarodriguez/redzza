@@ -10,6 +10,7 @@ echo "Starting $NAME as `whoami`"
 cd $VIRTUALENV
 source bin/activate
 cd $DJANGODIR
+pip install -r requirements.txt
 export REDZZA_SECRET_KEY="random_key:aasdafasf"
 export REDZZA_DB_NAME="redzza"
 export REDZZA_DB_USER="redzza"
