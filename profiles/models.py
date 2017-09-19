@@ -17,7 +17,7 @@ from django.contrib.sessions.models import Session
 @receiver(post_save)
 def clear_cache(sender, **kwargs):
     if sender != Session:
-        cache._cache.flush_all()
+        cache.clear()
 
 
 class File():
