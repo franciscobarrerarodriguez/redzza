@@ -8,12 +8,14 @@ defusedxml==0.5.0
 dj-database-url==0.4.2
 django-allauth==0.32.0
 django-cors-headers==2.1.0
+django-redis-cache==1.7.1
 django-rest-auth==0.9.1
 django-storages==1.6.5
 djangorestframework==3.4.6
 djangorestframework-expiring-authtoken==0.1.4
 docutils==0.14
 gunicorn==19.7.1
+hiredis==0.2.0
 idna==2.5
 jmespath==0.9.3
 oauthlib==2.0.2
@@ -22,6 +24,7 @@ psycopg2==2.7.3
 python-dateutil==2.6.1
 python3-openid==3.1.0
 pytz==2017.2
+redis==2.10.6
 requests==2.18.3
 requests-oauthlib==0.8.0
 s3transfer==0.1.11
