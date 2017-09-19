@@ -154,7 +154,7 @@ else:
     CACHES = {
         'default': {
             'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': 'redzza.mahwsm.0001.use1.cache.amazonaws.com:6379',
+            'LOCATION': 'redzza.g5yfs8.0001.use2.cache.amazonaws.com:6379',
             'OPTIONS': {
                 'DB': 1,
                 'PARSER_CLASS': 'redis.connection.HiredisParser'
