@@ -24,7 +24,7 @@ from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
 from django.core import serializers
 from redzza.settings import MEDIA_URL
-from redzza.site import CURRENT_SITE
+from redzza.site import S3
 import json
 
 
@@ -47,7 +47,7 @@ class UserViewSet(viewsets.ModelViewSet):
             profile = getProfile(user)
             context['profile'] = json.loads(serializers.serialize('json', [profile]))
             context['profile'][0]['fields']['location'] = getDataCities([profile.location])
-            context['profile'][0]['fields']['avatar'] = CURRENT_SITE + MEDIA_URL + str(profile.avatar)
+            context['profile'][0]['fields']['avatar'] = S3 + MEDIA_URL + str(profile.avatar)
             context['duration'] = getDurationUser(user)
             context['numberFollowers'] = getNumberFollowersUser(user)
             haveCategories = getHaveCategoriesUser(user)
@@ -393,7 +393,7 @@ def getDataMessages(messages):
     for message in messages:
         image = str(message.image)
         if image is not '':
-            image = CURRENT_SITE + MEDIA_URL + str(message.image)
+            image = S3 + MEDIA_URL + str(message.image)
         context.append({'id': message.id, 'timestamp': message.timestamp, 'text': message.text, 'image': image, 'sender': getProfileSimple([message.sender]), 'conversation': message.conversation.id})
     return context
 
@@ -421,7 +421,7 @@ def getPlaces(cityNotices):
 def getProfileSimple(profiles):
     context = []
     for profile in profiles:
-        context.append({'user': profile.user.id, 'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': CURRENT_SITE + MEDIA_URL + str(profile.avatar)})
+        context.append({'user': profile.user.id, 'profile': profile.id, 'profile_name': profile.user.get_full_name(), 'avatar': S3 + MEDIA_URL + str(profile.avatar)})
     return context
 
 
@@ -434,9 +434,9 @@ def getDataNotice(notices, fullData=True):
         if fullData:
             data = noticeComplete(notice)
         if len(images) > 0:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
+            context.append({'id': notice.id, 'title': notice.title, 'image': S3 + MEDIA_URL + str(images[0].image), 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
         else:
-            context.append({'id': notice.id, 'title': notice.title, 'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
+            context.append({'id': notice.id, 'title': notice.title, 'image': S3 + MEDIA_URL + 'Image/no-image.png', 'kind': "%s" % ("i_have" if notice.kind == 1 else "i_search"), 'data': data})
     return context
 
 
@@ -454,13 +454,13 @@ def noticeComplete(notice):
     context['notice'][0]['images'] = []
     if len(images) > 0:
         for i, image in enumerate(images):
-            context['notice'][0]['images'].append({'id': str(image.id), 'image': CURRENT_SITE + MEDIA_URL + str(image.image)})
+            context['notice'][0]['images'].append({'id': str(image.id), 'image': S3 + MEDIA_URL + str(image.image)})
     else:
-        context['notice'][0]['images'].append({'image': CURRENT_SITE + MEDIA_URL + 'Image/no-image.png'})
+        context['notice'][0]['images'].append({'image': S3 + MEDIA_URL + 'Image/no-image.png'})
     videos = Video.search(notice)
     context['notice'][0]['videos'] = []
     for i, video in enumerate(videos):
-        context['notice'][0]['videos'].append({'id': str(video.id), 'video': CURRENT_SITE + MEDIA_URL + str(video.video)})
+        context['notice'][0]['videos'].append({'id': str(video.id), 'video': S3 + MEDIA_URL + str(video.video)})
     thing = Notice.sortoutNotices([notice], False)[0]
     context['notice'][0]['thing'] = json.loads(serializers.serialize('json', [thing]))
     if thing.__class__ == Product:
