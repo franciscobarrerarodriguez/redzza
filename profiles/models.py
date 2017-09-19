@@ -2,22 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.shortcuts import get_object_or_404
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import date
 # usada para acceder a los archivos
 import os
 # usado para generar el nombre de una imagen
 from uuid import uuid4
-
-from django.core.cache import cache
-from django.contrib.sessions.models import Session
-
-
-# @receiver(post_save)
-# def clear_cache(sender, **kwargs):
-#     if sender != Session:
-#         cache.clear()
 
 
 class File():
