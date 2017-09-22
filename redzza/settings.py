@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rest_auth.registration',
     'storages',
+    'rangefilter',
 ]
 
 SITE_ID = 7
