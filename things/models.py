@@ -192,6 +192,9 @@ class Notice(models.Model):
         startdate = enddate - datetime.timedelta(days=8)
         recentnotice = Notice.objects.filter(visibility=True, date__range=[startdate, enddate]).order_by('-date')
         context = []
+        if recentnotice is not None:
+            # context.append(recentnotice.exclude(profile=profile))
+            context.append(recentnotice)
         if follnotice is not None:
             # context.append(follnotice.exclude(profile=profile))
             context.append(follnotice)
@@ -204,9 +207,6 @@ class Notice(models.Model):
         if allnotice is not None:
             # context.append(allnotice.exclude(profile=profile))
             context.append(allnotice)
-        if recentnotice is not None:
-            # context.append(recentnotice.exclude(profile=profile))
-            context.append(recentnotice)
         return context
 
     def sortoutNotices(notices, city):
