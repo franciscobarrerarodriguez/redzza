@@ -40,7 +40,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
             profiles.append(profileSender)
             text = request.data.get('text', None)
             image = request.data.get('image', None)
-            if (text or image) and notice and len(profiles) > 0 and profiles[0] != profiles[1]:
+            if profiles[0] != profiles[1]:
+                return Response({'success': False, 'err': 'Message to myself not allowed'}, status=status.HTTP_400_BAD_REQUEST)
+            if (text or image) and notice and len(profiles) > 0:
                 conversation = Conversation.create(profiles, notice)[0][0]
                 Message.create(text, image, profileSender, conversation)
                 return Response({'success': True, 'msg': 'conversation-created'}, status=status.HTTP_201_CREATED)
