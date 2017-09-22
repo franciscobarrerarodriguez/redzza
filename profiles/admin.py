@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Follow, Profile, Place, Icon
-from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+from rangefilter.filter import DateRangeFilter
 
 # admin.site.register(Album)
 
@@ -12,8 +12,10 @@ class AdminProfile(admin.ModelAdmin):
     list_display = ('user', 'email', 'get_full_name', 'location', 'last_login', 'date_joined')
 
     list_filter = (
-        ('user__date_joined', DateRangeFilter), ('user__last_login', DateTimeRangeFilter),
+        ('user__date_joined', DateRangeFilter),
     )
+
+    ordering = ('-user__date_joined',)
 
     def date_joined(self, obj):
         return obj.user.date_joined
