@@ -190,13 +190,17 @@ class Notice(models.Model):
         allnotice = Notice.objects.filter(visibility=True).order_by('-date')
         context = []
         if follnotice is not None:
-            context.append(follnotice.exclude(profile=profile))
+            # context.append(follnotice.exclude(profile=profile))
+            context.append(follnotice)
         if catnotice is not None:
+            context.append(catnotice)
             context.append(catnotice.exclude(notice__profile=profile))
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
-            context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
+            # context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
+            context.append(citynotice.order_by('notice__id').distinct('notice__id'))
         if allnotice is not None:
-            context.append(allnotice.exclude(profile=profile))
+            # context.append(allnotice.exclude(profile=profile))
+            context.append(allnotice)
         return context
 
     def sortoutNotices(notices, city):
