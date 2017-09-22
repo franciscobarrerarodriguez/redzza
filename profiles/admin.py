@@ -10,11 +10,7 @@ from rangefilter.filter import DateRangeFilter
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
     list_display = ('user', 'email', 'get_full_name', 'location', 'last_login', 'date_joined')
-
-    list_filter = (
-        ('user__date_joined', DateRangeFilter),
-    )
-
+    list_filter = (('user__date_joined', DateRangeFilter),)
     ordering = ('-user__date_joined',)
 
     def date_joined(self, obj):
