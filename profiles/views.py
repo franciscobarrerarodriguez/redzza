@@ -481,8 +481,14 @@ def noticesQuery(queries):
                     notices.append(element)
                 else:
                     notices.append(element.notice)
-    # notices = list(set(notices))
+    notices = removeDuplicates(notices)
     return notices
+
+
+def removeDuplicates(notices):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in notices if not (x in seen or seen_add(x))]
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
 
