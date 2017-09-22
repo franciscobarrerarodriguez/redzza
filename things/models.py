@@ -204,9 +204,9 @@ class Notice(models.Model):
         if citynotice.order_by('notice__id').distinct('notice__id') is not None:
             # context.append(citynotice.order_by('notice__id').distinct('notice__id').exclude(notice__profile=profile))
             context.append(citynotice.order_by('notice__id').distinct('notice__id'))
-        if allnotice is not None:
-            # context.append(allnotice.exclude(profile=profile))
-            context.append(allnotice)
+        # if allnotice is not None:
+        #     # context.append(allnotice.exclude(profile=profile))
+        #     context.append(allnotice)
         return context
 
     def sortoutNotices(notices, city):
