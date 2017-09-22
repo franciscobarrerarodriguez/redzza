@@ -481,7 +481,7 @@ def noticesQuery(queries):
                     notices.append(element)
                 else:
                     notices.append(element.notice)
-    notices = list(set(notices))
+    # notices = list(set(notices))
     return notices
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
