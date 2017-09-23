@@ -10,7 +10,7 @@ class Conversation(models.Model):
     # hora del ultimo mensaje enviado
     modified = models.DateTimeField(auto_now_add=True)
     contestant = models.ManyToManyField(Profile, related_name='contestant')
-    notice = models.ManyToManyField(Notice)
+    notice = models.ManyToManyField(Notice, blank=True)
     review = models.ManyToManyField(Profile, related_name='review', blank=True)
 
     def __str__(self):
@@ -19,17 +19,26 @@ class Conversation(models.Model):
     def getConversation(idConversation):
         return Conversation.objects.get(id=idConversation)
 
+    # def create(profiles, notice):
+    #     existence = Conversation.checkExistence(profiles, notice)
+    #     if existence.exists() is False:
+    #         conversation = Conversation()
+    #         conversation.save()
+    #         for p in profiles:
+    #             conversation.contestant.add(p)
+    #         conversation.notice.add(notice)
+    #         return [conversation], ""
+    #     else:
+    #         return existence, "update"
+
     def create(profiles, notice):
-        existence = Conversation.checkExistence(profiles, notice)
-        if existence.exists() is False:
-            conversation = Conversation()
-            conversation.save()
-            for p in profiles:
-                conversation.contestant.add(p)
+        conversation = Conversation()
+        conversation.save()
+        for p in profiles:
+            conversation.contestant.add(p)
+        if notice is not None:
             conversation.notice.add(notice)
-            return [conversation], ""
-        else:
-            return existence, "update"
+        return [conversation], ""
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('-modified')
