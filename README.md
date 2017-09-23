@@ -34,7 +34,7 @@
 | /api/v1/comments/*ID*/ | notice, profile, commentary | PUT | comentary | Edicion de un comentario para notice |
 | /api/v1/comments/*ID*/ |  | DELETE | comentary | Eliminacion de un comentario para notice |
 | /api/v1/apiServices/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
-| /api/v1/apiServices/startConversation/ | notice, text, image | POST | success, msg, err | Iniciar una conversacion |
+| /api/v1/apiServices/startConversation/ | text, image, user o notice | POST | success, msg, err | Iniciar una conversacion |
 | /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
 | /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
 | /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
