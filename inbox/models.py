@@ -19,26 +19,18 @@ class Conversation(models.Model):
     def getConversation(idConversation):
         return Conversation.objects.get(id=idConversation)
 
-    # def create(profiles, notice):
-    #     existence = Conversation.checkExistence(profiles, notice)
-    #     if existence.exists() is False:
-    #         conversation = Conversation()
-    #         conversation.save()
-    #         for p in profiles:
-    #             conversation.contestant.add(p)
-    #         conversation.notice.add(notice)
-    #         return [conversation], ""
-    #     else:
-    #         return existence, "update"
-
     def create(profiles, notice):
-        conversation = Conversation()
-        conversation.save()
-        for p in profiles:
-            conversation.contestant.add(p)
-        if notice is not None:
-            conversation.notice.add(notice)
-        return [conversation], ""
+        existence = Conversation.checkExistence(profiles, notice)
+        if existence.exists() is False:
+            conversation = Conversation()
+            conversation.save()
+            for p in profiles:
+                conversation.contestant.add(p)
+            if notice is not None:
+                conversation.notice.add(notice)
+            return [conversation], ""
+        else:
+            return existence, "update"
 
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('-modified')
