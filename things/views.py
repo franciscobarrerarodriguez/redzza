@@ -41,7 +41,10 @@ class NoticeViewSet(viewsets.ModelViewSet):
             notice = Notice.getNotice(pk)
             context = []
             for i, commentary in enumerate(Commentary.search(notice)):
-                context.append({'id': commentary.id, 'commentary': commentary.commentary, 'notice_name': commentary.notice.title, 'notice': commentary.notice.id, 'user_name': commentary.profile.user.get_full_name(), 'user': commentary.profile.user.id})
+                profile = viewsProfiles.getProfileSimple([commentary.profile])
+                notice = viewsProfiles.getDataNotice([commentary.notice], False)
+                commentarySerialized = json.loads(serializers.serialize('json', [commentary]))
+                context.append({'commentary': commentarySerialized, 'notice': notice, 'profile': profile})
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):

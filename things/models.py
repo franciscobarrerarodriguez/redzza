@@ -405,6 +405,7 @@ def video_delete(sender, instance, **kwargs):
 
 
 class Commentary(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
     commentary = models.CharField(max_length=500)
     notice = models.ForeignKey(Notice)
     profile = models.ForeignKey(Profile)
