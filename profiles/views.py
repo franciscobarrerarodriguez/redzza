@@ -33,7 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def list(self, request):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def retrieve(self, request):
+    def retrieve(self, request, pk=None):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # Obtencion de informacion de un usuario
