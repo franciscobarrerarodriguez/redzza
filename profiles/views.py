@@ -565,7 +565,7 @@ def getIconUser(user):
     return Icon.searchIcono(getProfile(user).icono)
 
 
-# Metodo que retorna el icono del usuario
+# Metodo que imagen de una notice
 def getImageNotice(notice):
     return Image.search(notice)
 
