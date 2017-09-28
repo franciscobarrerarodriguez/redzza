@@ -4,5 +4,5 @@ from .views import CategoryViewSet, WantedCategoryViewSet, SuggestedCategoryView
 
 router = routers.SimpleRouter()
 router.register(r'categories', CategoryViewSet)
-router.register(r'wantedCategories', WantedCategoryViewSet)
-router.register(r'suggestedCategories', SuggestedCategoryViewSet)
+# router.register(r'wantedCategories', WantedCategoryViewSet)
+# router.register(r'suggestedCategories', SuggestedCategoryViewSet)

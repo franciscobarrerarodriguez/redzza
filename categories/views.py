@@ -4,6 +4,7 @@ from .serializers import CategorySerializer, WantedCategorySerializer, Suggested
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from redzza import utils
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -16,7 +17,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     def getSubCategories(self, request, pk=None):
         try:
             categories = Category.getSubCategories(pk)
-            context = getDataCategories(categories)
+            context = utils.getDataCategories(categories)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -34,14 +35,3 @@ class WantedCategoryViewSet(viewsets.ModelViewSet):
 class SuggestedCategoryViewSet(viewsets.ModelViewSet):
     queryset = SuggestedCategory.objects.all()
     serializer_class = SuggestedCategorySerializer
-
-
-# obtener data de una lista de cidaddes
-def getDataCategories(categories):
-    context = []
-    for category in categories:
-        if category.pattern is None:
-            context.append({'id': category.id, 'pattern': None, 'name': category.name})
-        else:
-            context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name})
-    return context

@@ -1,5 +1,4 @@
-from categories import views as viewsCategories
-from things.models import Notice, Image, CityNotice, Video, Product, Color
+from categories import views as from things.models import Notice, Image, CityNotice, Video, Product, Color
 from profiles.models import Profile, Follow, Icon
 from string import ascii_lowercase, digits
 from random import choice
@@ -53,6 +52,17 @@ def getDataMessages(messages):
     return context
 
 
+# obtener data de una lista de categoruas
+def getDataCategories(categories):
+    context = []
+    for category in categories:
+        if category.pattern is None:
+            context.append({'id': category.id, 'pattern': None, 'name': category.name})
+        else:
+            context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name})
+    return context
+
+
 # obtener data de una lista de cidaddes
 def getDataCities(cities):
     context = []
@@ -101,7 +111,7 @@ def noticeComplete(notice):
     context['notice'] = json.loads(serializers.serialize('json', [notice]))
     context['notice'][0]['fields']['location'] = getDataCities([notice.location])
     context['notice'][0]['fields']['profile'] = getProfileSimple([notice.profile])
-    context['notice'][0]['fields']['category'] = viewsCategories.getDataCategories([notice.category])
+    context['notice'][0]['fields']['category'] = getDataCategories([notice.category])
     cityNotices = CityNotice.searchCities(notice)
     locations = getPlaces(cityNotices)
     context['notice'][0]['locations'] = getDataCities(locations)
