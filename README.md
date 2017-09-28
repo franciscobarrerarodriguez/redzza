@@ -30,8 +30,8 @@
 | /api/v1/notices/*ID*/getData/ |  | GET | notice | Obtencion de informacion de un notice por su id |
 | /api/v1/apiServices/searchNotice/ | kind(1,2), title, categories, locations | POST | success, data, err | Busqueda, kind obligatorio |
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
-| /api/v1/comments/ | notice, profile, commentary | POST | comentary | Creacion de comentario para notice |
-| /api/v1/comments/*ID*/ | notice, profile, commentary | PUT | comentary | Edicion de un comentario para notice |
+| /api/v1/comments/ | notice, commentary | POST | comentary | Creacion de comentario para notice |
+| /api/v1/comments/*ID*/ | notice, commentary | PUT | comentary | Edicion de un comentario para notice |
 | /api/v1/comments/*ID*/ |  | DELETE | comentary | Eliminacion de un comentario para notice |
 | /api/v1/apiServices/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
 | /api/v1/apiServices/startConversation/ | text, image, user o notice | POST | success, msg, err | Iniciar una conversacion |
