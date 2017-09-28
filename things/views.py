@@ -111,6 +111,24 @@ class CommentaryViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    def update(self, request, *args, **kwargs):
+        profile = viewsProfiles.getProfile(request.user)
+        request.data['profile'] = profile.id
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if request.user != instance.profile.user:
+            return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         if request.user != instance.profile.user:
