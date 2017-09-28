@@ -36,6 +36,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.filter(is_staff=False).order_by('date_joined').reverse()
     serializer_class = UserSerializer
+    http_method_names = ['get', 'head']
 
     # Obtencion de informacion de un usuario
     @detail_route(methods=['get'])
