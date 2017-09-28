@@ -13,6 +13,12 @@ class NoticeViewSet(viewsets.ModelViewSet):
     serializer_class = NoticeSerializer
     http_method_names = ['get', 'head', 'delete']
 
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         if request.user != instance.profile.user:
@@ -80,6 +86,12 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     http_method_names = ['post', 'head', 'delete']
 
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def create(self, request, *args, **kwargs):
         notice = Notice.getNotice(request.data['notice'])
         if request.user != notice.profile.user:
@@ -103,6 +115,12 @@ class VideoViewSet(viewsets.ModelViewSet):
     serializer_class = VideoSerializer
     http_method_names = ['post', 'head', 'delete']
 
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def create(self, request, *args, **kwargs):
         notice = Notice.getNotice(request.data['notice'])
         if request.user != notice.profile.user:
@@ -125,6 +143,12 @@ class CommentaryViewSet(viewsets.ModelViewSet):
     queryset = Commentary.objects.all()
     serializer_class = CommentarySerializer
     http_method_names = ['post', 'head', 'put', 'delete']
+
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def create(self, request, *args, **kwargs):
         profile = utils.getProfile(request.user)
