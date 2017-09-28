@@ -3,4 +3,4 @@ from .views import AdvertisingViewSet
 
 
 router = routers.SimpleRouter()
-router.register(r'advertising', AdvertisingViewSet)
+# router.register(r'advertising', AdvertisingViewSet)
