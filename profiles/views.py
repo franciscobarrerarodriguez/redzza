@@ -30,6 +30,12 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     http_method_names = ['get', 'head']
 
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     # Obtencion de informacion de un usuario
     @detail_route(methods=['get'])
     def getData(self, request, pk=None):

@@ -14,6 +14,7 @@ import json
 from django.core import serializers
 from rest_framework_expiring_authtoken.models import ExpiringToken
 from categories.models import WantedCategory
+from tags.models import TagProfile
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
