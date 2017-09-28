@@ -10,6 +10,7 @@ from things.models import Notice
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    http_method_names = ['head', 'delete']
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
