@@ -11,6 +11,7 @@ import json
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
+    http_method_names = ['get', 'head', 'delete']
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -77,6 +78,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+    http_method_names = ['post', 'head', 'delete']
 
     def create(self, request, *args, **kwargs):
         notice = Notice.getNotice(request.data['notice'])
@@ -99,6 +101,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+    http_method_names = ['post', 'head', 'delete']
 
     def create(self, request, *args, **kwargs):
         notice = Notice.getNotice(request.data['notice'])
@@ -121,6 +124,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 class CommentaryViewSet(viewsets.ModelViewSet):
     queryset = Commentary.objects.all()
     serializer_class = CommentarySerializer
+    http_method_names = ['post', 'head', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
         profile = viewsProfiles.getProfile(request.user)
