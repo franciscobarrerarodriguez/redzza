@@ -17,7 +17,7 @@ from django.core import serializers
 from redzza.settings import MEDIA_URL
 from redzza.site import S3
 import json
-import utils
+from redzza import utils
 
 
 class ProfileViewSet(viewsets.ModelViewSet):

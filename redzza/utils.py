@@ -1,6 +1,6 @@
 from categories import views as viewsCategories
 from things.models import Notice, Image, CityNotice, Video, Product, Color
-from .models import Profile, Follow, Icon
+from profiles.models import Profile, Follow, Icon
 from string import ascii_lowercase, digits
 from random import choice
 from django.core.validators import validate_email

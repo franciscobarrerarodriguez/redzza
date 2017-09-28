@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
-from profiles import views as viewsProfiles
+from redzza import utils
 from .models import Notice, CityNotice, Product, Color, Service, Image, Video, Commentary
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 from django.core import serializers
@@ -26,7 +26,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
     def getData(self, request, pk=None):
         try:
             notice = Notice.getNotice(pk)
-            context = viewsProfiles.noticeComplete(notice)
+            context = utils.noticeComplete(notice)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
@@ -42,8 +42,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
             notice = Notice.getNotice(pk)
             context = []
             for i, commentary in enumerate(Commentary.search(notice)):
-                profile = viewsProfiles.getProfileSimple([commentary.profile])
-                notice = viewsProfiles.getDataNotice([commentary.notice], False)
+                profile = utils.getProfileSimple([commentary.profile])
+                notice = utils.getDataNotice([commentary.notice], False)
                 commentarySerialized = json.loads(serializers.serialize('json', [commentary]))
                 context.append({'commentary': commentarySerialized, 'notice': notice, 'profile': profile})
             return Response({'success': True, 'data': context})
@@ -127,7 +127,7 @@ class CommentaryViewSet(viewsets.ModelViewSet):
     http_method_names = ['post', 'head', 'put', 'delete']
 
     def create(self, request, *args, **kwargs):
-        profile = viewsProfiles.getProfile(request.user)
+        profile = utils.getProfile(request.user)
         request.data['profile'] = profile.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -136,7 +136,7 @@ class CommentaryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def update(self, request, *args, **kwargs):
-        profile = viewsProfiles.getProfile(request.user)
+        profile = utils.getProfile(request.user)
         request.data['profile'] = profile.id
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -168,7 +168,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def newNotice(self, request):
         try:
             user = request.user
-            profile = viewsProfiles.getProfile(user)
+            profile = utils.getProfile(user)
             # KIND: 1 --> have; 2 --> search
             kind = request.data.get('kind', None)
             # THING P --> producto, S --> servicio
@@ -349,8 +349,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 queries.append(Notice.searchTitle(title, kind))
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
-            notices = viewsProfiles.noticesQuery(queries)
-            context = viewsProfiles.getDataNotice(notices)
+            notices = utils.noticesQuery(queries)
+            context = utils.getDataNotice(notices)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):

@@ -3,7 +3,7 @@ from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
-from profiles import views as viewsProfiles
+from redzza import utils
 from things.models import Notice
 
 
@@ -31,11 +31,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def startConversation(self, request):
         try:
             user = request.user
-            profileSender = viewsProfiles.getProfile(user)
+            profileSender = utils.getProfile(user)
             idNotice = request.data.get('notice', None)
             notice = None if idNotice is None else Notice.getNotice(idNotice)
             idUserReceiver = request.data.get('user', None)
-            profileReceiver = viewsProfiles.getProfile(viewsProfiles.getUser(idUserReceiver)) if notice is None else notice.profile
+            profileReceiver = utils.getProfile(utils.getUser(idUserReceiver)) if notice is None else notice.profile
             profiles = []
             profiles.append(profileReceiver)
             profiles.append(profileSender)
@@ -61,7 +61,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def addMessage(self, request):
         try:
             user = request.user
-            profileSender = viewsProfiles.getProfile(user)
+            profileSender = utils.getProfile(user)
             idConversation = request.data.get('conversation', None)
             conversation = Conversation.getConversation(idConversation)
             text = request.data.get('text', None)
@@ -84,14 +84,14 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def getInbox(self, request):
         try:
             user = request.user
-            profile = viewsProfiles.getProfile(user)
+            profile = utils.getProfile(user)
             context = []
             conversations = Conversation.search(profile)
             for conversation in conversations:
-                listContestants = viewsProfiles.getProfileSimple(conversation.contestant.all())
-                listReviews = viewsProfiles.getProfileSimple(conversation.review.all())
-                listNotices = viewsProfiles.getDataNotice(conversation.notice.all(), fullData=False)
-                listMessages = viewsProfiles.getDataMessages(Message.search(conversation))
+                listContestants = utils.getProfileSimple(conversation.contestant.all())
+                listReviews = utils.getProfileSimple(conversation.review.all())
+                listNotices = utils.getDataNotice(conversation.notice.all(), fullData=False)
+                listMessages = utils.getDataMessages(Message.search(conversation))
                 context.append({'id': conversation.id, 'modified': conversation.modified, 'contestants': listContestants, 'notices': listNotices, 'reviews': listReviews, 'messages': listMessages})
             return Response({'success': True, 'data': context})
         except Exception as e:
@@ -106,7 +106,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def getCountNotifications(self, request):
         try:
             user = request.user
-            profile = viewsProfiles.getProfile(user)
+            profile = utils.getProfile(user)
             count = Conversation.countNotifications(profile)
             return Response({'success': True, 'count': count})
         except Exception as e:
@@ -121,7 +121,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     def reviewConversation(self, request):
         try:
             user = request.user
-            idProfile = viewsProfiles.getProfile(user).id
+            idProfile = utils.getProfile(user).id
             idConversation = request.data.get('conversation', None)
             Conversation.addReview(idProfile, idConversation)
             return Response({'success': True, 'msg': 'conversation-review'})
