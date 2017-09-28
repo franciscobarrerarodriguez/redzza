@@ -1,4 +1,4 @@
-from categories import views as from things.models import Notice, Image, CityNotice, Video, Product, Color
+from things.models import Notice, Image, CityNotice, Video, Product, Color
 from profiles.models import Profile, Follow, Icon
 from string import ascii_lowercase, digits
 from random import choice
