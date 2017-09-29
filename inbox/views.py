@@ -1,16 +1,15 @@
 from rest_framework import viewsets, status
-from .models import Conversation, Message
+from .models import Conversation, Message, Notice
 from .serializers import ConversationSerializer, MessageSerializer
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from redzza import utils
-from things.models import Notice
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    http_method_names = ['head', 'delete']
+    http_method_names = ['get', 'head', 'delete']
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -18,6 +17,30 @@ class ConversationViewSet(viewsets.ModelViewSet):
             return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_destroy(instance)
         return Response({'success': True})
+
+    def list(self, request):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def retrieve(self, request, pk=None):
+        try:
+            conversation = Conversation.getConversation(pk)
+            if utils.getProfile(request.user) not in conversation.contestant.all():
+                return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+            conversations = [conversation]
+            context = []
+            for conversation in conversations:
+                listContestants = utils.getProfileSimple(conversation.contestant.all())
+                listReviews = utils.getProfileSimple(conversation.review.all())
+                listNotices = utils.getDataNotice(conversation.notice.all(), fullData=False)
+                listMessages = utils.getDataMessages(Message.search(conversation))
+                context.append({'id': conversation.id, 'modified': conversation.modified, 'contestants': listContestants, 'notices': listNotices, 'reviews': listReviews, 'messages': listMessages})
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class MessageViewSet(viewsets.ModelViewSet):
