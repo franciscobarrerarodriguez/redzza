@@ -22,7 +22,7 @@
 | /api/v1/apiServices/updateNotice/ | notice, title, category, time, state, offer, place, colors, description, locations, urgency, visibility | PUT | success, msg, err | Edicion publicacion de servicio o producto *Un campo a la vez* |
 | /api/v1/images/ | notice, image | POST | image | Imagen para notice |
 | /api/v1/images/*ID*/ | | DELETE | success | Eliminacion de imagen por id de notice |
-| /api/v1/videos/ | notice, video | POST, DELETE | video | Video para notice |
+| /api/v1/videos/ | notice, video | POST | video | Video para notice |
 | /api/v1/videos/*ID*/ | | DELETE | success | Eliminacion de video por id de notice |
 | /api/v1/users/*ID*/getData/ |  | GET | success, data, err | Informacion de un usuario por su id |
 | /api/v1/users/*ID*/getNotices/ |  | GET | success, data, err | Publicaciones de un usuario por su id |
