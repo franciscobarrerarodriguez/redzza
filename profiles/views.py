@@ -359,3 +359,20 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Verificacion de seguimiento de usuario
+    @list_route(methods=['post'])
+    def checkFollowing(self, request):
+        try:
+            following = utils.getProfile(utils.getUser(request.data.get('user', None)))
+            follower = utils.getProfile(request.user)
+            if following is None:
+                return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True, 'following': Follow.checkFollowing(follower, following)})
+
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)

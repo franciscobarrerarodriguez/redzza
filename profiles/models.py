@@ -195,3 +195,6 @@ class Follow(models.Model):
 
     def searchFollowings(profile):
         return Follow.objects.filter(follower=profile).values('following')
+
+    def checkFollowing(follower, following):
+        return Follow.objects.filter(follower=follower, following=following).exists()
