@@ -36,6 +36,7 @@
 | /api/v1/apiServices/getHome/ |  | GET | success, data, err | Publicaciones del home de un usuario por su id |
 | /api/v1/apiServices/startConversation/ | text, image, user o notice | POST | success, msg, err | Iniciar una conversacion |
 | /api/v1/apiServices/addMessage/ | conversation, text, image | POST | success, msg, err | Agregar mensaje a una conversacion existente |
+| /api/v1/conversations/*ID*/ |  | GET | success | Recuperacion de una conversacion por su id |
 | /api/v1/conversations/*ID*/ |  | DELETE | success | Eliminacion de una conversacion por su id |
 | /api/v1/apiServices/getInbox/ |  | GET | success, data, err | Obtencion de mensajes de un usuario |
 | /api/v1/apiServices/getCountNotifications/ |  | GET | success, count, err | Obtencion de numero de notificaciones |
