@@ -172,6 +172,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e.message
             else:
                 err = e
+            if created:
+                user.delete()
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Login por correo electronico o usuario y contraseña
@@ -252,8 +254,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             elif email:
                 if Profile.searchEmail(email) is False:
                     if utils.validateStructureEmail(email) is True:
-                        user.email = email
-                        user.save()
+                        EmailAddress.change(EmailAddress.objects.get(user=user), request, email)
                         return Response({'success': True, 'msg': 'email-update'})
                     else:
                         return Response({'success': False, 'err': 'email-invalid'}, status=status.HTTP_400_BAD_REQUEST)
