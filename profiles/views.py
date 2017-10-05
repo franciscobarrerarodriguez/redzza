@@ -136,23 +136,13 @@ class ApiServicesViewSet(viewsets.ViewSet):
             last_name = request.data.get('last_name', None)
             password = request.data.get('password', None)
             place = request.data.get('place', None)
-            i_search = request.data.get('i_search', None)
-            i_have = request.data.get('i_have', None)
-            suggesting = request.data.get('suggesting', None)
 
-            if email and username and first_name and last_name and password and place and len(i_search) > 0 and len(i_have) > 0:
+            if email and username and first_name and last_name and password and place:
                 if Profile.searchEmail(email) is False:
                     if utils.validateStructureEmail(email):
                         user, created = Profile.createUser(email, username, first_name, last_name, password)
                         if created:
-                            profile = Profile.create(place, user)
-                            # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-                            for element in i_have:
-                                WantedCategory.create(element['pk'], profile, 1)
-                            for element in i_search:
-                                WantedCategory.create(element['pk'], profile, 2)
-                            if suggesting:
-                                SuggestedCategory.create(suggesting, profile)
+                            Profile.create(place, user)
                             login(request, user)
                             token = Token.objects.create(user=user)
                             userSerialized = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
