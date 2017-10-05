@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'tags.apps.TagsConfig',
     'inbox.apps.InboxConfig',
     'advertising.apps.AdvertisingConfig',
+    'django_admin_env_notice',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,9 +109,7 @@ ROOT_URLCONF = 'redzza.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR + '/redzza/frontend',
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,6 +117,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django_admin_env_notice.context_processors.from_settings",
             ],
         },
     },
@@ -128,6 +128,9 @@ WSGI_APPLICATION = 'redzza.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 if DEBUG:
+    ENVIRONMENT_NAME = "Development server"
+    ENVIRONMENT_COLOR = "#A0A0A0"
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -139,6 +142,9 @@ if DEBUG:
         }
     }
 else:
+    ENVIRONMENT_NAME = "Production server"
+    ENVIRONMENT_COLOR = "#FF2222"
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',

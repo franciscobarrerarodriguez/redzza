@@ -21,6 +21,9 @@ router.registry.extend(tags_router.registry)
 router.registry.extend(advertising_router.registry)
 router.registry.extend(inbox_router.registry)
 
+admin.site.site_header = 'Redzza Administration'
+admin.site.site_title = 'Redzza Administration'
+
 urlpatterns = [
     url(r'^', admin.site.urls,),
     url(r'^', include('django.contrib.auth.urls')),
