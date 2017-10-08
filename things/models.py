@@ -188,7 +188,7 @@ class Notice(models.Model):
         if profile.location.pattern is not None:
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
         allnotice = Notice.objects.filter(visibility=True).order_by('-date')
-        enddate = datetime.datetime.today()
+        enddate = timezone.now()
         startdate = enddate - datetime.timedelta(days=8)
         recentnotice = Notice.objects.filter(visibility=True, date__range=[startdate, enddate]).order_by('-date')
         context = []
