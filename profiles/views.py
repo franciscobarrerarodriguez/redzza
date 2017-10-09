@@ -318,7 +318,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             context = utils.getDataNotice(notices)
             page = utils.getPagination(context, request)
             if isinstance(page, str):
-                return Response({'success': False, 'data': page}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({'success': False, 'err': page}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif page.has_next():
                 return Response({'success': True, 'data': page.object_list, 'next': page.next_page_number()})
             else:
