@@ -159,7 +159,7 @@ class Notice(models.Model):
             result = CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category__pattern=category, notice__kind=kind, notice__visibility=True) | CityNotice.searchNotices(city).filter(notice__title__icontains=title, notice__category=category, notice__kind=kind, notice__visibility=True)
         return result.order_by('-notice__date', 'notice__urgency')
 
-    def searchHome(idProfile):
+    def searchHome(idProfile, days=8):
         profile = get_object_or_404(Profile, id=idProfile)
         follnotice = Notice.searchFollowing(Follow.searchFollowings(profile))
         catnotice = None
@@ -189,7 +189,7 @@ class Notice(models.Model):
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
         allnotice = Notice.objects.filter(visibility=True).order_by('-date')
         enddate = timezone.now()
-        startdate = enddate - datetime.timedelta(days=20)
+        startdate = enddate - datetime.timedelta(days)
         recentnotice = Notice.objects.filter(visibility=True, date__range=[startdate, enddate]).order_by('-date')
         context = []
 
