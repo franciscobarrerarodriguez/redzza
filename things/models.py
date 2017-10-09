@@ -189,7 +189,7 @@ class Notice(models.Model):
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)
         allnotice = Notice.objects.filter(visibility=True).order_by('-date')
         enddate = timezone.now()
-        startdate = enddate - datetime.timedelta(days=8)
+        startdate = enddate - datetime.timedelta(days=20)
         recentnotice = Notice.objects.filter(visibility=True, date__range=[startdate, enddate]).order_by('-date')
         context = []
 

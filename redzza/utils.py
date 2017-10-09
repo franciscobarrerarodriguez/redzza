@@ -15,6 +15,7 @@ from django.core import serializers
 from rest_framework_expiring_authtoken.models import ExpiringToken
 from categories.models import WantedCategory
 from tags.models import TagProfile
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
@@ -157,7 +158,19 @@ def removeDuplicates(notices):
     return [x for x in notices if not (x in seen or seen_add(x))]
 
 
+def getPagination(context, request):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(context, 10)
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = "Page not an integer"
+    except EmptyPage:
+        data = "Empty Page"
+    return data
+
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
+
 
 # Metodo de obtencion de perfil de usuario
 def getProfile(user):

@@ -8,7 +8,7 @@ from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from categories.models import WantedCategory, SuggestedCategory
+from categories.models import WantedCategory
 from tags.models import TagProfile
 from .models import Profile, Place, Follow
 from .serializers import ProfileSerializer, UserSerializer, PlaceSerializer, FollowSerializer
@@ -316,7 +316,13 @@ class ApiServicesViewSet(viewsets.ViewSet):
             queries = utils.Notice.searchHome(profile.id)
             notices = utils.noticesQuery(queries)
             context = utils.getDataNotice(notices)
-            return Response({'success': True, 'data': context})
+            page = utils.getPagination(context, request)
+            if isinstance(page, str):
+                return Response({'success': False, 'data': page}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            elif page.has_next():
+                return Response({'success': True, 'data': page.object_list, 'next': page.next_page_number()})
+            else:
+                return Response({'success': True, 'data': page.object_list})
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
