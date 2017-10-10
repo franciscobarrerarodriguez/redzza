@@ -117,9 +117,15 @@ class FollowViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         follower = utils.getProfile(request.user)
         user = request.data.get('user', None)
-        if user is not None:
-            following = utils.getProfile(utils.getUser(user))
-            request.data['following'] = following.id
+
+        if user is None:
+            return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+
+        following = utils.getProfile(utils.getUser(user))
+        if Follow.checkFollowing(follower.id, following.id):
+            return Response({'success': False, 'err': 'already following'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+        request.data['following'] = following.id
         request.data['follower'] = follower.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
