@@ -49,6 +49,7 @@
 | /api/v1/apiServices/checkToken/ | token | POST | detail: Invalid token, Token has expired, Token has valid, User inactive or deleted | Verificacion de estado de token |
 | /api/v1/apiServices/checkFollowing/ | user | POST | success, following, err | Verificacion de seguimiento de perfil |
 | /api/v1/followers/ | user | POST | data | Seguir a una persona |
+| /api/v1/followers/ | user | DELETE | data | Dejar de seguir a una persona |
 
 
 ## Kind
