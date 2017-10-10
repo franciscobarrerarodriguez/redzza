@@ -21,7 +21,7 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'pattern')
 
 
-class FollowSerializer(serializers.HyperlinkedModelSerializer):
+class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = ('id', 'url', 'following', 'follower')

@@ -107,6 +107,17 @@ class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
 
+    def create(self, request, *args, **kwargs):
+        follower = utils.getProfile(request.user)
+        following = utils.getProfile(utils.getUser(request.data['following']))
+        request.data['follower'] = follower.id
+        request.data['following'] = following.id
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class ApiServicesViewSet(viewsets.ViewSet):
 
