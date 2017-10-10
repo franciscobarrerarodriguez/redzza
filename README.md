@@ -32,7 +32,7 @@
 | /api/v1/notices/*ID*/getComments/ |  | GET | success, data, err | Comentarios de una notice por su id |
 | /api/v1/comments/ | notice, commentary | POST | comentary | Creacion de comentario para notice |
 | /api/v1/comments/*ID*/ | notice, commentary | PUT | comentary | Edicion de un comentario para notice |
-| /api/v1/comments/*ID*/ |  | DELETE | comentary | Eliminacion de un comentario para notice |
+| /api/v1/comments/*ID*/ |  | DELETE | success | Eliminacion de un comentario para notice |
 | /api/v1/apiServices/getHome/ |  | GET | success, data, next, err | Publicaciones del home de un usuario por su id, pagina 1 |
 | /api/v1/apiServices/getHome?page=*N* |  | GET | success, data, next, err | Publicaciones del home de un usuario por su id, pagina N |
 | /api/v1/apiServices/startConversation/ | text, image, user o notice | POST | success, msg, err | Iniciar una conversacion |
@@ -49,7 +49,7 @@
 | /api/v1/apiServices/checkToken/ | token | POST | detail: Invalid token, Token has expired, Token has valid, User inactive or deleted | Verificacion de estado de token |
 | /api/v1/apiServices/checkFollowing/ | user | POST | success, following, err | Verificacion de seguimiento de perfil |
 | /api/v1/followers/ | user | POST | data | Seguir a una persona |
-| /api/v1/followers/ | user | DELETE | data | Dejar de seguir a una persona |
+| /api/v1/apiServices/unfollow/ | user | DELETE | success, err | Dejar de seguir a una persona |
 
 
 ## Kind

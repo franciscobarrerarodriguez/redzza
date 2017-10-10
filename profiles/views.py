@@ -106,7 +106,7 @@ class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
 class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
-    http_method_names = ['post', 'head', 'delete']
+    http_method_names = ['post', 'head']
 
     def list(self, request):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -399,3 +399,17 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    @list_route(methods=['delete'])
+    def unfollow(self, request, *args, **kwargs):
+        follower = utils.getProfile(request.user)
+
+        user = request.data.get('user', None)
+        if user is None:
+            return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+
+        following = utils.getProfile(utils.getUser(user))
+
+        instance = Follow.getFollowing(follower, following)
+        instance.delete()
+        return Response({'success': True})

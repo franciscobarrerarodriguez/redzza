@@ -198,3 +198,6 @@ class Follow(models.Model):
 
     def checkFollowing(follower, following):
         return Follow.objects.filter(follower=follower, following=following).exists()
+
+    def getFollowing(follower, following):
+        return Follow.objects.filter(follower=follower, following=following)
