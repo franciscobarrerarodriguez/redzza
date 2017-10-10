@@ -109,9 +109,11 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         follower = utils.getProfile(request.user)
-        following = utils.getProfile(utils.getUser(request.data['following']))
+        user = request.data.get('user', None)
+        if user is not None:
+            following = utils.getProfile(utils.getUser(user))
+            request.data['following'] = following.id
         request.data['follower'] = follower.id
-        request.data['following'] = following.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
