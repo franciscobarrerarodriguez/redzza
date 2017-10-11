@@ -16,6 +16,7 @@ from rest_framework_expiring_authtoken.models import ExpiringToken
 from categories.models import WantedCategory
 from tags.models import TagProfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import itertools
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
@@ -151,7 +152,7 @@ def noticesQuery(queries):
     notices = removeDuplicates(notices)
     i_have = [notice for notice in notices if notice.kind == 1]
     i_search = [notice for notice in notices if notice.kind == 2]
-    return notices
+    return [x for x in itertools.chain.from_iterable(itertools.zip_longest(i_have, i_search)) if x]
 
 
 def removeDuplicates(notices):
@@ -160,9 +161,9 @@ def removeDuplicates(notices):
     return [x for x in notices if not (x in seen or seen_add(x))]
 
 
-def getPagination(context, request):
+def getPagination(context, request, size):
     page = request.GET.get('page', 1)
-    paginator = Paginator(context, 10)
+    paginator = Paginator(context, size)
     try:
         data = paginator.page(page)
     except PageNotAnInteger:

@@ -341,9 +341,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
             profile = utils.getProfile(user)
             queries = utils.Notice.searchHome(profile.id)
             notices = utils.noticesQuery(queries)
-            print(notices)
             context = utils.getDataNotice(notices)
-            page = utils.getPagination(context, request)
+            page = utils.getPagination(context, request, 10)
             if isinstance(page, str):
                 return Response({'success': False, 'err': page}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             elif page.has_next():
