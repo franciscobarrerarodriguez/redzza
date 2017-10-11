@@ -149,6 +149,8 @@ def noticesQuery(queries):
                 else:
                     notices.append(element.notice)
     notices = removeDuplicates(notices)
+    i_have = [notice for notice in notices if notice.kind == 1]
+    i_search = [notice for notice in notices if notice.kind == 2]
     return notices
 
 

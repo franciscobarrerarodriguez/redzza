@@ -341,6 +341,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             profile = utils.getProfile(user)
             queries = utils.Notice.searchHome(profile.id)
             notices = utils.noticesQuery(queries)
+            print(notices)
             context = utils.getDataNotice(notices)
             page = utils.getPagination(context, request)
             if isinstance(page, str):
@@ -400,8 +401,8 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    @list_route(methods=['delete'])
-    def unfollow(self, request, *args, **kwargs):
+    @list_route(methods=['post'])
+    def unfollow(self, request):
         try:
             follower = utils.getProfile(request.user)
 
