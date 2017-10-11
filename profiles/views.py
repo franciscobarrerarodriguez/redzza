@@ -156,6 +156,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
     @list_route(methods=['post'], permission_classes=[AllowAny])
     def createUser(self, request):
         try:
+            created = False
             email = request.data.get('email', None)
             username = utils.generateRandomUsername(request.data.get('first_name', None))
             first_name = request.data.get('first_name', None)
