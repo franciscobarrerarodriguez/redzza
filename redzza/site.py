@@ -5,7 +5,7 @@ try:
     if DEBUG:
         S3 = 'http://%s' % (Site.objects.get(id=8).domain)
         CURRENT_SITE = 'http://%s' % (Site.objects.get(id=5).domain)
-        CURRENT_SITE_FRONTEND = 'https://%s' % (Site.objects.get(id=6).domain)
+        CURRENT_SITE_FRONTEND = 'http://%s' % (Site.objects.get(id=6).domain)
     else:
         S3 = 'http://%s' % (Site.objects.get(id=8).domain)
         CURRENT_SITE = 'http://%s' % (Site.objects.get(id=5).domain)
