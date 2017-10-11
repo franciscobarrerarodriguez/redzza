@@ -6,6 +6,7 @@ from categories.models import WantedCategory, Category
 from profiles.models import Profile, Place, Follow
 from things.models import Notice, Image, Video
 from inbox.models import Conversation, Message
+from advertising.models import Advertising
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import requests
@@ -52,6 +53,7 @@ def queries(request):
     # query = Conversation.create(Profile.objects.all(), Notice.objects.all()[0])
     # 16
     # query = Place.getDepartments()
-    return HttpResponse(Notice.searchHome(20))
+    print(Advertising.objects.all())
+    return HttpResponse(Advertising.objects.all())
     # type -> tipo de campo
     # dir atributos de la clase
