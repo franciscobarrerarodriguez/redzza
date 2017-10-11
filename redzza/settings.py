@@ -85,7 +85,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_expiring_authtoken.authentication.ExpiringTokenAuthentication'
     ],
-    'PAGE_SIZE': 10
 }
 
 EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=24)
