@@ -423,7 +423,7 @@ class Commentary(models.Model):
         return commentary
 
     def search(notice):
-        return Commentary.objects.filter(notice=notice)
+        return Commentary.objects.filter(notice=notice).order_by('timestamp')
 
     def searchHistory(profile):
-        return Commentary.objects.filter(profile=profile)
+        return Commentary.objects.filter(profile=profile).order_by('timestamp')
