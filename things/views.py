@@ -212,6 +212,15 @@ class ApiServicesViewSet(viewsets.ViewSet):
             # servicio
             time = request.data.get('time', None)
 
+            if kind is None or thing is None or title is None or category is None or place is None:
+                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if thing == 'P' and state is None:
+                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if thing == 'S' and time is None:
+                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+
             notice = Notice.create(profile, category, title, description, kind, urgency, place)
             if locations:
                 for location in locations:
