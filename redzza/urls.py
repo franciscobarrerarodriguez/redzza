@@ -25,7 +25,7 @@ router.registry.extend(inbox_router.registry)
 admin.site.site_header = 'Redzza Administration'
 admin.site.site_title = 'Redzza Administration'
 
-admin.site.__class__ = OTPAdminSite
+# admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     url(r'^', admin.site.urls,),
