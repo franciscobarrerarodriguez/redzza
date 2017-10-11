@@ -15,4 +15,6 @@ class Advertising(models.Model):
         return get_object_or_404(Advertising, id=idAdv)
 
     def increaseCounter(idAdv):
-        Advertising.searchAdvertising(idAdv).counter += 1
+        adv = Advertising.searchAdvertising(idAdv)
+        adv.counter += 1
+        return adv.counter

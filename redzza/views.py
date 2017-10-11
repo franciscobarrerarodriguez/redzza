@@ -53,7 +53,6 @@ def queries(request):
     # query = Conversation.create(Profile.objects.all(), Notice.objects.all()[0])
     # 16
     # query = Place.getDepartments()
-    print(Advertising.objects.all())
-    return HttpResponse(Advertising.objects.all())
+    return HttpResponse(Advertising.increaseCounter(1))
     # type -> tipo de campo
     # dir atributos de la clase
