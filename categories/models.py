@@ -1,5 +1,5 @@
 from django.db import models
-from profiles.models import Profile
+from profiles.models import Profile, File
 from django.shortcuts import get_object_or_404
 
 
@@ -7,6 +7,7 @@ class Category(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
     name = models.CharField(max_length=28)
     description = models.CharField(max_length=300, blank=True)
+    image = models.ImageField(upload_to=File.generatePath, default='Category/no.image.png')
 
     def __str__(self):
         return self.name
