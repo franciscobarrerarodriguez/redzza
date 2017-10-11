@@ -227,6 +227,13 @@ class Notice(models.Model):
                 result.append(Product.searchProduct(notice))
         return result
 
+    def predictive(start):
+        result = []
+        query = Notice.objects.filter(title__istartswith=start).order_by('title')
+        for notice in query:
+            result.append(notice.title)
+        return result
+
 
 @receiver(post_init, sender=Notice)
 def check_urgency(sender, instance, **kwargs):

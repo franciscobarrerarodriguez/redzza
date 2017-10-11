@@ -216,7 +216,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
 
             if thing == 'P' and (state is None or state == 'null'):
-                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'success': False, 'err': 'state undin'}, status=status.HTTP_400_BAD_REQUEST)
 
             if thing == 'S' and (time is None or time == 'null'):
                 return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
@@ -384,6 +384,24 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             notices = utils.noticesQuery(queries)
             context = utils.getDataNotice(notices)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Autocompletado del buscador
+    @list_route(methods=['post'])
+    def searchPredictive(self, request):
+        try:
+            start = request.data.get('start', None)
+
+            if start:
+                context = Notice.predictive(start)
+            else:
+                return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
