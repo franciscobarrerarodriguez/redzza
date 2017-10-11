@@ -402,14 +402,21 @@ class ApiServicesViewSet(viewsets.ViewSet):
 
     @list_route(methods=['delete'])
     def unfollow(self, request, *args, **kwargs):
-        follower = utils.getProfile(request.user)
+        try:
+            follower = utils.getProfile(request.user)
 
-        user = request.data.get('user', None)
-        if user is None:
-            return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+            user = request.data.get('user', None)
+            if user is None:
+                return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
 
-        following = utils.getProfile(utils.getUser(user))
+            following = utils.getProfile(utils.getUser(user))
 
-        instance = Follow.getFollowing(follower, following)
-        instance.delete()
-        return Response({'success': True})
+            instance = Follow.getFollowing(follower, following)
+            instance.delete()
+            return Response({'success': True})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
