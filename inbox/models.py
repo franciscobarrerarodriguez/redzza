@@ -35,6 +35,10 @@ class Conversation(models.Model):
     def search(profile):
         return Conversation.objects.filter(contestant=profile).order_by('-modified')
 
+    def addNotice(idC):
+        conv = Conversation.getConversation(idC)
+        conv.notice.add(notice)
+
     # notificaciones
     def countNotifications(profile):
         return Conversation.objects.filter(contestant=profile).exclude(review=profile).count()
