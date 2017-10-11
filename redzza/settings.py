@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'storages',
     'rangefilter',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 ]
 
 SITE_ID = 7
@@ -98,6 +100,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -131,6 +134,8 @@ if DEBUG:
     ENVIRONMENT_NAME = "Development server"
     ENVIRONMENT_COLOR = "#A0A0A0"
 
+    OTP_TOTP_ISSUER = 'Redzza Development'
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -144,6 +149,8 @@ if DEBUG:
 else:
     ENVIRONMENT_NAME = "Production server"
     ENVIRONMENT_COLOR = "#FF2222"
+
+    OTP_TOTP_ISSUER = 'Redzza Production'
 
     DATABASES = {
         'default': {

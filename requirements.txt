@@ -10,6 +10,7 @@ django-admin-env-notice==0.1.4
 django-admin-rangefilter==0.3.0
 django-allauth==0.32.0
 django-cors-headers==2.1.0
+django-otp==0.4.1.1
 django-redis-cache==1.7.1
 django-rest-auth==0.9.1
 django-storages==1.6.5
@@ -26,6 +27,7 @@ psycopg2==2.7.3
 python-dateutil==2.6.1
 python3-openid==3.1.0
 pytz==2017.2
+qrcode==5.3
 redis==2.10.6
 requests==2.18.3
 requests-oauthlib==0.8.0

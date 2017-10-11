@@ -12,6 +12,7 @@ from tags.urls import router as tags_router
 from advertising.urls import router as advertising_router
 from inbox.urls import router as inbox_router
 from rest_framework_expiring_authtoken import views
+from django_otp.admin import OTPAdminSite
 
 router = routers.DefaultRouter()
 router.registry.extend(profiles_router.registry)
@@ -23,6 +24,8 @@ router.registry.extend(inbox_router.registry)
 
 admin.site.site_header = 'Redzza Administration'
 admin.site.site_title = 'Redzza Administration'
+
+admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     url(r'^', admin.site.urls,),
