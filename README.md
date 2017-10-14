@@ -51,6 +51,7 @@
 | /api/v1/followers/ | user | POST | data | Seguir a una persona |
 | /api/v1/apiServices/unfollow/ | user | POST | success, err | Dejar de seguir a una persona |
 | /api/v1/apiServices/searchPredictive/ | start | POST | success, data, err | Autocompletado para buscador |
+| /api/v1/apiServices/searchPredictiveCache/ | start | POST | success, data, err | Autocompletado para buscador con cache |
 
 
 ## Kind
