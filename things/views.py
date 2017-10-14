@@ -6,6 +6,7 @@ from .models import Notice, CityNotice, Product, Color, Service, Image, Video, C
 from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializer, ColorSerializer, ServiceSerializer, ImageSerializer, VideoSerializer, CommentarySerializer
 from django.core import serializers
 import json
+from django.core.cache import cache
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
@@ -400,6 +401,28 @@ class ApiServicesViewSet(viewsets.ViewSet):
 
             if start:
                 context = Notice.predictive(start)
+            else:
+                return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True, 'data': context})
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    # Autocompletado del buscador
+    @list_route(methods=['post'])
+    def searchPredictiveCache(self, request):
+        try:
+            start = request.data.get('start', None)
+
+            if start:
+                context = cache.get('start_%s' % start)
+                if context is None:
+                    print("Calculando ....")
+                    context = Notice.predictive(start)
+                    cache.set('start_%s' % start, context)
             else:
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             return Response({'success': True, 'data': context})

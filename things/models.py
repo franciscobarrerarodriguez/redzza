@@ -6,8 +6,9 @@ from categories.models import Category, WantedCategory
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 import datetime
-from django.db.models.signals import post_delete, post_init
+from django.db.models.signals import post_delete, post_init, post_save
 from django.dispatch import receiver
+from django.core.cache import cache
 # Create your models here.
 # subcategorias y ciudades
 # timefield en el servidor
@@ -427,3 +428,10 @@ class Commentary(models.Model):
 
     def searchHistory(profile):
         return Commentary.objects.filter(profile=profile).order_by('timestamp')
+
+
+# Limpiado de cache cada cada vez que se crea una instancia en notice
+@receiver(post_save, sender=Notice)
+def clear_cache(sender, **kwargs):
+    print('cache clean')
+    cache.clear()
