@@ -433,5 +433,4 @@ class Commentary(models.Model):
 # Limpiado de cache cada cada vez que se crea una instancia en notice
 @receiver(post_save, sender=Notice)
 def clear_cache(sender, **kwargs):
-    print('cache clean')
     cache.clear()

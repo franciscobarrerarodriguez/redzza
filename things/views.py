@@ -420,7 +420,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if start:
                 context = cache.get('start_%s' % start)
                 if context is None:
-                    print("Calculando ....")
                     context = Notice.predictive(start)
                     cache.set('start_%s' % start, context)
             else:
