@@ -18,6 +18,7 @@ from redzza.settings import MEDIA_URL
 from redzza.site import S3
 import json
 from redzza import utils
+from django.core.cache import cache
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -340,9 +341,13 @@ class ApiServicesViewSet(viewsets.ViewSet):
         try:
             user = request.user
             profile = utils.getProfile(user)
-            queries = utils.Notice.searchHome(profile.id)
-            notices = utils.noticesQuery(queries)
-            context = utils.getDataNotice(notices)
+            context = cache.get('home_%s' % profile.id)
+            if context is None:
+                queries = utils.Notice.searchHome(profile.id)
+                notices = utils.noticesQuery(queries)
+                context = utils.getDataNotice(notices)
+                cache.set('home_%s' % profile.id, context)
+
             page = utils.getPagination(context, request, 20)
             if isinstance(page, str):
                 return Response({'success': False, 'err': page}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
