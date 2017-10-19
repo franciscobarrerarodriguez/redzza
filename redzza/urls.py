@@ -38,4 +38,5 @@ urlpatterns = [
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^queries/', main_view.queries, name='query'),
+    url(r'^rest-auth/google/$', main_view.GoogleLogin.as_view(), name='google_login')
 ]
