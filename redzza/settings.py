@@ -49,8 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_expiring_authtoken',
-    'django.contrib.sites',
     'rest_auth',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
 ]
 
-SITE_ID = 7
+SITE_ID = 9
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 

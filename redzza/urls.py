@@ -34,9 +34,10 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/login/', views.obtain_expiring_auth_token),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^rest-auth/google/$', main_view.GoogleLogin.as_view(), name='google_login'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^queries/', main_view.queries, name='query'),
-    url(r'^rest-auth/google/$', main_view.GoogleLogin.as_view(), name='google_login')
+    url(r'^accounts/', include('allauth.urls'), name='socialaccount_signup'),
 ]
