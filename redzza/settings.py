@@ -66,6 +66,8 @@ SITE_ID = 7
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
+SOCIALACCOUNT_ADAPTER = 'redzza.adapter.DefaultSocialAccountAdapterCustom'
+
 OLD_PASSWORD_FIELD_ENABLED = True
 
 LOGOUT_ON_PASSWORD_CHANGE = False

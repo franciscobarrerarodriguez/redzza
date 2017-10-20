@@ -47,6 +47,9 @@ class Place(models.Model):
     def searchPlace(idLocation):
         return get_object_or_404(Place, id=idLocation)
 
+    def searchName(name):
+        return Place.objects.get(name=name)
+
 
 class Icon(models.Model):
     name = models.CharField(max_length=50)
