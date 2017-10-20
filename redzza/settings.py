@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
 ]
 
-SITE_ID = 9
+SITE_ID = 7
 
 ACCOUNT_ADAPTER = 'redzza.adapter.DefaultAccountAdapterCustom'
 
