@@ -9,6 +9,13 @@ from datetime import date
 import os
 # usado para generar el nombre de una imagen
 from uuid import uuid4
+from django.core.files import File as FileDjango
+from django.core.files.temp import NamedTemporaryFile
+import requests
+from urllib.parse import urlparse
+from django.db.models.signals import post_save
+from allauth.socialaccount.models import SocialAccount
+from os.path import splitext
 
 
 class File():
@@ -162,9 +169,8 @@ class Profile(models.Model):
         profile.avialability = avialability
         return profile.save()
 
+
 # metodo para borrar archivos de los avatar cuando se borre el registro
-
-
 @receiver(pre_save, sender=Profile)
 def avatar_delete(sender, instance, **kwargs):
     """
@@ -204,3 +210,28 @@ class Follow(models.Model):
 
     def getFollowing(follower, following):
         return Follow.objects.filter(follower=follower, following=following)
+
+
+def saveImageUrl(model, url):
+    r = requests.get(url)
+    if r.status_code == requests.codes.ok:
+        img_temp = NamedTemporaryFile(delete=True)
+        img_temp.write(r.content)
+        img_temp.flush()
+        img_filename = img_temp.name + splitext(urlparse(url).path)[1]
+        model.avatar.save(img_filename, FileDjango(img_temp), save=True)
+        return True
+    return False
+
+
+@receiver(post_save, sender=User)
+def retrieve_social_data(sender, instance, **kwargs):
+    data = SocialAccount.objects.filter(user=instance)
+    profile = Profile.objects.filter(user=instance)
+    if data and not profile:
+        idPlace = Place.searchName("Sin definir").id
+        profile = Profile.create(idPlace, instance)
+        picture = data[0].get_avatar_url()
+        if picture:
+            saveImageUrl(profile, picture)
+        profile.save()
