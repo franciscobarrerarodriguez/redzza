@@ -170,10 +170,11 @@ else:
         'default': {
             'BACKEND': 'redis_cache.RedisCache',
             'LOCATION': 'redzza.g5yfs8.0001.use2.cache.amazonaws.com:6379',
+            'TIMEOUT': None,
             'OPTIONS': {
                 'DB': 1,
-                'PARSER_CLASS': 'redis.connection.HiredisParser'
-            }
+                'PARSER_CLASS': 'redis.connection.HiredisParser',
+            },
         }
     }
 
