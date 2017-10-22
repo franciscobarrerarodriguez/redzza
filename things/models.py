@@ -230,7 +230,7 @@ class Notice(models.Model):
 
     def predictive(start):
         result = []
-        query = Notice.objects.filter(title__istartswith=start).order_by('title')
+        query = Notice.objects.filter(title__istartswith=start, visibility=True).order_by('title').distinct('title')
         for notice in query:
             result.append(notice.title)
         return result
