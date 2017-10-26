@@ -411,7 +411,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    # Autocompletado del buscador
+    # Autocompletado del buscador con cache
     @list_route(methods=['post'])
     def searchPredictiveCache(self, request):
         try:
