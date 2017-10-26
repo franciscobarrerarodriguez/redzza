@@ -50,8 +50,7 @@
 | /api/v1/apiServices/checkFollowing/ | user | POST | success, following, err | Verificacion de seguimiento de perfil |
 | /api/v1/followers/ | user | POST | data | Seguir a una persona |
 | /api/v1/apiServices/unfollow/ | user | POST | success, err | Dejar de seguir a una persona |
-| /api/v1/apiServices/searchPredictive/ | start | POST | success, data, err | Autocompletado para buscador |
-| /api/v1/apiServices/searchPredictiveCache/ | start | POST | success, data, err | Autocompletado para buscador con cache |
+| /api/v1/apiServices/searchPredictive/ | start | POST | success, data, err | Autocompletado para buscador con cache |
 | /rest-auth/google/ | access_token | POST | token, success, msg, err, user, timetoken | Autenticacion con Google |
 
 ## Kind
