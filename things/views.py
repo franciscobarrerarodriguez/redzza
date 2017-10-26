@@ -393,27 +393,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 err = e
             return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    # Autocompletado del buscador
-    @list_route(methods=['post'])
-    def searchPredictive(self, request):
-        try:
-            start = request.data.get('start', None)
-
-            if start:
-                context = Notice.predictive(start)
-            else:
-                return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'success': True, 'data': context})
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
     # Autocompletado del buscador con cache
     @list_route(methods=['post'])
-    def searchPredictiveCache(self, request):
+    def searchPredictive(self, request):
         try:
             start = request.data.get('start', None)
 
