@@ -73,9 +73,9 @@ OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 # EMAIL Settings
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'contacto@redzza.com'
 EMAIL_HOST_PASSWORD = 'avaadore110684'
@@ -124,6 +124,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "django_admin_env_notice.context_processors.from_settings",
+                "redzza.site.frontend",
             ],
         },
     },
@@ -253,5 +254,6 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'redzza.storage_backends.MediaStorage'
 
 REST_AUTH_SERIALIZERS = {
-    'TOKEN_SERIALIZER': 'redzza.serializers.CustomTokenSerializer'
+    'TOKEN_SERIALIZER': 'redzza.serializers.CustomTokenSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'redzza.serializers.CustomPasswordResetSerializer'
 }

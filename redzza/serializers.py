@@ -1,8 +1,10 @@
+from rest_auth.serializers import PasswordResetSerializer
 from rest_auth.models import TokenModel
 from rest_framework import serializers
 from django.core import serializers as djangoSerializers
 from redzza import utils
 import json
+from .site import CURRENT_SITE_FRONTEND
 
 
 class CustomTokenSerializer(serializers.ModelSerializer):
@@ -24,3 +26,9 @@ class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = TokenModel
         fields = ('data',)
+
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+
+    def get_email_options(self):
+        return {'extra_email_context': {'CURRENT_SITE_FRONTEND': CURRENT_SITE_FRONTEND}}
