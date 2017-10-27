@@ -1,18 +1,16 @@
-from allauth.account.adapter import get_adapter as get_account_adapter
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.utils import user_email, user_field, user_username
 from allauth.utils import valid_email_or_none
 from .site import CURRENT_SITE_FRONTEND
 from redzza import utils
-from profiles.models import Profile, Place
 
 
 class DefaultAccountAdapterCustom(DefaultAccountAdapter):
 
     def send_mail(self, template_prefix, email, context):
         context['activate_url'] = CURRENT_SITE_FRONTEND + \
-            '/verify-email/' + context['key'] + '/'
+            '/#/verify-email/' + context['key'] + '/'
         msg = self.render_mail(template_prefix, email, context)
         msg.send()
 
