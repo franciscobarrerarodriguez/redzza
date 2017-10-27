@@ -52,6 +52,7 @@
 | /api/v1/apiServices/unfollow/ | user | POST | success, err | Dejar de seguir a una persona |
 | /api/v1/apiServices/searchPredictive/ | start | POST | success, data, err | Autocompletado para buscador con cache |
 | /rest-auth/google/ | access_token | POST | token, success, msg, err, user, timetoken | Autenticacion con Google |
+| /rest-auth/facebook/ | access_token | POST | token, success, msg, err, user, timetoken | Autenticacion con Facebook |
 
 ## Kind
 - i_have(Ofrezco) --> 1 
