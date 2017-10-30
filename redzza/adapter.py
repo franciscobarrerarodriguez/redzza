@@ -36,10 +36,10 @@ class DefaultSocialAccountAdapterCustom(DefaultSocialAccountAdapter):
         email = data.get('email')
         name = data.get('name')
         user = sociallogin.user
-        user_email(user, valid_email_or_none(email) or '')
         name_parts = (name or '').partition(' ')
         user_field(user, 'first_name', first_name or name_parts[0])
         user_field(user, 'last_name', last_name or name_parts[2])
         username = utils.generateRandomUsername(first_name or name_parts[0] or '')
+        user_email(user, valid_email_or_none(email) or (username + '@redzza.com'))
         user_username(user, username)
         return user

@@ -163,14 +163,14 @@ class ApiServicesViewSet(viewsets.ViewSet):
             first_name = request.data.get('first_name', None)
             last_name = request.data.get('last_name', None)
             password = request.data.get('password', None)
-            place = request.data.get('place', None)
 
-            if email and username and first_name and last_name and password and place:
+            if email and username and first_name and last_name and password:
                 if Profile.searchEmail(email) is False:
                     if utils.validateStructureEmail(email):
                         user, created = Profile.createUser(email, username, first_name, last_name, password)
                         if created:
-                            Profile.create(place, user)
+                            idPlace = Place.searchName("Sin definir").id
+                            Profile.create(idPlace, user)
                             login(request, user)
                             token = Token.objects.create(user=user)
                             userSerialized = json.loads(serializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
