@@ -358,6 +358,10 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if kind is None or kind > 2:
                 return Response({'success': False, 'err': 'kind-undefined'}, status=status.HTTP_400_BAD_REQUEST)
 
+            context = cache.get('search_%s' % title)
+            if context is not None:
+                return Response({'success': True, 'data': context})
+
             queries = []
             if title and categories and locations:
                 for category in categories:
@@ -385,6 +389,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'fields-undefined'}, status=status.HTTP_400_BAD_REQUEST)
             notices = utils.noticesQuery(queries)
             context = utils.getDataNotice(notices)
+            cache.set('search_%s' % title, context)
             return Response({'success': True, 'data': context})
         except Exception as e:
             if hasattr(e, 'message'):
