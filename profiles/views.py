@@ -249,85 +249,85 @@ class ApiServicesViewSet(viewsets.ViewSet):
             i_have = request.data.get('i_have', None)
             tags = request.data.get('tags', None)
 
-            if first_name and last_name:
-                user.first_name = first_name
-                user.last_name = last_name
-                user.save()
-                return Response({'success': True, 'msg': 'full_name-update'})
-            elif username:
+            response = {'success': False, 'err': 'field-undefined'}
+
+            if username:
                 if Profile.searchUsername(username) is False:
                     user.username = username
                     user.save()
-                    return Response({'success': True, 'msg': 'username-update'})
+                    response = {'success': True, 'msg': 'username-update'}
                 else:
-                    return Response({'success': False, 'err': 'username-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-            elif first_name:
+                    response = {'success': False, 'err': 'username-exists'}
+            if first_name:
                 user.first_name = first_name
                 user.save()
-                return Response({'success': True, 'msg': 'first_name-update'})
-            elif last_name:
+                response = {'success': True, 'msg': 'first_name-update'}
+            if last_name:
                 user.last_name = last_name
                 user.save()
-                return Response({'success': True, 'msg': 'last_name-update'})
-            elif email:
+                response = {'success': True, 'msg': 'last_name-update'}
+            if email:
                 if Profile.searchEmail(email) is False:
                     if utils.validateStructureEmail(email) is True:
                         EmailAddress.change(EmailAddress.objects.get(user=user), request, email)
-                        return Response({'success': True, 'msg': 'email-update'})
+                        response = {'success': True, 'msg': 'email-update'}
                     else:
-                        return Response({'success': False, 'err': 'email-invalid'}, status=status.HTTP_400_BAD_REQUEST)
+                        response = {'success': False, 'err': 'email-invalid'}
                 else:
-                    return Response({'success': False, 'err': 'email-exists'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-            elif avatar:
+                    response = {'success': False, 'err': 'email-exists'}
+            if avatar:
                 Profile.updateAvatar(profile, avatar)
-                return Response({'success': True, 'msg': 'avatar-update'})
-            elif icono:
+                response = {'success': True, 'msg': 'avatar-update'}
+            if icono:
                 Profile.updateIcono(profile, icono)
-                return Response({'success': True, 'msg': 'icono-update'})
-            elif birth_date:
+                response = {'success': True, 'msg': 'icono-update'}
+            if birth_date:
                 Profile.updateBirthdate(profile, birth_date)
-                return Response({'success': True, 'msg': 'birth_date-update'})
-            elif gender:
+                response = {'success': True, 'msg': 'birth_date-update'}
+            if gender:
                 Profile.updateGender(profile, gender)
-                return Response({'success': True, 'msg': 'gender-update'})
-            elif phone:
+                response = {'success': True, 'msg': 'gender-update'}
+            if phone:
                 Profile.updatePhone(profile, phone)
-                return Response({'success': True, 'msg': 'phone-update'})
-            elif biography:
+                response = {'success': True, 'msg': 'phone-update'}
+            if biography:
                 Profile.updateBiography(profile, biography)
-                return Response({'success': True, 'msg': 'biography-update'})
-            elif location:
+                response = {'success': True, 'msg': 'biography-update'}
+            if location:
                 Profile.updateLocation(profile, location)
-                return Response({'success': True, 'msg': 'location-update'})
-            elif company:
+                response = {'success': True, 'msg': 'location-update'}
+            if company:
                 Profile.updateCompany(profile, company)
-                return Response({'success': True, 'msg': 'company-update'})
-            elif profession:
+                response = {'success': True, 'msg': 'company-update'}
+            if profession:
                 Profile.updateProfession(profile, profession)
-                return Response({'success': True, 'msg': 'profession-update'})
-            elif address:
+                response = {'success': True, 'msg': 'profession-update'}
+            if address:
                 Profile.updateAddress(profile, address)
-                return Response({'success': True, 'msg': 'address-update'})
-            elif avialability:
+                response = {'success': True, 'msg': 'address-update'}
+            if avialability:
                 Profile.updateAvialability(profile, avialability)
-                return Response({'success': True, 'msg': 'avialability-update'})
-            elif i_search:
+                response = {'success': True, 'msg': 'avialability-update'}
+            if i_search:
                 WantedCategory.deleteAllSearch(profile)
                 for element in i_search:
                     WantedCategory.create(element['pk'], profile, 2)
-                return Response({'success': True, 'msg': 'i_search-update'})
-            elif i_have:
+                response = {'success': True, 'msg': 'i_search-update'}
+            if i_have:
                 WantedCategory.deleteAllHave(profile)
                 for element in i_have:
                     WantedCategory.create(element['pk'], profile, 1)
-                return Response({'success': True, 'msg': 'i_have-update'})
-            elif tags:
+                response = {'success': True, 'msg': 'i_have-update'}
+            if tags:
                 TagProfile.deleteAll(profile)
                 for element in tags:
                     TagProfile.create(element['pk'], profile)
-                return Response({'success': True, 'msg': 'tags-update'})
-            else:
-                return Response({'success': False, 'err': 'field-undefined'}, status=status.HTTP_400_BAD_REQUEST)
+                response = {'success': True, 'msg': 'tags-update'}
+
+            if response.success:
+                Response(response)
+            Response(response, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
