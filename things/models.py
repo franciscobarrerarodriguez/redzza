@@ -232,7 +232,7 @@ class Notice(models.Model):
         result = {}
         query = Notice.objects.filter(title__istartswith=start, visibility=True).order_by('title').distinct('title')
         for index in range(len(query)):
-            result[query[index].title] = None
+            result[query[index].title.lower()] = None
         return result
 
 
