@@ -324,9 +324,9 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     TagProfile.create(element['pk'], profile)
                 response = {'success': True, 'msg': 'tags-update'}
 
-            if response.success:
-                Response(response)
-            Response(response, status=status.HTTP_400_BAD_REQUEST)
+            if response["success"]:
+                return Response(response)
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
             if hasattr(e, 'message'):
