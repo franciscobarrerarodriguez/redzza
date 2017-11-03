@@ -5,6 +5,7 @@ from django.core import serializers as djangoSerializers
 from redzza import utils
 import json
 from .site import CURRENT_SITE_FRONTEND
+from profiles.models import Profile
 
 
 class CustomTokenSerializer(serializers.ModelSerializer):
@@ -32,3 +33,14 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
 
     def get_email_options(self):
         return {'extra_email_context': {'CURRENT_SITE_FRONTEND': CURRENT_SITE_FRONTEND}}
+
+    def validate_email(self, value):
+        if not Profile.searchEmail(value):
+            raise serializers.ValidationError('non-existent')
+
+        # Create PasswordResetForm with the serializer
+        self.reset_form = self.password_reset_form_class(data=self.initial_data)
+        if not self.reset_form.is_valid():
+            raise serializers.ValidationError(self.reset_form.errors)
+
+        return value
