@@ -70,6 +70,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
             if (text or image) and len(profiles) > 0:
                 conversation = Conversation.create(profiles, notice)[0][0]
                 Message.create(text, image, profileSender, conversation)
+                utils.sendEmail(profiles[0].user.email, 'notifications/new_message.html')
                 return Response({'success': True, 'msg': 'conversation-created'}, status=status.HTTP_201_CREATED)
             else:
                 return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
@@ -83,25 +84,29 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Agrega mensaje a una conversacion
     @list_route(methods=['post'])
     def addMessage(self, request):
-        try:
-            user = request.user
-            profileSender = utils.getProfile(user)
-            idConversation = request.data.get('conversation', None)
-            conversation = Conversation.getConversation(idConversation)
-            text = request.data.get('text', None)
-            image = request.data.get('image', None)
+        # try:
+        user = request.user
+        profileSender = utils.getProfile(user)
+        idConversation = request.data.get('conversation', None)
+        conversation = Conversation.getConversation(idConversation)
+        text = request.data.get('text', None)
+        image = request.data.get('image', None)
 
-            if (text or image) and conversation and profileSender:
-                Message.create(text, image, profileSender, conversation)
-                return Response({'success': True, 'msg': 'message-created'}, status=status.HTTP_201_CREATED)
-            else:
-                return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            if hasattr(e, 'message'):
-                err = e.message
-            else:
-                err = e
-            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        if (text or image) and conversation and profileSender:
+            Message.create(text, image, profileSender, conversation)
+            contestants = conversation.contestant.all()
+            for profile in contestants:
+                if profile != profileSender:
+                    utils.sendEmail(profile.user.email, 'notifications/new_message.html')
+            return Response({'success': True, 'msg': 'message-created'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
+        # except Exception as e:
+        #     if hasattr(e, 'message'):
+        #         err = e.message
+        #     else:
+        #         err = e
+        #     return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Obtiene inbox de un usuario
     @list_route(methods=['get'])

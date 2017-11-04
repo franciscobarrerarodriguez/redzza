@@ -9,7 +9,7 @@ from rest_framework_expiring_authtoken.settings import token_settings
 from django.utils import timezone
 from django.contrib.auth.models import User
 from redzza.site import S3
-from redzza.settings import MEDIA_URL
+from redzza.settings import MEDIA_URL, EMAIL_HOST_USER
 import json
 from django.core import serializers
 from rest_framework_expiring_authtoken.models import ExpiringToken
@@ -17,6 +17,8 @@ from categories.models import WantedCategory
 from tags.models import TagProfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import itertools
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 # ---------------------------------METODOS LOGICOS----------------------------------------
@@ -171,6 +173,21 @@ def getPagination(context, request, size):
     except EmptyPage:
         data = "Empty Page"
     return data
+
+
+# Envio de correo electronico
+def sendEmail(email, template, context=''):
+    msg_html = render_to_string(template, {'context': context})
+    sender = EMAIL_HOST_USER
+
+    send_mail(
+        '[Redzza] Notification',
+        '',
+        sender,
+        [email],
+        html_message=msg_html,
+    )
+
 
 # ---------------------------------METODOS OBTENCION DE DATOS---------------------------------
 
