@@ -8,7 +8,7 @@ class Category(models.Model):
     name = models.CharField(max_length=28)
     description = models.CharField(max_length=300, blank=True)
     image = models.ImageField(upload_to=File.generatePath, default='Category/no.image.png')
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=7, default="#FFFFFF")
 
     def __str__(self):
         return self.name
