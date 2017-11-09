@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 class Category(models.Model):
     pattern = models.ForeignKey("self", blank=True, null=True)
-    name = models.CharField(max_length=28)
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=300, blank=True)
     image = models.ImageField(upload_to=File.generatePath, default='Category/no.image.png')
     color = models.CharField(max_length=7, default="#FFFFFF")
