@@ -22,13 +22,15 @@ class WantedCategory(models.Model):
     profile = models.ForeignKey(Profile)
     # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
     type_category = models.IntegerField()
+    # Para el tipo i_have
+    notice = models.ForeignKey('things.Notice', blank=True, null=True)
 
     def __str__(self):
         return str(self.category)
 
-    def create(element, profile, kind):
+    def create(element, profile, kind, notice=None):
         category = get_object_or_404(Category, id=element)
-        wanted = WantedCategory(profile=profile, category=category, type_category=kind)
+        wanted = WantedCategory(profile=profile, category=category, type_category=kind, notice=notice)
         return wanted.save()
 
     def deleteAllHave(profile):
