@@ -17,7 +17,7 @@ class AdminCategory(admin.ModelAdmin):
 
 @admin.register(WantedCategory)
 class AdminWantedCategory(admin.ModelAdmin):
-    list_display = ('category', 'profile', 'type_category')
+    list_display = ('category', 'profile', 'type_category', 'notice')
 
 
 @admin.register(SuggestedCategory)

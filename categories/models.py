@@ -36,6 +36,9 @@ class WantedCategory(models.Model):
     def deleteAllHave(profile):
         WantedCategory.objects.filter(profile=profile, type_category=1).delete()
 
+    def deleteHaveNotice(notice):
+        WantedCategory.objects.filter(notice=notice, type_category=1).delete()
+
     def deleteAllSearch(profile):
         WantedCategory.objects.filter(profile=profile, type_category=2).delete()
 
