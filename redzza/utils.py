@@ -62,9 +62,9 @@ def getDataCategories(categories):
     context = []
     for category in categories:
         if category.pattern is None:
-            context.append({'id': category.id, 'pattern': None, 'name': category.name, 'image': S3 + MEDIA_URL + str(category.image)})
+            context.append({'id': category.id, 'pattern': None, 'name': category.name, 'image': S3 + MEDIA_URL + str(category.image), 'color': category.color})
         else:
-            context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name, 'image': S3 + MEDIA_URL + str(category.image)})
+            context.append({'id': category.id, 'pattern': category.pattern.id, 'name': category.name, 'image': S3 + MEDIA_URL + str(category.image), 'color': category.color})
     return context
 
 

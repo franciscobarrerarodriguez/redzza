@@ -12,7 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
             return S3 + MEDIA_URL + str(obj.image)
 
         model = Category
-        fields = ('id', 'pattern', 'name', 'description', 'image')
+        fields = ('id', 'pattern', 'name', 'description', 'image', 'color')
 
 
 class WantedCategorySerializer(serializers.HyperlinkedModelSerializer):
