@@ -7,7 +7,6 @@ from .serializers import NoticeSerializer, CityNoticeSerializer, ProductSerializ
 from django.core import serializers
 import json
 from django.core.cache import cache
-from categories.models import WantedCategory
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
@@ -26,7 +25,6 @@ class NoticeViewSet(viewsets.ModelViewSet):
         if request.user != instance.profile.user:
             return Response({'success': False, 'err': 'user-unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         instance.visibility = False
-        WantedCategory.deleteHaveNotice(instance)
         instance.save()
         return Response({'success': True})
 
@@ -225,7 +223,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': False, 'err': 'Incomplete data'}, status=status.HTTP_400_BAD_REQUEST)
 
             notice = Notice.create(profile, category, title, description, kind, urgency, place)
-            WantedCategory.create(category, profile, 1, notice)
             if locations:
                 for location in locations:
                     CityNotice.create(location, notice)
@@ -290,8 +287,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 return Response({'success': True, 'msg': 'title-update'})
             elif category:
                 Notice.updateCategory(notice, category)
-                WantedCategory.deleteHaveNotice(notice)
-                WantedCategory.create(category, notice.profile, 1, notice)
                 return Response({'success': True, 'msg': 'category-update'})
             elif place:
                 Notice.updatePlace(notice, place)

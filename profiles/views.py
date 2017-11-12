@@ -259,7 +259,6 @@ class ApiServicesViewSet(viewsets.ViewSet):
             address = request.data.get('address', None)
             avialability = request.data.get('avialability', None)
             i_search = request.data.get('i_search', None)
-            i_have = request.data.get('i_have', None)
             tags = request.data.get('tags', None)
 
             response = {'success': False, 'err': 'field-undefined'}
@@ -322,15 +321,10 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 Profile.updateAvialability(profile, avialability)
                 response = {'success': True, 'msg': 'avialability-update'}
             if i_search:
-                WantedCategory.deleteAllSearch(profile)
+                WantedCategory.deleteAll(profile)
                 for element in i_search:
-                    WantedCategory.create(element['pk'], profile, 2)
+                    WantedCategory.create(element['pk'], profile)
                 response = {'success': True, 'msg': 'i_search-update'}
-            if i_have:
-                WantedCategory.deleteAllHave(profile)
-                for element in i_have:
-                    WantedCategory.create(element['pk'], profile, 1)
-                response = {'success': True, 'msg': 'i_have-update'}
             if tags:
                 TagProfile.deleteAll(profile)
                 for element in tags:

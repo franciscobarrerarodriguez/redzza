@@ -20,33 +20,20 @@ class Category(models.Model):
 class WantedCategory(models.Model):
     category = models.ForeignKey(Category)
     profile = models.ForeignKey(Profile)
-    # i_have(Ofrezco) --> 1 ; i_search(Busco) --> 2
-    type_category = models.IntegerField()
-    # Para el tipo i_have
-    notice = models.ForeignKey('things.Notice', blank=True, null=True)
 
     def __str__(self):
         return str(self.category)
 
-    def create(element, profile, kind, notice=None):
+    def create(element, profile):
         category = get_object_or_404(Category, id=element)
-        wanted = WantedCategory(profile=profile, category=category, type_category=kind, notice=notice)
+        wanted = WantedCategory(profile=profile, category=category)
         return wanted.save()
 
-    def deleteAllHave(profile):
-        WantedCategory.objects.filter(profile=profile, type_category=1).delete()
+    def deleteAll(profile):
+        WantedCategory.objects.filter(profile=profile).delete()
 
-    def deleteHaveNotice(notice):
-        WantedCategory.objects.filter(notice=notice, type_category=1).delete()
-
-    def deleteAllSearch(profile):
-        WantedCategory.objects.filter(profile=profile, type_category=2).delete()
-
-    def searchOffer(profile):
-        return WantedCategory.objects.filter(profile=profile, type_category=2)
-
-    def searchHave(profile):
-        return WantedCategory.objects.filter(profile=profile, type_category=1)
+    def search(profile):
+        return WantedCategory.objects.filter(profile=profile)
 
 
 class SuggestedCategory(models.Model):

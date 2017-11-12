@@ -164,27 +164,27 @@ class Notice(models.Model):
         profile = get_object_or_404(Profile, id=idProfile)
         follnotice = Notice.searchFollowing(Follow.searchFollowings(profile))
         catnotice = None
-        for category in WantedCategory.searchOffer(profile):
+        for category in WantedCategory.search(profile):
             if catnotice is None:
                 catnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
             else:
                 catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 1)
-        for category in WantedCategory.searchHave(profile):
+        for notice in Notice.getNoticeHave(profile):
             if catnotice is None:
-                catnotice = Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+                catnotice = Notice.searchCategoryCity(notice.category.id, profile.location.id, 2)
             else:
-                catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.id, 2)
+                catnotice = catnotice | Notice.searchCategoryCity(notice.category.id, profile.location.id, 2)
         if profile.location.pattern is not None:
-            for category in WantedCategory.searchOffer(profile):
+            for category in WantedCategory.search(profile):
                 if catnotice is None:
                     catnotice = Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 1)
                 else:
                     catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 1)
-            for category in WantedCategory.searchHave(profile):
+            for notice in Notice.getNoticeHave(profile):
                 if catnotice is None:
-                    catnotice = Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 2)
+                    catnotice = Notice.searchCategoryCity(notice.category.id, profile.location.pattern.id, 2)
                 else:
-                    catnotice = catnotice | Notice.searchCategoryCity(category.category.id, profile.location.pattern.id, 2)
+                    catnotice = catnotice | Notice.searchCategoryCity(notice.category.id, profile.location.pattern.id, 2)
         citynotice = Notice.searchCity(profile.location.id, 1) | Notice.searchCity(profile.location.id, 2)
         if profile.location.pattern is not None:
             citynotice = citynotice | Notice.searchCity(profile.location.pattern.id, 1) | Notice.searchCity(profile.location.pattern.id, 2)

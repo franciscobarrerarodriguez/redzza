@@ -239,13 +239,16 @@ def getNumberFollowersUser(user):
 # Metodo que retorna las categorias que ofrece el usuario ingresado por parametro
 # i_have(Ofrezco) --> 1
 def getHaveCategoriesUser(user):
-    return WantedCategory.searchHave(getProfile(user))
+    categories = []
+    for notice in Notice.getNoticeHave(getProfile(user)):
+        categories.push(notice.category)
+    return categories
 
 
 # Metodo que retorna las categorias que busca el usuario ingresado por parametro
 # i_search(Busco) --> 2
 def getSearchCategoriesUser(user):
-    return WantedCategory.searchOffer(getProfile(user))
+    return WantedCategory.search(getProfile(user))
 
 
 # Metodo que retorna todas las notices de un usuarios
