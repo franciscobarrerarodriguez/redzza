@@ -19,6 +19,7 @@ class CustomTokenSerializer(serializers.ModelSerializer):
         token = utils.getToken(user)
         timeToken = utils.getTimeToken(token)
         userSerialized = json.loads(djangoSerializers.serialize('json', [user], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+        userSerialized[0]['fields']['is_verified'] = True
         if user.is_staff:
             return {'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken}
         else:
