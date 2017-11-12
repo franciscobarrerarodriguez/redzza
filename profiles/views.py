@@ -216,8 +216,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
                 else:
                     return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
+            elif True:
+                return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            elif True:
+                return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             else:
-                return Response({'success': False, 'err': 'invalid-login'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({'success': False, 'err': 'l'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
                 err = e.message
