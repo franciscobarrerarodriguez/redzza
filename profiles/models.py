@@ -116,6 +116,12 @@ class Profile(models.Model):
         except User.DoesNotExist:
             return None
 
+    def getUserUsername(username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
     def searchEmail(email):
         return User.objects.filter(email__iexact=email).exists()
 

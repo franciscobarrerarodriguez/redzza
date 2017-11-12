@@ -216,6 +216,11 @@ def getUserEmail(email):
     return Profile.getUserEmail(email)
 
 
+# Metodo de obtencion de usuario por username
+def getUserUsername(username):
+    return Profile.getUserUsername(username)
+
+
 # Metodo que retorna el tiempo inscrito en redzza del usuario ingresado por parametro
 def getDurationUser(user):
     return (timezone.now() - user.date_joined)

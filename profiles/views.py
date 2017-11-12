@@ -218,12 +218,12 @@ class ApiServicesViewSet(viewsets.ViewSet):
                 else:
                     return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
             else:
-                socialaccount = Socialaccount.objects.filter(user=utils.getUserEmail(user))
+                socialaccount = SocialAccount.objects.filter(user=utils.getUserUsername(user))
                 if socialaccount is not None:
                     for account in socialaccount:
-                        if account.provider == 'Facebook':
+                        if account.provider == 'facebook':
                             return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-                        if account.profile == 'Google':
+                        if account.provider == 'google':
                             return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
                 return Response({'success': False, 'err': 'l'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
