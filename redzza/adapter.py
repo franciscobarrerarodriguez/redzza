@@ -1,4 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
+from allauth.account.models import EmailAddress
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.utils import user_email, user_field, user_username
 from allauth.utils import valid_email_or_none
@@ -43,3 +44,34 @@ class DefaultSocialAccountAdapterCustom(DefaultSocialAccountAdapter):
         user_email(user, valid_email_or_none(email) or (username + '@redzza.com'))
         user_username(user, username)
         return user
+
+    def pre_social_login(self, request, sociallogin):
+
+        # social account already exists, so this is just a login
+        if sociallogin.is_existing:
+            return
+
+        # some social logins don't have an email address
+        if not sociallogin.email_addresses:
+            return
+
+        # find the first verified email that we get from this sociallogin
+        verified_email = None
+        for email in sociallogin.email_addresses:
+            if email.verified:
+                verified_email = email
+                break
+
+        # no verified emails found, nothing more to do
+        if not verified_email:
+            return
+
+        # check if given email address already exists as a verified email on
+        # an existing user's account
+        try:
+            existing_email = EmailAddress.objects.get(email__iexact=email.email, verified=True)
+        except EmailAddress.DoesNotExist:
+            return
+
+        # if it does, connect this new social login to the existing user
+        sociallogin.connect(request, existing_email.user)
