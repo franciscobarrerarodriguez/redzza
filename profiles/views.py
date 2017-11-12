@@ -199,43 +199,43 @@ class ApiServicesViewSet(viewsets.ViewSet):
     # Login por correo electronico o usuario y contraseña
     @list_route(methods=['post'], permission_classes=[AllowAny])
     def loginUser(self, request):
-        # try:
-        user = request.data.get('user', None)
-        password = request.data.get('password', None)
-        if utils.validateStructureEmail(user):
-            userEmail = utils.getUserEmailNoSocial(user)
-            if userEmail is not None:
-                user = userEmail.username
-        userAuthenticate = authenticate(request, username=user, password=password)
-        if userAuthenticate is not None:
-            login(request, userAuthenticate)
-            token = utils.getToken(userAuthenticate)
-            timeToken = utils.getTimeToken(token)
-            userSerialized = json.loads(serializers.serialize('json', [userAuthenticate], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
-            userSerialized[0]['fields']['is_verified'] = EmailAddress.objects.get(user=userAuthenticate).verified
-            if userAuthenticate.is_staff:
-                return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
-            else:
-                return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
-        else:
+        try:
+            user = request.data.get('user', None)
+            password = request.data.get('password', None)
             if utils.validateStructureEmail(user):
-                checkUser = utils.getUserEmail(user)
+                userEmail = utils.getUserEmailNoSocial(user)
+                if userEmail is not None:
+                    user = userEmail.username
+            userAuthenticate = authenticate(request, username=user, password=password)
+            if userAuthenticate is not None:
+                login(request, userAuthenticate)
+                token = utils.getToken(userAuthenticate)
+                timeToken = utils.getTimeToken(token)
+                userSerialized = json.loads(serializers.serialize('json', [userAuthenticate], fields=('username', 'first_name', 'last_name', 'email', 'is_active', 'last_login', 'date_joined')))
+                userSerialized[0]['fields']['is_verified'] = EmailAddress.objects.get(user=userAuthenticate).verified
+                if userAuthenticate.is_staff:
+                    return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
+                else:
+                    return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
             else:
-                checkUser = utils.getUserUsername(user)
-            socialaccount = SocialAccount.objects.filter(user=checkUser)
-            if socialaccount is not None:
-                for account in socialaccount:
-                    if account.provider == 'facebook':
-                        return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-                    if account.provider == 'google':
-                        return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-            return Response({'success': False, 'err': 'l'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-        # except Exception as e:
-        #     if hasattr(e, 'message'):
-        #         err = e.message
-        #     else:
-        #         err = e
-        #     return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                if utils.validateStructureEmail(user):
+                    checkUser = utils.getUserEmail(user)
+                else:
+                    checkUser = utils.getUserUsername(user)
+                socialaccount = SocialAccount.objects.filter(user=checkUser)
+                if socialaccount is not None:
+                    for account in socialaccount:
+                        if account.provider == 'facebook':
+                            return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                        if account.provider == 'google':
+                            return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({'success': False, 'err': 'l'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                err = e.message
+            else:
+                err = e
+            return Response({'success': False, 'err': str(err)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     # Edicion de informacion del usuario
     @list_route(methods=['put'])
