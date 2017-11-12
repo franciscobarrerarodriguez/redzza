@@ -216,6 +216,11 @@ def getUserEmail(email):
     return Profile.getUserEmail(email)
 
 
+# Metodo de obtencion de usuario no social
+def getUserEmailNoSocial(email):
+    return Profile.getUserEmailNoSocial(email)
+
+
 # Metodo de obtencion de usuario por username
 def getUserUsername(username):
     return Profile.getUserUsername(username)

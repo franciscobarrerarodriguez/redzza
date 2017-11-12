@@ -203,7 +203,7 @@ class ApiServicesViewSet(viewsets.ViewSet):
         user = request.data.get('user', None)
         password = request.data.get('password', None)
         if utils.validateStructureEmail(user):
-            userEmail = utils.getUserEmail(user)
+            userEmail = utils.getUserEmailNoSocial(user)
             if userEmail is not None:
                 user = userEmail.username
         userAuthenticate = authenticate(request, username=user, password=password)
@@ -218,7 +218,11 @@ class ApiServicesViewSet(viewsets.ViewSet):
             else:
                 return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
         else:
-            socialaccount = SocialAccount.objects.filter(user=utils.getUserUsername(user))
+            if utils.validateStructureEmail(user):
+                checkUser = utils.getUserEmail(user)
+            else:
+                checkUser = utils.getUserUsername(user)
+            socialaccount = SocialAccount.objects.filter(user=checkUser)
             if socialaccount is not None:
                 for account in socialaccount:
                     if account.provider == 'facebook':

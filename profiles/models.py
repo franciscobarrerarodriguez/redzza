@@ -112,7 +112,17 @@ class Profile(models.Model):
 
     def getUserEmail(email):
         try:
-            return User.objects.get(email=email)
+            return User.objects.filter(email=email)
+        except User.DoesNotExist:
+            return None
+
+    def getUserEmailNoSocial(email):
+        try:
+            users = User.objects.filter(email=email)
+            for user in users:
+                if SocialAccount.objects.filter(user=user) is None:
+                    return user
+            return None
         except User.DoesNotExist:
             return None
 
