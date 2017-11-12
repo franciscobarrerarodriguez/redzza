@@ -5,6 +5,7 @@ from rest_framework.decorators import list_route, detail_route
 from rest_framework.authtoken.models import Token
 from allauth.account import app_settings as allauth_settings
 from allauth.account.models import EmailAddress
+from allauth.socialaccount.models import Socialaccount
 from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -216,11 +217,14 @@ class ApiServicesViewSet(viewsets.ViewSet):
                     return Response({'success': True, 'msg': 'user-admin', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
                 else:
                     return Response({'success': True, 'msg': 'user-normal', 'user': userSerialized, 'token': token.key, 'timeToken': timeToken})
-            elif True:
-                return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-            elif True:
-                return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             else:
+                socialaccount = Socialaccount.objects.filter(user=utils.getUserEmail(user))
+                if socialaccount is not None:
+                    for account in socialaccount:
+                        if account.provider == 'Facebook':
+                            return Response({'success': False, 'err': 'f'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                        if account.profile == 'Google':
+                            return Response({'success': False, 'err': 'g'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
                 return Response({'success': False, 'err': 'l'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except Exception as e:
             if hasattr(e, 'message'):
