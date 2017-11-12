@@ -5,7 +5,7 @@ from rest_framework.decorators import list_route, detail_route
 from rest_framework.authtoken.models import Token
 from allauth.account import app_settings as allauth_settings
 from allauth.account.models import EmailAddress
-from allauth.socialaccount.models import Socialaccount
+from allauth.socialaccount.models import SocialAccount
 from allauth.account.utils import complete_signup
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
