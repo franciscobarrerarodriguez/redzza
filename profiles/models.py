@@ -120,7 +120,7 @@ class Profile(models.Model):
         try:
             users = User.objects.filter(email=email)
             for user in users:
-                if SocialAccount.objects.filter(user=user) is None:
+                if not SocialAccount.objects.filter(user=user).exists():
                     return user
             return None
         except User.DoesNotExist:
