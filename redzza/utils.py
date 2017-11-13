@@ -241,7 +241,7 @@ def getNumberFollowersUser(user):
 def getHaveCategoriesUser(user):
     categories = []
     for notice in Notice.getNoticeHave(getProfile(user)):
-        categories.push(notice.category)
+        categories.append(notice.category)
     return categories
 
 
