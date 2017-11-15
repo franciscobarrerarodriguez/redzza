@@ -1,4 +1,4 @@
-# Redzza  ![CircleCI](https://circleci.com/gh/larry852/redzza.svg?style=svg&circle-token=cd70aaea93f105fc9177883b44ce4eb1abd5f6be)
+# Intercambios  ![CircleCI](https://circleci.com/gh/larry852/redzza.svg?style=svg&circle-token=cd70aaea93f105fc9177883b44ce4eb1abd5f6be)
 
 ## Modelo E-R
 ![MER](modeloE-R.png?raw=true "Modelo E-R")
