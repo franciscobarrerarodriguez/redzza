@@ -1,6 +1,8 @@
-EC2 --> ssh -i .ssh/redzza.pem ubuntu@ec2-18-221-7-120.us-east-2.compute.amazonaws.com
+EC2 Backend SSH--> ssh -i .ssh/redzza.pem ubuntu@ec2-18-221-7-120.us-east-2.compute.amazonaws.com
 
-EC2 Frontend --> scp -i .ssh/redzza.pem -r frontend-redzza/redzza-frontend/dist ubuntu@ec2-52-15-101-27.us-east-2.compute.amazonaws.com:dist
+EC2 Frontend SSH --> ssh -i .ssh/redzza.pem ubuntu@ec2-52-15-101-27.us-east-2.compute.amazonaws.com
+
+EC2 Frontend Copia archivos --> scp -i .ssh/redzza.pem -r frontend-redzza/redzza-frontend/dist ubuntu@ec2-52-15-101-27.us-east-2.compute.amazonaws.com:dist
 
 RDS --> psql -h redzza.ctbplp1yxtbq.us-east-2.rds.amazonaws.com -U redzza -d redzza    <<<<< pass: redzza852
 
